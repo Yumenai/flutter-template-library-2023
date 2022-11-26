@@ -1,0 +1,33 @@
+name: template_library
+description: An application that provide a code repository needed to accelerate flutter application development.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# Android : Version Name               + Version Code
+# iOS     : CFBundleShortVersionString + CFBundleVersion
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.18.5 <3.0.0'
+
+# flutter pub upgrade --major-versions
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+  # Provide iOS Cupertino style icons.
+  cupertino_icons: ^1.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # Provide a set of recommended lints to encourage good coding practices.
+  flutter_lints: ^2.0.0
+
+# The following section is specific to Flutter packages.
+flutter:
+
+  # Provide Android Material style icons.
+  uses-material-design: true
