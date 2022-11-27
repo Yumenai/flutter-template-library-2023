@@ -23,8 +23,11 @@ dependencies:
   # Provide state management
   provider: ^6.0.4
 
-  # Provide Information of the application
+  # Provide information of the application
   package_info_plus: ^3.0.1
+
+  # Provide key value storage management
+  shared_preferences: ^2.0.15
 
   # Provide iOS Cupertino style icons.
   cupertino_icons: ^1.0.2
