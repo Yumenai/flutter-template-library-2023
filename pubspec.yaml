@@ -31,3 +31,7 @@ flutter:
 
   # Provide Android Material style icons.
   uses-material-design: true
+
+  # Declare Multimedia Resources
+  assets:
+    - asset/image/
