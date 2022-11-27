@@ -15,6 +15,10 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # Provide localization management
+  flutter_localizations:
+    sdk: flutter
+
 
   # Provide iOS Cupertino style icons.
   cupertino_icons: ^1.0.2
@@ -28,6 +32,9 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+
+  # Enable generation of localized Strings from arb files
+  generate: true
 
   # Provide Android Material style icons.
   uses-material-design: true

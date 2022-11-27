@@ -1,0 +1,6 @@
+{
+  "appDescription": "此应用程序的目标是开发一个模板，以确保未来 Flutter 应用程序的一致性和最佳编码实践。",
+
+  "routeTitleDashboard": "仪表板",
+  "routeTitleSettings": "设置"
+}

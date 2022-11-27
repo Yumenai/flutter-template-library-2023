@@ -1,0 +1,6 @@
+{
+  "appDescription": "The goals of this application is to develop a template that ensure consistency and best coding practices for future flutter application.",
+
+  "routeTitleDashboard": "Dashboard",
+  "routeTitleSettings": "Settings"
+}
