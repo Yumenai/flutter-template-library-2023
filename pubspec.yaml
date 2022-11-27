@@ -20,11 +20,14 @@ dependencies:
     sdk: flutter
 
 
-  # Provide iOS Cupertino style icons.
-  cupertino_icons: ^1.0.2
-
   # Provide state management
   provider: ^6.0.4
+
+  # Provide Information of the application
+  package_info_plus: ^3.0.1
+
+  # Provide iOS Cupertino style icons.
+  cupertino_icons: ^1.0.2
 
 dev_dependencies:
   flutter_test:
