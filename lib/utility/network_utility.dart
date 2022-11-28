@@ -6,8 +6,20 @@ import 'dart:typed_data';
 import 'package:http_parser/http_parser.dart';
 import 'package:http/http.dart' as http;
 
-class NetworkRepositoryService {
-  const NetworkRepositoryService();
+class NetworkUtility {
+  static bool isSuccess(final http.Response? response) {
+    final statusCode = response?.statusCode ?? -999;
+
+    return statusCode >= 200 && statusCode < 300;
+  }
+
+  static bool isFailure(final http.Response? response) {
+    return isSuccess(response);
+  }
+
+  static bool isConnectionError(final http.Response? response) {
+    return response == null;
+  }
 
   static Future<http.Response?> get({
     required final String hostAddress,
@@ -167,4 +179,6 @@ class NetworkRepositoryService {
       return null;
     }
   }
+
+  const NetworkUtility._();
 }
