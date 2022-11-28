@@ -29,6 +29,9 @@ dependencies:
   # Provide key value storage management
   shared_preferences: ^2.0.15
 
+  # Provide file storage management
+  path_provider: ^2.0.11
+
   # Provide iOS Cupertino style icons.
   cupertino_icons: ^1.0.2
 
