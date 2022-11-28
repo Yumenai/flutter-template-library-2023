@@ -38,6 +38,9 @@ dependencies:
   # Provide database storage management
   sqflite: ^2.2.0+3
 
+  # Provide network connection
+  http: ^0.13.5
+
   # Provide notification message
   firebase_messaging: ^14.1.2
 
