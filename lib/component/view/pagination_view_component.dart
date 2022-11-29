@@ -192,7 +192,7 @@ class _PaginationViewComponentState extends State<PaginationViewComponent> {
           itemBuilder: (context, indexPosition) {
             if (widget.controller.dataList.length > indexPosition) {
               return widget.itemBuilder(context, indexPosition);
-            } else if (widget.controller.isLoading) {
+            } else if (widget.controller.isLoadable) {
               return const Padding(
                 padding: EdgeInsets.all(32.0),
                 child: Center(
@@ -235,7 +235,7 @@ class _PaginationViewComponentState extends State<PaginationViewComponent> {
                   }
                 },),
               );
-            } else if (widget.controller.isLoading) {
+            } else if (widget.controller.isLoadable) {
               return const Padding(
                 padding: EdgeInsets.all(32.0),
                 child: Center(
