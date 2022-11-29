@@ -14,15 +14,6 @@ class AppController extends ChangeNotifier {
     );
   }
 
-  static AppControllerNotify notify(final BuildContext context) {
-    return AppControllerNotify(
-      Provider.of<AppController>(
-        context,
-        listen: false,
-      ),
-    );
-  }
-
   static AppController listen(final BuildContext context) {
     return Provider.of<AppController>(context);
   }
@@ -69,13 +60,13 @@ class AppController extends ChangeNotifier {
     return !isBrightnessDark(context);
   }
 
-  void _updateTheme(final BuildContext context, final ThemeMode themeMode) {
+  void updateTheme(final BuildContext context, final ThemeMode themeMode) {
     _themeMode = themeMode;
 
-    _synchronizeBrightness(context);
+    synchronizeBrightness(context);
   }
 
-  void _updateLanguage(final BuildContext context, final String languageCode) {
+  void updateLanguage(final BuildContext context, final String languageCode) {
     for (final locale in LanguageResourceData.supportedLocaleList) {
       if (locale.languageCode == languageCode) {
         _locale = locale;
@@ -85,7 +76,7 @@ class AppController extends ChangeNotifier {
     }
   }
 
-  void _synchronizeBrightness(final BuildContext context) {
+  void synchronizeBrightness(final BuildContext context) {
     if (isBrightnessDark(context)) {
       _color = const ColorResourceData.dark();
       _image = const ImageResourceData.dark();
@@ -95,23 +86,5 @@ class AppController extends ChangeNotifier {
     }
 
     notifyListeners();
-  }
-}
-
-class AppControllerNotify {
-  final AppController _controller;
-
-  const AppControllerNotify(this._controller);
-
-  void updateTheme(final BuildContext context, final ThemeMode themeMode) {
-    _controller._updateTheme(context, themeMode);
-  }
-
-  void updateLanguage(final BuildContext context, final String languageCode) {
-    _controller._updateLanguage(context, languageCode);
-  }
-
-  void synchronizeBrightness(final BuildContext context) {
-    _controller._synchronizeBrightness(context);
   }
 }
