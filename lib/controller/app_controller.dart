@@ -19,54 +19,31 @@ class AppController extends ChangeNotifier {
   }
 
   ThemeMode _themeMode;
+  ThemeMode get themeMode => _themeMode;
+
   Locale _locale;
+  Locale? get locale => _locale;
 
   ColorResourceData _color;
-  ImageResourceData _image;
+  ColorResourceData get color => _color;
 
-  AppController(final BuildContext context)
+  ImageResourceData _image;
+  ImageResourceData get image => _image;
+
+  AppController()
       : _themeMode = ThemeMode.light,
         _locale = LanguageResourceData.supportedLocaleList.first,
         _color = const ColorResourceData.light(),
         _image = const ImageResourceData.light();
 
-  ThemeMode get themeMode => _themeMode;
-
-  Locale? get locale => _locale;
-
-  ColorResourceData get color => _color;
-
-  ImageResourceData get image => _image;
-
   AppLocalizations? text(final BuildContext context) => AppLocalizations.of(context);
 
-  Brightness getBrightness(final BuildContext context) {
-    if (_themeMode == ThemeMode.system) {
-      return MediaQuery.of(context).platformBrightness;
-    } else {
-      return Theme.of(context).brightness;
-    }
-  }
-
-  bool isBrightnessDark(final BuildContext context) {
-    if (_themeMode == ThemeMode.system) {
-      return WidgetsBinding.instance.window.platformBrightness == Brightness.dark;
-    } else {
-      return _themeMode == ThemeMode.dark;
-    }
-  }
-
-  bool isBrightnessLight(final BuildContext context) {
-    return !isBrightnessDark(context);
-  }
-
-  void updateTheme(final BuildContext context, final ThemeMode themeMode) {
+  void updateTheme(final ThemeMode themeMode) {
     _themeMode = themeMode;
-
-    synchronizeBrightness(context);
+    notifyListeners();
   }
 
-  void updateLanguage(final BuildContext context, final String languageCode) {
+  void updateLanguage(final String languageCode) {
     for (final locale in LanguageResourceData.supportedLocaleList) {
       if (locale.languageCode == languageCode) {
         _locale = locale;
@@ -76,8 +53,8 @@ class AppController extends ChangeNotifier {
     }
   }
 
-  void synchronizeBrightness(final BuildContext context) {
-    if (isBrightnessDark(context)) {
+  void updateBrightness(final Brightness brightness) {
+    if (brightness == Brightness.dark) {
       _color = const ColorResourceData.dark();
       _image = const ImageResourceData.dark();
     } else {
