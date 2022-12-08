@@ -12,6 +12,8 @@ class ImageViewComponent extends StatelessWidget {
   final double? width;
   final double? height;
   final BoxFit? fit;
+  final Color? color;
+  final BlendMode? colorBlend;
 
   ImageViewComponent.file(final File file, {
     Key? key,
@@ -21,6 +23,8 @@ class ImageViewComponent extends StatelessWidget {
     this.width,
     this.height,
     this.fit = BoxFit.cover,
+    this.color,
+    this.colorBlend,
   }) :  image = FileImage(file),
         super(key: key);
 
@@ -32,6 +36,8 @@ class ImageViewComponent extends StatelessWidget {
     this.width,
     this.height,
     this.fit = BoxFit.cover,
+    this.color,
+    this.colorBlend,
   }) :  image = AssetImage(assetPath),
         super(key: key);
 
@@ -43,6 +49,8 @@ class ImageViewComponent extends StatelessWidget {
     this.width,
     this.height,
     this.fit = BoxFit.cover,
+    this.color,
+    this.colorBlend,
   }) :  image = MemoryImage(data),
         super(key: key);
 
@@ -54,6 +62,8 @@ class ImageViewComponent extends StatelessWidget {
     this.width,
     this.height,
     this.fit = BoxFit.cover,
+    this.color,
+    this.colorBlend,
   }) :  image = NetworkImage(url),
         super(key: key);
 
@@ -61,6 +71,8 @@ class ImageViewComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Image(
       image: image,
+      color: color,
+      colorBlendMode: colorBlend,
       frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
         final animatedImageWidget = AnimatedOpacity(
           opacity: frame == null ? 0 : 1,
