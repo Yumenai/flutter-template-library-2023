@@ -1,16 +1,19 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';
 
 class LanguageResourceData {
-  static List<LocalizationsDelegate> localizationDelegateList = AppLocalizations.localizationsDelegates;
+  static const localizationDelegateList = AppLocalizations.localizationsDelegates;
 
-  static List<Locale> supportedLocaleList = AppLocalizations.supportedLocales;
+  static const supportedLocaleList = AppLocalizations.supportedLocales;
 
   /// Language Code: Language Native Name
-  static Map<String, String> supportedInformationList = {
-    'en': "English",
+  static const supportedInformationList = {
+    'en': 'English',
     'zh': '中文',
   };
+
+  static final defaultLocalizationDelegate = AppLocalizations.localizationsDelegates.first;
+
+  static final defaultLocale = AppLocalizations.supportedLocales.first;
 
   const LanguageResourceData._();
 }
