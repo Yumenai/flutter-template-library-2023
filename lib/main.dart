@@ -1,13 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-void main() {
+import 'component/template/app_template_component.dart';
+import 'controller/app_controller.dart';
+import 'route/controller/entry/splash_entry_controller_route.dart';
+import 'utility/app_utility.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final appController = await AppController.initialise();
+
   runApp(
-    MaterialApp(
-      title: 'FlutterTemplateLibrary',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('FlutterTemplateLibrary'),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) {
+            return appController;
+          },
         ),
+      ],
+      child: AppTemplateComponent(
+        name: await AppUtility.name,
+        layout: SplashEntryControllerRoute.screen(),
       ),
     ),
   );
