@@ -35,8 +35,8 @@ class ScreenTemplateComponent extends StatelessWidget {
       appBar: AppBar(
         title: _headerLayout(),
         actions: infoActionList,
-        backgroundColor: enableOverlapHeader ? null : Colors.transparent,
-        elevation: enableOverlapHeader ? null : 0,
+        backgroundColor: enableOverlapHeader ? Colors.transparent : null,
+        elevation: enableOverlapHeader ? 0 : null,
         centerTitle: true,
       ),
       extendBodyBehindAppBar: enableOverlapHeader,
