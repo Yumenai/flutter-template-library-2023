@@ -29,6 +29,7 @@ InputDecoration _inputDecoration({
   required final bool enablePaddingVertical,
   required final bool enablePrefixIconConstraint,
   required final bool enableSuffixIconConstraint,
+  required final Brightness brightness,
   required final TextInputStyle style,
 }) {
   final EdgeInsets padding;
@@ -57,7 +58,7 @@ InputDecoration _inputDecoration({
         borderSide: BorderSide.none,
       );
       floatingLabelBehavior = FloatingLabelBehavior.never;
-      backgroundColorComponent = backgroundColor ?? const Color(0xFFEEEEEE);
+      backgroundColorComponent = backgroundColor ?? (brightness == Brightness.light ? const Color(0xFFEEEEEE) : const Color(0x61000000));
       break;
     case TextInputStyle.outline:
       padding = enablePaddingVertical ? const EdgeInsets.symmetric(
@@ -384,6 +385,7 @@ class TextInputComponent extends StatelessWidget {
         enablePaddingVertical: maxLine > 1,
         enablePrefixIconConstraint: enablePrefixIconConstraint,
         enableSuffixIconConstraint: enableSuffixIconConstraint,
+        brightness: Theme.of(context).brightness,
         style: style,
       ),
       maxLines: maxLine,
@@ -666,6 +668,7 @@ class OptionTextInputComponent extends StatelessWidget {
         enablePaddingVertical: false,
         enablePrefixIconConstraint: enablePrefixIconConstraint,
         enableSuffixIconConstraint: enableSuffixIconConstraint,
+        brightness: Theme.of(context).brightness,
         style: style,
       ),
       onChanged: (indexPosition) {
