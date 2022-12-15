@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../../../component/template/screen_template_component.dart';
+import '../../../component/view/image_view_component.dart';
+import '../../../component/view/text_view_component.dart';
+import '../../../controller/app_controller.dart';
+import '../../../utility/app_utility.dart';
 import '../../controller/entry/splash_entry_controller_route.dart';
 
 class SplashEntryScreenRoute extends StatefulWidget {
@@ -25,10 +30,39 @@ class _SplashEntryScreenRouteState extends State<SplashEntryScreenRoute> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Flutter Template Library'),
+    return ScreenTemplateComponent(
+      layout: Center(
+        child: ListView(
+          shrinkWrap: true,
+          padding: const EdgeInsets.all(24),
+          children: [
+            ImageViewComponent.asset(
+              AppController.listen(context).image.app.splash,
+              width: 200,
+              height: 200,
+            ),
+            const SizedBox(
+              height: 24,
+            ),
+            TextViewComponent.future(
+              AppUtility.name,
+              align: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 24,
+              ),
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            const UnconstrainedBox(
+              child: CircularProgressIndicator(),
+            ),
+          ],
+        ),
       ),
+      enableOverlapHeader: true,
     );
   }
 }
