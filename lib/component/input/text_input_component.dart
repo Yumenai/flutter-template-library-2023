@@ -3,15 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-// normal (DONE)
-// email
-// phone
-// number
-// decimal
-// field
-// dropdown (DONE)
-// action (DONE)
-
 enum TextInputStyle {
   line,
   fill,

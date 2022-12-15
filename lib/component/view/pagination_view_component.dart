@@ -187,6 +187,7 @@ class _PaginationViewComponentState extends State<PaginationViewComponent> {
       animation: widget.controller,
       builder: (context, child) {
         return _loadingPlaceholder ?? ListView.builder(
+          physics: const AlwaysScrollableScrollPhysics(),
           controller: _scrollController,
           itemCount: widget.controller.dataList.length + 1,
           itemBuilder: (context, indexPosition) {
@@ -216,6 +217,7 @@ class _PaginationViewComponentState extends State<PaginationViewComponent> {
         final verticalCount = (widget.controller.dataList.length / widget.rowCount).ceil();
 
         return _loadingPlaceholder ?? ListView.builder(
+          physics: const AlwaysScrollableScrollPhysics(),
           controller: _scrollController,
           itemCount: verticalCount + 1,
           itemBuilder: (context, indexPosition) {
@@ -258,6 +260,7 @@ class _PaginationViewComponentState extends State<PaginationViewComponent> {
       animation: widget.controller,
       builder: (context, child) {
         return _loadingPlaceholder ?? PageView.builder(
+          physics: const AlwaysScrollableScrollPhysics(),
           controller: _pageController,
           itemCount: widget.controller.dataList.length,
           itemBuilder: widget.itemBuilder,
