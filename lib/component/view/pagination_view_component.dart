@@ -210,10 +210,11 @@ class _PaginationViewComponentState extends State<PaginationViewComponent> {
   }
 
   Widget get _gridStyleComponent {
-    final verticalCount = (widget.controller.dataList.length / widget.rowCount).ceil();
     return AnimatedBuilder(
       animation: widget.controller,
       builder: (context, child) {
+        final verticalCount = (widget.controller.dataList.length / widget.rowCount).ceil();
+
         return _loadingPlaceholder ?? ListView.builder(
           controller: _scrollController,
           itemCount: verticalCount + 1,
