@@ -72,6 +72,8 @@ class ImageViewComponent extends StatelessWidget {
     return Image(
       image: image,
       color: color,
+      width: width,
+      height: height,
       colorBlendMode: colorBlend,
       frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
         final animatedImageWidget = AnimatedOpacity(
