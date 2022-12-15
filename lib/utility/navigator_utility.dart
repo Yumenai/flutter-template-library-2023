@@ -34,6 +34,18 @@ class _DialogNavigator {
     );
   }
 
+  void showMessage(final BuildContext context, {
+    required final String? message,
+    final Duration duration = const Duration(
+      seconds: 1,
+    ),
+  }) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message ?? ''),
+      duration: duration,
+    ));
+  }
+
   const _DialogNavigator._();
 }
 
