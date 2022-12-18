@@ -9,7 +9,7 @@ import '../../../controller/app_controller.dart';
 import '../../../utility/app_utility.dart';
 import '../../controller/entry/register_entry_controller_route.dart';
 
-class RegisterEntryScreenRoute extends StatelessWidget {
+class RegisterEntryScreenRoute extends StatefulWidget {
   final RegisterEntryControllerRoute controller;
 
   const RegisterEntryScreenRoute({
@@ -17,6 +17,11 @@ class RegisterEntryScreenRoute extends StatelessWidget {
     required this.controller,
   }) : super(key: key);
 
+  @override
+  State<RegisterEntryScreenRoute> createState() => _RegisterEntryScreenRouteState();
+}
+
+class _RegisterEntryScreenRouteState extends State<RegisterEntryScreenRoute> {
   @override
   Widget build(BuildContext context) {
     return ScreenTemplateComponent(
@@ -57,23 +62,23 @@ class RegisterEntryScreenRoute extends StatelessWidget {
             ),
             TextInputComponent(
               label: 'ID',
-              controller: controller.idInputController,
+              controller: widget.controller.idInputController,
             ),
             TextInputComponent(
               label: 'Name',
-              controller: controller.nameInputController,
+              controller: widget.controller.nameInputController,
             ),
             TextInputComponent.email(
               label: 'Email',
-              controller: controller.emailInputController,
+              controller: widget.controller.emailInputController,
             ),
             SecureTextInputComponent(
               label: 'Password',
-              controller: controller.passwordInputController,
+              controller: widget.controller.passwordInputController,
             ),
             SecureTextInputComponent(
               label: 'Confirm Password',
-              controller: controller.confirmPasswordInputController,
+              controller: widget.controller.confirmPasswordInputController,
             ),
             const SizedBox(
               height: 24,
@@ -81,7 +86,7 @@ class RegisterEntryScreenRoute extends StatelessWidget {
             TextButtonComponent.submit(
               title: 'Sign Up',
               style: TextButtonStyle.elevated,
-              onPressed: () => controller.signUp(context),
+              onPressed: () => widget.controller.signUp(this),
             ),
           ],
         ),

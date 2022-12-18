@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 
+import '../../../service/repository_service.dart';
 import '../../../utility/navigator_utility.dart';
 import '../../screen/entry/register_entry_screen_route.dart';
+import 'splash_entry_controller_route.dart';
 
 class RegisterEntryControllerRoute {
-  static Widget screen() {
-    return RegisterEntryScreenRoute(
-      controller: RegisterEntryControllerRoute._(),
-    );
-  }
-
   static void navigate(final BuildContext context) {
     NavigatorUtility.screen.next(
       context,
-      screen: screen(),
+      screen: RegisterEntryScreenRoute(
+        controller: RegisterEntryControllerRoute._(),
+      ),
     );
   }
 
@@ -25,7 +23,11 @@ class RegisterEntryControllerRoute {
 
   RegisterEntryControllerRoute._();
 
-  void signUp(final BuildContext context) {
+  void signUp(final State state) async {
+    await RepositoryService.storage.key.setAccessToken('accessToken');
 
+    if (!state.mounted) return;
+
+    SplashEntryControllerRoute.navigate(state.context);
   }
 }

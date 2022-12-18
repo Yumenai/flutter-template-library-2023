@@ -9,7 +9,7 @@ import '../../../controller/app_controller.dart';
 import '../../../utility/app_utility.dart';
 import '../../controller/entry/authenticate_entry_controller_route.dart';
 
-class AuthenticateEntryScreenRoute extends StatelessWidget {
+class AuthenticateEntryScreenRoute extends StatefulWidget {
   final AuthenticateEntryControllerRoute controller;
 
   const AuthenticateEntryScreenRoute({
@@ -17,6 +17,11 @@ class AuthenticateEntryScreenRoute extends StatelessWidget {
     required this.controller,
   }) : super(key: key);
 
+  @override
+  State<AuthenticateEntryScreenRoute> createState() => _AuthenticateEntryScreenRouteState();
+}
+
+class _AuthenticateEntryScreenRouteState extends State<AuthenticateEntryScreenRoute> {
   @override
   Widget build(BuildContext context) {
     return ScreenTemplateComponent(
@@ -57,11 +62,11 @@ class AuthenticateEntryScreenRoute extends StatelessWidget {
             ),
             TextInputComponent(
               label: 'ID',
-              controller: controller.idInputController,
+              controller: widget.controller.idInputController,
             ),
             SecureTextInputComponent(
               label: 'Password',
-              controller: controller.passwordInputController,
+              controller: widget.controller.passwordInputController,
             ),
             const SizedBox(
               height: 24,
@@ -69,7 +74,7 @@ class AuthenticateEntryScreenRoute extends StatelessWidget {
             TextButtonComponent.submit(
               title: 'Sign In',
               style: TextButtonStyle.elevated,
-              onPressed: () => controller.signIn(context),
+              onPressed: () => widget.controller.signIn(this),
             ),
           ],
         ),

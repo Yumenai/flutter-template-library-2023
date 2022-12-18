@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../../service/repository_service.dart';
 import '../../../utility/navigator_utility.dart';
 import '../../screen/entry/authenticate_entry_screen_route.dart';
+import 'splash_entry_controller_route.dart';
 
 class AuthenticateEntryControllerRoute {
   static Widget screen() {
@@ -22,7 +24,11 @@ class AuthenticateEntryControllerRoute {
 
   AuthenticateEntryControllerRoute._();
 
-  void signIn(final BuildContext context) {
+  void signIn(final State state) async {
+    await RepositoryService.storage.key.setAccessToken('accessToken');
 
+    if (!state.mounted) return;
+
+    SplashEntryControllerRoute.navigate(state.context);
   }
 }

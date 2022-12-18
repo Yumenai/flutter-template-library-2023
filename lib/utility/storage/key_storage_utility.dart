@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-class KeyStorageService {
+class KeyStorageUtility {
   static SharedPreferences? _sharePreference;
 
   static Future<SharedPreferences> get _instance async {
@@ -62,5 +62,5 @@ class KeyStorageService {
     return (await _instance).clear();
   }
 
-  const KeyStorageService._();
+  const KeyStorageUtility._();
 }
