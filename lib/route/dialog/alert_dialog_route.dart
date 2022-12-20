@@ -87,9 +87,11 @@ class AlertDialogRoute {
   static Future<bool?> showLoading(final BuildContext context, {
     final String? title,
     final String? message,
+    final bool isDismissible = false,
   }) async {
     return await NavigatorUtility.dialog.showPopup(
       context,
+      dismissible: isDismissible,
       widget: DialogTemplateComponent(
         title: title ?? 'Loading...',
         message: message,
