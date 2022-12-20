@@ -59,6 +59,9 @@ dependencies:
   # Provide feature to select media
   image_picker: ^0.8.6
 
+  # Provide feature to select file
+  file_picker: ^5.2.4
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
