@@ -56,6 +56,9 @@ dependencies:
   # Provide authentication for Facebook Account
   flutter_facebook_auth: ^5.0.6
 
+  # Provide feature to select media
+  image_picker: ^0.8.6
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -1,10 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import '../../component/template/dialog_template_component.dart';
+import '../../utility/media_utility.dart';
 import '../../utility/navigator_utility.dart';
 
 class OptionDialogRoute {
-  static Future<int?> show(final BuildContext context, {
+  static Future<int?> select(final BuildContext context, {
     required final String? title,
     final String? message,
     final int? selectedOptionPosition,
@@ -42,6 +45,25 @@ class OptionDialogRoute {
     if (selectedPosition is int) return selectedPosition;
 
     return null;
+  }
+
+  static Future<File?> selectImage(final BuildContext context) async {
+    final selectedOptionPosition = await select(
+      context,
+      title: 'Select Image',
+      optionList: [
+        'Camera',
+        'Gallery',
+      ],
+    );
+
+    if (selectedOptionPosition == 0) {
+      return MediaUtility.captureImage();
+    } else if (selectedOptionPosition == 1) {
+      return MediaUtility.selectImage();
+    } else {
+      return null;
+    }
   }
 
   const OptionDialogRoute._();
