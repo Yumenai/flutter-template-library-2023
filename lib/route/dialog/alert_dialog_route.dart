@@ -84,5 +84,25 @@ class AlertDialogRoute {
     ) == true;
   }
 
+  static Future<bool?> showLoading(final BuildContext context, {
+    final String? title,
+    final String? message,
+  }) async {
+    return await NavigatorUtility.dialog.showPopup(
+      context,
+      widget: DialogTemplateComponent(
+        title: title ?? 'Loading...',
+        message: message,
+        layout: const LinearProgressIndicator(),
+        layoutPadding: const EdgeInsets.only(
+          top: 12,
+          left: 24,
+          right: 24,
+          bottom: 24,
+        ),
+      ),
+    ) == true;
+  }
+
   const AlertDialogRoute._();
 }
