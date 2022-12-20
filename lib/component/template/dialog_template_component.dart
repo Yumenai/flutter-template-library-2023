@@ -53,6 +53,7 @@ class DialogTemplateComponent extends StatelessWidget {
         vertical: 2,
       ),
       scrollable: true,
+      clipBehavior: Clip.antiAlias,
     );
   }
 

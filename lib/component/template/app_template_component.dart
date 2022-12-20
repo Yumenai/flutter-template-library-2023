@@ -75,6 +75,7 @@ class _AppTemplateComponentState extends State<AppTemplateComponent> with Widget
         theme: ThemeData(
           useMaterial3: true,
           brightness: Brightness.light,
+          primaryColor: lightColorResource.primary,
           colorScheme: ColorScheme.light(
             brightness: Brightness.light,
             primary: lightColorResource.primary,
@@ -88,10 +89,17 @@ class _AppTemplateComponentState extends State<AppTemplateComponent> with Widget
             surface: lightColorResource.surface,
             onSurface: lightColorResource.onSurface,
           ),
+          radioTheme: RadioThemeData(
+            fillColor: MaterialStateProperty.all(lightColorResource.primary),
+          ),
+          checkboxTheme: CheckboxThemeData(
+            checkColor: MaterialStateProperty.all(lightColorResource.primary),
+          ),
         ),
         darkTheme: ThemeData.dark(
           useMaterial3: true,
         ).copyWith(
+          primaryColor: darkColorResource.primary,
           colorScheme: ColorScheme.dark(
             brightness: Brightness.dark,
             primary: darkColorResource.primary,
@@ -104,6 +112,12 @@ class _AppTemplateComponentState extends State<AppTemplateComponent> with Widget
             onBackground: darkColorResource.onBackground,
             surface: darkColorResource.surface,
             onSurface: darkColorResource.onSurface,
+          ),
+          radioTheme: RadioThemeData(
+            fillColor: MaterialStateProperty.all(darkColorResource.primary),
+          ),
+          checkboxTheme: CheckboxThemeData(
+            checkColor: MaterialStateProperty.all(darkColorResource.primary),
           ),
         ),
         locale: AppController.listen(context).locale,
