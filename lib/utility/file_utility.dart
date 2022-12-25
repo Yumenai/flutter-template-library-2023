@@ -1,8 +1,29 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
 
-class MediaUtility {
+class FileUtility {
+  static Future<File?> select({
+    final String? title,
+    final bool allowMultiple = false,
+  }) async {
+    final file = await FilePicker.platform.pickFiles(
+      dialogTitle: title,
+      allowMultiple: allowMultiple,
+    );
+
+    if (file == null) return null;
+
+    if (file.files.isEmpty) return null;
+
+    final filePath = file.files.first.path;
+
+    if (filePath == null) return null;
+
+    return File(filePath);
+  }
+
   static Future<File?> captureImage({
     final int? fileQuality,
   }) async {
@@ -65,5 +86,5 @@ class MediaUtility {
     return File(imageFile.path);
   }
 
-  const MediaUtility._();
+  const FileUtility._();
 }

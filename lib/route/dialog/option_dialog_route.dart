@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import '../../component/template/dialog_template_component.dart';
-import '../../utility/media_utility.dart';
+import '../../utility/file_utility.dart';
 import '../../utility/navigator_utility.dart';
 
 class OptionDialogRoute {
@@ -58,9 +58,9 @@ class OptionDialogRoute {
     );
 
     if (selectedOptionPosition == 0) {
-      return MediaUtility.captureImage();
+      return FileUtility.captureImage();
     } else if (selectedOptionPosition == 1) {
-      return MediaUtility.selectImage();
+      return FileUtility.selectImage();
     } else {
       return null;
     }
