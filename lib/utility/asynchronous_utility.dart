@@ -7,12 +7,12 @@ class AsynchronousUtility {
   }) async {
     final receiverPort = ReceivePort();
 
-    await Isolate.spawn<_AsynchronousModel<Data, Response>>((model) async {
-      Isolate.exit(model.sendPort, await onCompute(model.data));
-    }, _AsynchronousModel(
-      data: data,
-      sendPort: receiverPort.sendPort,
-    ));
+    await Isolate.spawn<List<dynamic>>((dataList) async {
+      Isolate.exit(dataList.first, await onCompute(dataList[1]));
+    }, [
+      receiverPort.sendPort,
+      data,
+    ]);
 
     final result = await receiverPort.first;
 
@@ -24,16 +24,4 @@ class AsynchronousUtility {
   }
 
   const AsynchronousUtility._();
-}
-
-class _AsynchronousModel<Data, Response> {
-  final Data? data;
-  final Response? response;
-  final SendPort sendPort;
-
-  const _AsynchronousModel({
-    required this.sendPort,
-    required this.data,
-    this.response,
-  });
 }
