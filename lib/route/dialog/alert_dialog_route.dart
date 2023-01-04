@@ -12,6 +12,9 @@ class AlertDialogRoute {
   static Future<bool?> show(final BuildContext context, {
     final String? title,
     final String? message,
+    final Widget? layout,
+    final EdgeInsets? layoutPadding,
+    final String? positiveTitle,
     final void Function()? onPressedPositive,
     final bool enablePositiveClosure = true,
     final AlertDialogStyle style = AlertDialogStyle.alert,
@@ -31,7 +34,9 @@ class AlertDialogRoute {
         titleColor: color,
         message: message,
         messageColor: color,
-        actionPositive: MapEntry('Okay', () {
+        layout: layout,
+        layoutPadding: layoutPadding,
+        actionPositive: MapEntry(positiveTitle ?? 'Okay', () {
           onPressedPositive?.call();
 
           return enablePositiveClosure;
@@ -45,6 +50,8 @@ class AlertDialogRoute {
   static Future<bool?> showConfirm(final BuildContext context, {
     final String? title,
     final String? message,
+    final Widget? layout,
+    final EdgeInsets? layoutPadding,
     final String? positiveTitle,
     final String? negativeTitle,
     final bool enablePositiveClosure = true,
@@ -68,14 +75,16 @@ class AlertDialogRoute {
         titleColor: color,
         message: message,
         messageColor: color,
-        actionPositive: MapEntry('Yes, Confirm', () {
+        layout: layout,
+        layoutPadding: layoutPadding,
+        actionPositive: MapEntry(positiveTitle ?? 'Yes, Confirm', () {
           onPressedPositive?.call();
 
           return enablePositiveClosure;
         }),
         actionPositiveBackgroundColor: color,
         actionPositiveForegroundColor: onColor,
-        actionNegative: MapEntry('No, Cancel', () {
+        actionNegative: MapEntry(negativeTitle ?? 'No, Cancel', () {
           onPressedNegative?.call();
 
           return enableNegativeClosure;
