@@ -7,14 +7,15 @@ class DatabaseStorageUtility {
   static Future<void> open({
     required final String name,
     required final int version,
-    required Future<void> Function(int) onCreate,
+    required Future<void> Function() onCreate,
     required Future<void> Function(int, int) onUpgrade,
   }) async {
-    await openDatabase(
+    _databaseInstance[name] ??= await openDatabase(
       name,
       version: version,
       onCreate: (database, version) {
-        _databaseInstance[name] = database;
+        _databaseInstance[name] ??= database;
+        onCreate();
       },
       onUpgrade: (database, oldVersion, newVersion) {
         onUpgrade(oldVersion, newVersion);
@@ -65,15 +66,43 @@ class DatabaseStorageUtility {
   }
 
   /// Execute raw query with result
-  static Future<void> querySql({
+  static Future<List<Map<String, Object?>>> querySql({
+    required final String databaseName,
+    required final String tableName,
+    final bool? distinct,
+    final List<String>? columns,
+    final String? where,
+    final List<Object?>? whereArgs,
+    final String? groupBy,
+    final String? having,
+    final String? orderBy,
+    final int? limit,
+    final int? offset,
+  }) async {
+    return await _databaseInstance[databaseName]?.query(
+      tableName,
+      distinct: distinct,
+      columns: columns,
+      where: where,
+      whereArgs: whereArgs,
+      groupBy: groupBy,
+      having: having,
+      orderBy: orderBy,
+      limit: limit,
+      offset: offset,
+    ) ?? [];
+  }
+
+  static Future<List<Map<String, Object?>>> queryRawSql({
     required final String databaseName,
     required final String query,
   }) async {
-    await _databaseInstance[databaseName]?.rawQuery(query);
+    return await _databaseInstance[databaseName]?.rawQuery(query) ?? [];
   }
 
-  static Future<void> querySqlList({
+  static Future<void> queryRawSqlList({
     required final String databaseName,
+    required final String tableName,
     required final List<String> queryList,
   }) async {
     final dbBatch = _databaseInstance[databaseName]?.batch();
