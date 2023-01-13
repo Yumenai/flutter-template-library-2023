@@ -41,7 +41,7 @@ class ImageViewComponent extends StatelessWidget {
   }) :  image = AssetImage(assetPath),
         super(key: key);
 
-  ImageViewComponent.memory(Uint8List data, {
+  ImageViewComponent.memory(final Uint8List data, {
     Key? key,
     this.placeholder,
     this.errorPlaceholder,
