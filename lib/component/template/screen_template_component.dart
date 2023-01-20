@@ -13,6 +13,8 @@ class ScreenTemplateComponent extends StatelessWidget {
   final Widget? navigatorRight;
   final Widget? navigatorBottom;
 
+  final Color? foregroundColor;
+  final Color? backgroundColor;
   final bool enableOverlapHeader;
 
   const ScreenTemplateComponent({
@@ -26,6 +28,8 @@ class ScreenTemplateComponent extends StatelessWidget {
     this.navigatorLeft,
     this.navigatorRight,
     this.navigatorBottom,
+    this.foregroundColor,
+    this.backgroundColor,
     this.enableOverlapHeader = false,
   }) : super(key: key);
 
@@ -38,7 +42,9 @@ class ScreenTemplateComponent extends StatelessWidget {
         backgroundColor: enableOverlapHeader ? Colors.transparent : null,
         elevation: enableOverlapHeader ? 0 : null,
         centerTitle: true,
+        foregroundColor: foregroundColor,
       ),
+      backgroundColor: backgroundColor,
       extendBodyBehindAppBar: enableOverlapHeader,
       body: GestureDetector(
         onTap: () {
