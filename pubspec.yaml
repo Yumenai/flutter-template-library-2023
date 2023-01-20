@@ -66,6 +66,8 @@ dependencies:
 
   flutter_svg: ^1.1.6
 
+  mobile_scanner: ^2.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
