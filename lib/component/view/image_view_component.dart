@@ -70,6 +70,7 @@ class ImageViewComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Image(
+      fit: fit,
       image: image,
       color: color,
       width: width,
