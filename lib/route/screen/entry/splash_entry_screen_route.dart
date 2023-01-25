@@ -38,6 +38,7 @@ class _SplashEntryScreenRouteState extends State<SplashEntryScreenRoute> {
           children: [
             ImageViewComponent.asset(
               AppController.listen(context).image.app.splash,
+              fit: BoxFit.contain,
               width: 200,
               height: 200,
             ),
