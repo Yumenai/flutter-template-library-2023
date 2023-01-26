@@ -2,9 +2,52 @@ import 'package:flutter/material.dart';
 
 class TabLayoutComponent extends StatelessWidget {
   final int position;
+  final bool isCentered;
+  final bool isScrollable;
   final Map<String?, Widget> layout;
 
   const TabLayoutComponent({
+    Key? key,
+    this.layout = const {},
+    this.position = 0,
+    this.isCentered = true,
+    this.isScrollable = true,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      initialIndex: position,
+      length: layout.length,
+      child: Column(
+        crossAxisAlignment: isCentered ? CrossAxisAlignment.center : CrossAxisAlignment.stretch,
+        children: [
+          TabBar(
+            isScrollable: isScrollable,
+            labelColor: Theme.of(context).colorScheme.onSurface,
+            tabs: layout.keys.map((title) {
+              return Tab(
+                text: title ?? '',
+              );
+            }).toList(),
+          ),
+          Expanded(
+            child: TabBarView(
+              children: layout.values.toList(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+class PageTabLayoutComponent extends StatelessWidget {
+  final int position;
+  final Map<String?, Widget> layout;
+
+  const PageTabLayoutComponent({
     Key? key,
     this.layout = const {},
     this.position = 0,
@@ -31,7 +74,7 @@ class TabLayoutComponent extends StatelessWidget {
                     shape: const RoundedRectangleBorder(),
                     padding: EdgeInsets.zero,
                     minimumSize: const Size(double.infinity, double.infinity),
-                    foregroundColor: currentPagePosition == i ? Theme.of(context).colorScheme.onPrimary : Colors.black,
+                    foregroundColor: currentPagePosition == i ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onSurface,
                     backgroundColor: Colors.transparent,
                   ),
                   child: Text(
