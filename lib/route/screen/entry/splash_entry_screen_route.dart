@@ -4,16 +4,25 @@ import '../../../component/template/screen_template_component.dart';
 import '../../../component/view/image_view_component.dart';
 import '../../../component/view/text_view_component.dart';
 import '../../../controller/app_controller.dart';
+import '../../../service/repository_service.dart';
 import '../../../utility/app_utility.dart';
-import '../../controller/entry/splash_entry_controller_route.dart';
+import '../../../utility/navigator_utility.dart';
+import '../dashboard_screen_route.dart';
+import 'landing_entry_screen_route.dart';
 
 class SplashEntryScreenRoute extends StatefulWidget {
-  final SplashEntryControllerRoute controller;
+  static void navigate(final BuildContext context) {
+    NavigatorUtility.screen.nextSession(
+      context,
+      screen: const SplashEntryScreenRoute(),
+    );
+  }
+
+  final controller = const _ScreenController._();
 
   const SplashEntryScreenRoute({
-    Key? key,
-    required this.controller,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<SplashEntryScreenRoute> createState() => _SplashEntryScreenRouteState();
@@ -65,5 +74,27 @@ class _SplashEntryScreenRouteState extends State<SplashEntryScreenRoute> {
       ),
       enableOverlapHeader: true,
     );
+  }
+}
+
+class _ScreenController {
+  const _ScreenController._();
+
+  void initialise(final State state) async {
+    await Future.delayed(const Duration(
+      seconds: 1,
+    ));
+
+    if (!state.mounted) return;
+
+    final accessToken = await RepositoryService.storage.key.accessToken;
+
+    if (!state.mounted) return;
+
+    if (accessToken.isEmpty) {
+      LandingEntryScreenRoute.navigate(state.context);
+    } else {
+      DashboardScreenRoute.navigate(state.context);
+    }
   }
 }

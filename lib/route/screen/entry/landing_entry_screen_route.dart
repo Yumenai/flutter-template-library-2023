@@ -6,15 +6,23 @@ import '../../../component/view/image_view_component.dart';
 import '../../../component/view/text_view_component.dart';
 import '../../../controller/app_controller.dart';
 import '../../../utility/app_utility.dart';
-import '../../controller/entry/landing_entry_controller_route.dart';
+import '../../../utility/navigator_utility.dart';
+import 'authenticate_entry_screen_route.dart';
+import 'register_entry_screen_route.dart';
 
 class LandingEntryScreenRoute extends StatelessWidget {
-  final LandingEntryControllerRoute controller;
+  static void navigate(final BuildContext context) {
+    NavigatorUtility.screen.nextSession(
+      context,
+      screen: const LandingEntryScreenRoute(),
+    );
+  }
+
+  final controller = const _ScreenController._();
 
   const LandingEntryScreenRoute({
-    Key? key,
-    required this.controller,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -69,5 +77,17 @@ class LandingEntryScreenRoute extends StatelessWidget {
       ),
       enableOverlapHeader: true,
     );
+  }
+}
+
+class _ScreenController {
+  const _ScreenController._();
+
+  void signIn(final BuildContext context) {
+    AuthenticateEntryScreenRoute.navigate(context);
+  }
+
+  void signUp(final BuildContext context) {
+    RegisterEntryScreenRoute.navigate(context);
   }
 }

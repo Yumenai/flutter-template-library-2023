@@ -6,22 +6,25 @@ import '../../../component/template/screen_template_component.dart';
 import '../../../component/view/image_view_component.dart';
 import '../../../component/view/text_view_component.dart';
 import '../../../controller/app_controller.dart';
+import '../../../service/repository_service.dart';
 import '../../../utility/app_utility.dart';
-import '../../controller/entry/register_entry_controller_route.dart';
+import '../../../utility/navigator_utility.dart';
+import 'splash_entry_screen_route.dart';
 
-class RegisterEntryScreenRoute extends StatefulWidget {
-  final RegisterEntryControllerRoute controller;
+class RegisterEntryScreenRoute extends StatelessWidget {
+  static void navigate(final BuildContext context) {
+    NavigatorUtility.screen.next(
+      context,
+      screen: RegisterEntryScreenRoute(),
+    );
+  }
 
-  const RegisterEntryScreenRoute({
-    Key? key,
-    required this.controller,
-  }) : super(key: key);
+  final controller = _ScreenController._();
 
-  @override
-  State<RegisterEntryScreenRoute> createState() => _RegisterEntryScreenRouteState();
-}
+  RegisterEntryScreenRoute({
+    super.key,
+  });
 
-class _RegisterEntryScreenRouteState extends State<RegisterEntryScreenRoute> {
   @override
   Widget build(BuildContext context) {
     return ScreenTemplateComponent(
@@ -62,23 +65,23 @@ class _RegisterEntryScreenRouteState extends State<RegisterEntryScreenRoute> {
             ),
             TextInputComponent(
               label: 'ID',
-              controller: widget.controller.idInputController,
+              controller: controller.idInputController,
             ),
             TextInputComponent(
               label: 'Name',
-              controller: widget.controller.nameInputController,
+              controller: controller.nameInputController,
             ),
             TextInputComponent.email(
               label: 'Email',
-              controller: widget.controller.emailInputController,
+              controller: controller.emailInputController,
             ),
             SecureTextInputComponent(
               label: 'Password',
-              controller: widget.controller.passwordInputController,
+              controller: controller.passwordInputController,
             ),
             SecureTextInputComponent(
               label: 'Confirm Password',
-              controller: widget.controller.confirmPasswordInputController,
+              controller: controller.confirmPasswordInputController,
             ),
             const SizedBox(
               height: 24,
@@ -86,12 +89,30 @@ class _RegisterEntryScreenRouteState extends State<RegisterEntryScreenRoute> {
             TextButtonComponent.submit(
               title: 'Sign Up',
               style: TextButtonStyle.elevated,
-              onPressed: () => widget.controller.signUp(this),
+              onPressed: () => controller.signUp(context),
             ),
           ],
         ),
       ),
       enableOverlapHeader: true,
     );
+  }
+}
+
+class _ScreenController {
+  final idInputController = TextEditingController();
+  final nameInputController = TextEditingController();
+  final emailInputController = TextEditingController();
+  final passwordInputController = TextEditingController();
+  final confirmPasswordInputController = TextEditingController();
+
+  _ScreenController._();
+
+  void signUp(final BuildContext context) async {
+    await RepositoryService.storage.key.setAccessToken('accessToken');
+
+    if (!context.mounted) return;
+
+    SplashEntryScreenRoute.navigate(context);
   }
 }
