@@ -94,7 +94,7 @@ class _ScreenController {
   _ScreenController._();
 
   void signIn(final BuildContext context) async {
-    await RepositoryService.storage.key.setAccessToken('accessToken');
+    await RepositoryService.storage.key.setRefreshToken('accessToken');
 
     if (!context.mounted) return;
 

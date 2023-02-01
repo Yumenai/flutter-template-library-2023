@@ -6,6 +6,8 @@ import 'dart:typed_data';
 import 'package:http_parser/http_parser.dart';
 import 'package:http/http.dart' as http;
 
+typedef NetworkResponse = http.Response;
+
 class NetworkUtility {
   static bool isSuccess(final http.Response? response) {
     final statusCode = response?.statusCode ?? -999;

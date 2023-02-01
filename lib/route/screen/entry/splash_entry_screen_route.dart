@@ -87,7 +87,7 @@ class _ScreenController {
 
     if (!state.mounted) return;
 
-    final accessToken = await RepositoryService.storage.key.accessToken;
+    final accessToken = await RepositoryService.storage.key.refreshToken;
 
     if (!state.mounted) return;
 
