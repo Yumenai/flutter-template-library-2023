@@ -7,7 +7,7 @@ class SliderViewComponent extends StatefulWidget {
   final Widget Function(BuildContext, int)? itemBuilder;
   final List<Widget> children;
   final Color? indicatorColor;
-  final Duration? automateDuration;
+  final bool enableAutoplay;
   final bool enableWindowMode;
   final bool enableAnimation;
 
@@ -15,7 +15,7 @@ class SliderViewComponent extends StatefulWidget {
     Key? key,
     this.children = const [],
     this.indicatorColor,
-    this.automateDuration,
+    this.enableAutoplay = false,
     this.enableWindowMode = false,
     this.enableAnimation = true,
   }) :  itemCount = null,
@@ -27,7 +27,7 @@ class SliderViewComponent extends StatefulWidget {
     this.itemCount,
     this.itemBuilder,
     this.indicatorColor,
-    this.automateDuration,
+    this.enableAutoplay = false,
     this.enableWindowMode = false,
     this.enableAnimation = true,
   }) :  children = const [],
@@ -46,20 +46,19 @@ class _SliderViewComponentState extends State<SliderViewComponent> {
 
   @override
   void initState() {
-    if (widget.automateDuration != null) {
-      timer = Timer.periodic(widget.automateDuration ?? const Duration(seconds: 1), (timer) {
-        if (model.pagePosition == (widget.itemCount ?? widget.children.length) - 1) {
-          pageController.jumpTo(0);
-        } else {
-          pageController.nextPage(
-            duration: const Duration(
-              milliseconds: 150,
-            ),
-            curve: Curves.linear,
-          );
-        }
+    if (widget.enableAutoplay) {
+      timer = Timer.periodic(const Duration(
+        seconds: 3,
+      ), (timer) {
+        pageController.nextPage(
+          duration: const Duration(
+            milliseconds: 250,
+          ),
+          curve: Curves.linear,
+        );
       });
     }
+
     super.initState();
   }
 
