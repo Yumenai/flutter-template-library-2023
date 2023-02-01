@@ -72,21 +72,26 @@ class _SliderViewComponentState extends State<SliderViewComponent> {
 
   @override
   Widget build(BuildContext context) {
+    final constantItemSize = widget.itemCount ?? widget.children.length;
+
     return Stack(
       children: [
-        if (widget.itemCount == null)
-          PageView(
-            controller: pageController,
-            onPageChanged: (position) {
-              model.updatePosition(position);
-            },
-            children: widget.enableAnimation ? widget.children.asMap().entries.map((itemMapEntry) {
+        PageView.builder(
+          controller: pageController,
+          onPageChanged: (position) {
+            model.updatePosition(position % constantItemSize);
+          },
+          itemBuilder: (context, indexPosition) {
+            final constantPosition = indexPosition % constantItemSize;
+            final itemWidget = widget.itemBuilder?.call(context, constantPosition) ?? (widget.children.length > constantPosition ? widget.children[constantPosition] : const SizedBox());
+
+            if (widget.enableAnimation) {
               return AnimatedBuilder(
                 animation: model,
-                child: itemMapEntry.value,
+                child: itemWidget,
                 builder: (context, child) {
                   return AnimatedPadding(
-                    padding: model.pagePosition == itemMapEntry.key ? const EdgeInsets.all(0) : const EdgeInsets.all(24),
+                    padding: model.pagePosition == constantPosition ? const EdgeInsets.all(0) : const EdgeInsets.all(24),
                     curve: Curves.easeInOutCubic,
                     duration: const Duration(
                       milliseconds: 250,
@@ -95,36 +100,11 @@ class _SliderViewComponentState extends State<SliderViewComponent> {
                   );
                 },
               );
-            }).toList() : widget.children,
-          )
-        else
-          PageView.builder(
-            controller: pageController,
-            onPageChanged: (position) {
-              model.updatePosition(position);
-            },
-            itemCount: widget.itemCount,
-            itemBuilder: (context, indexPosition) {
-              if (widget.enableAnimation) {
-                return AnimatedBuilder(
-                  animation: model,
-                  child: widget.itemBuilder?.call(context, indexPosition),
-                  builder: (context, child) {
-                    return AnimatedPadding(
-                      padding: model.pagePosition == indexPosition ? const EdgeInsets.all(0) : const EdgeInsets.all(24),
-                      curve: Curves.easeInOutCubic,
-                      duration: const Duration(
-                        milliseconds: 250,
-                      ),
-                      child: child,
-                    );
-                  },
-                );
-              } else {
-                return widget.itemBuilder?.call(context, indexPosition) ?? const SizedBox();
-              }
-            },
-          ),
+            } else {
+              return itemWidget;
+            }
+          },
+        ),
         Positioned(
           left: 12,
           right: 12,
