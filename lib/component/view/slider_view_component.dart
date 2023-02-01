@@ -8,12 +8,16 @@ class SliderViewComponent extends StatefulWidget {
   final List<Widget> children;
   final Color? indicatorColor;
   final Duration? automateDuration;
+  final bool enableWindowMode;
+  final bool enableAnimation;
 
   const SliderViewComponent({
     Key? key,
     this.children = const [],
     this.indicatorColor,
     this.automateDuration,
+    this.enableWindowMode = false,
+    this.enableAnimation = true,
   }) :  itemCount = null,
         itemBuilder = null,
         super(key: key);
@@ -24,6 +28,8 @@ class SliderViewComponent extends StatefulWidget {
     this.itemBuilder,
     this.indicatorColor,
     this.automateDuration,
+    this.enableWindowMode = false,
+    this.enableAnimation = true,
   }) :  children = const [],
         super(key: key);
 
@@ -33,7 +39,9 @@ class SliderViewComponent extends StatefulWidget {
 
 class _SliderViewComponentState extends State<SliderViewComponent> {
   final model = _SliderViewModel();
-  final pageController = PageController();
+  late final pageController = PageController(
+    viewportFraction: widget.enableWindowMode ? 0.7 : 1,
+  );
   late final Timer timer;
 
   @override
@@ -72,7 +80,22 @@ class _SliderViewComponentState extends State<SliderViewComponent> {
             onPageChanged: (position) {
               model.updatePosition(position);
             },
-            children: widget.children,
+            children: widget.enableAnimation ? widget.children.asMap().entries.map((itemMapEntry) {
+              return AnimatedBuilder(
+                animation: model,
+                child: itemMapEntry.value,
+                builder: (context, child) {
+                  return AnimatedPadding(
+                    padding: model.pagePosition == itemMapEntry.key ? const EdgeInsets.all(0) : const EdgeInsets.all(24),
+                    curve: Curves.easeInOutCubic,
+                    duration: const Duration(
+                      milliseconds: 250,
+                    ),
+                    child: child,
+                  );
+                },
+              );
+            }).toList() : widget.children,
           )
         else
           PageView.builder(
@@ -82,7 +105,24 @@ class _SliderViewComponentState extends State<SliderViewComponent> {
             },
             itemCount: widget.itemCount,
             itemBuilder: (context, indexPosition) {
-              return widget.itemBuilder?.call(context, indexPosition) ?? const SizedBox();
+              if (widget.enableAnimation) {
+                return AnimatedBuilder(
+                  animation: model,
+                  child: widget.itemBuilder?.call(context, indexPosition),
+                  builder: (context, child) {
+                    return AnimatedPadding(
+                      padding: model.pagePosition == indexPosition ? const EdgeInsets.all(0) : const EdgeInsets.all(24),
+                      curve: Curves.easeInOutCubic,
+                      duration: const Duration(
+                        milliseconds: 250,
+                      ),
+                      child: child,
+                    );
+                  },
+                );
+              } else {
+                return widget.itemBuilder?.call(context, indexPosition) ?? const SizedBox();
+              }
             },
           ),
         Positioned(
