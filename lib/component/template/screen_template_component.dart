@@ -149,39 +149,47 @@ class CollapsibleScreenTemplateComponent extends StatelessWidget {
       body: NestedScrollView(
         headerSliverBuilder: (context, isInnerBoxScrolled) {
           return [
-            SliverAppBar(
-              pinned: true,
-              floating: false,
-              actions: infoActionList,
-              expandedHeight: MediaQuery.of(context).size.width,
-              foregroundColor: foregroundColor,
-              flexibleSpace: FlexibleSpaceBar(
-                title: LayoutBuilder(
-                  builder: (context, constraint) {
-                    final opacity = topSpacing / constraint.constrainHeight();
+            SliverOverlapAbsorber(
+              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+              sliver: SliverAppBar(
+                pinned: true,
+                floating: false,
+                actions: infoActionList,
+                expandedHeight: MediaQuery.of(context).size.width,
+                foregroundColor: foregroundColor,
+                flexibleSpace: FlexibleSpaceBar(
+                  title: LayoutBuilder(
+                    builder: (context, constraint) {
+                      final opacity = topSpacing / constraint.constrainHeight();
 
-                    return Opacity(
-                      opacity: opacity < 0.5 ? 0 : opacity,
-                      child: _infoComponent(
-                        infoIconPrefix: infoIconPrefix,
-                        infoIconSuffix: infoIconSuffix,
-                        infoTitle: infoTitle,
-                        foregroundColor: Theme.of(context).colorScheme.onSurface,
-                      ),
-                    );
-                  },
+                      return Opacity(
+                        opacity: opacity < 0.5 ? 0 : opacity,
+                        child: _infoComponent(
+                          infoIconPrefix: infoIconPrefix,
+                          infoIconSuffix: infoIconSuffix,
+                          infoTitle: infoTitle,
+                          foregroundColor: Theme.of(context).colorScheme.onSurface,
+                        ),
+                      );
+                    },
+                  ),
+                  centerTitle: true,
+                  background: infoBackground,
                 ),
-                centerTitle: true,
-                background: infoBackground,
               ),
             ),
           ];
         },
-        body: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).unfocus();
-          },
-          child: layout,
+        body: Padding(
+          padding: const EdgeInsets.only(
+            top: kToolbarHeight,
+          ),
+          child: GestureDetector(
+            onTap: () {
+              FocusScope.of(context).unfocus();
+            },
+            child: layout,
+          ),
         ),
       ),
       floatingActionButton: layoutAction,
