@@ -35,6 +35,7 @@ class RegisterEntryScreenRoute extends StatelessWidget {
           children: [
             ImageViewComponent.asset(
               AppController.listen(context).image.app.splash,
+              fit: BoxFit.contain,
               width: 150,
               height: 150,
             ),
