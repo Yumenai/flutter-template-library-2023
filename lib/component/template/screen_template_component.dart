@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../data/app_data.dart';
+import '../../data/variable/environment_variable_data.dart';
+
 Widget? _infoComponent({
   required final Widget? infoIconPrefix,
   required final Widget? infoIconSuffix,
@@ -78,7 +81,7 @@ class ScreenTemplateComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    final component = Scaffold(
       appBar: AppBar(
         title: _infoComponent(
           infoIconPrefix: infoIconPrefix,
@@ -104,6 +107,12 @@ class ScreenTemplateComponent extends StatelessWidget {
       endDrawer: navigatorRight,
       bottomNavigationBar: navigatorBottom,
     );
+
+    if (AppData.isDevelopmentMode) {
+      return _EnvironmentBannerComponent(component);
+    } else {
+      return component;
+    }
   }
 }
 
@@ -144,7 +153,7 @@ class CollapsibleScreenTemplateComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     final topSpacing = MediaQuery.of(context).padding.top + kToolbarHeight - 16;
 
-    return Scaffold(
+    final component = Scaffold(
       backgroundColor: backgroundColor,
       body: NestedScrollView(
         headerSliverBuilder: (context, isInnerBoxScrolled) {
@@ -197,5 +206,31 @@ class CollapsibleScreenTemplateComponent extends StatelessWidget {
       endDrawer: navigatorRight,
       bottomNavigationBar: navigatorBottom,
     );
+
+    if (AppData.isDevelopmentMode) {
+      return _EnvironmentBannerComponent(component);
+    } else {
+      return component;
+    }
+  }
+}
+
+class _EnvironmentBannerComponent extends StatelessWidget {
+  final Widget child;
+
+  const _EnvironmentBannerComponent(this.child);
+
+  @override
+  Widget build(BuildContext context) {
+    if (AppData.isDevelopmentMode) {
+      return Banner(
+        location: BannerLocation.topStart,
+        message: AppData.environment.code,
+        color: AppData.environment.color,
+        child: child,
+      );
+    } else {
+      return child;
+    }
   }
 }

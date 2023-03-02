@@ -5,6 +5,10 @@ class AppData {
 
   static EnvironmentVariableData _environment = EnvironmentVariableData.development;
 
+  static EnvironmentVariableData get environment => _environment;
+
+  static bool get isDevelopmentMode => true;
+
   static void updateEnvironment({
     final bool toProduction = false,
     final bool toUserAcceptanceTest = false,
