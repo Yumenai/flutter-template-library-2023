@@ -1,30 +1,22 @@
-import 'variable/environment_variable_data.dart';
+import 'package:flutter/material.dart';
+
+import 'resource/language_resource_data.dart';
 
 class AppData {
-  static String get hostAddress => _environment.hostAddress;
+  static const hostAddressProduction = 'https://www.yumenai.com/api';
+  static const hostAddressUserAcceptanceTest = 'https://www.yumenai.com/api/uat';
+  static const hostAddressSystemIntegrationTest = 'https://www.yumenai.com/api/sit';
+  static const hostAddressDevelopment = 'https://www.yumenai.com/api/development';
 
-  static EnvironmentVariableData _environment = EnvironmentVariableData.development;
+  static const defaultHostAddress = hostAddressDevelopment;
 
-  static EnvironmentVariableData get environment => _environment;
+  static const defaultThemeMode = ThemeMode.system;
+
+  static final defaultLocalizationDelegate = LanguageResourceData.localizationDelegateList.first;
+
+  static final defaultLocale = LanguageResourceData.supportedLocaleList.first;
 
   static bool get isDevelopmentMode => true;
-
-  static void updateEnvironment({
-    final bool toProduction = false,
-    final bool toUserAcceptanceTest = false,
-    final bool toSystemIntegrationTest = false,
-    final bool toDevelopment = false,
-  }) {
-    if (toProduction) {
-      _environment = EnvironmentVariableData.production;
-    } else if (toUserAcceptanceTest) {
-      _environment = EnvironmentVariableData.userAcceptanceTest;
-    } else if (toSystemIntegrationTest) {
-      _environment = EnvironmentVariableData.systemIntegrationTest;
-    } else if (toDevelopment) {
-      _environment = EnvironmentVariableData.development;
-    }
-  }
 
   const AppData._();
 }

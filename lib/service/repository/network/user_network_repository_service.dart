@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-import '../../../data/app_data.dart';
+import '../../../controller/app_controller.dart';
 import '../../../model/user_model.dart';
 import '../../../route/dialog/alert_dialog_route.dart';
 import '../../../utility/network_utility.dart';
@@ -20,7 +20,7 @@ class UserNetworkRepositoryService {
     AlertDialogRoute.showLoading(context);
 
     final result = await NetworkUtility.get(
-      hostAddress: AppData.hostAddress,
+      hostAddress: AppController.of(context).hostAddress,
       apiRoute: 'user/get',
       headerMap: await getNetworkHeader(),
     );
@@ -42,7 +42,7 @@ class UserNetworkRepositoryService {
     AlertDialogRoute.showLoading(context);
 
     final result = await NetworkUtility.post(
-      hostAddress: AppData.hostAddress,
+      hostAddress: AppController.of(context).hostAddress,
       apiRoute: 'user/updateProfile',
       headerMap: await getNetworkHeader(),
     );

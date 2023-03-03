@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../controller/app_controller.dart';
 import '../../data/app_data.dart';
 import '../../data/variable/environment_variable_data.dart';
 
@@ -222,15 +223,33 @@ class _EnvironmentBannerComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (AppData.isDevelopmentMode) {
-      return Banner(
-        location: BannerLocation.topStart,
-        message: AppData.environment.code,
-        color: AppData.environment.color,
-        child: child,
-      );
-    } else {
-      return child;
+    final String label;
+    final Color color;
+
+    switch(AppController.of(context).environment) {
+      case EnvironmentVariableData.production:
+        label = 'PROD';
+        color = Colors.green;
+        break;
+      case EnvironmentVariableData.userAcceptanceTest:
+        label = 'UAT';
+        color = Colors.blue;
+        break;
+      case EnvironmentVariableData.systemIntegrationTest:
+        label = 'SIT';
+        color = Colors.orange;
+        break;
+      case EnvironmentVariableData.development:
+        label = 'DEV';
+        color = Colors.red;
+        break;
     }
+
+    return Banner(
+      location: BannerLocation.topStart,
+      message: label,
+      color: color,
+      child: child,
+    );
   }
 }

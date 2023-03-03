@@ -26,7 +26,7 @@ dependencies:
   # Provide state management
   provider: ^6.0.4
 
-  # Provide information of the application
+  # Provide application information
   package_info_plus: ^3.0.1
 
   # Provide key value storage management

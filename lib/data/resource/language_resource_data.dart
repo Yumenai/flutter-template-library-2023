@@ -11,9 +11,5 @@ class LanguageResourceData {
     'zh': '中文',
   };
 
-  static final defaultLocalizationDelegate = AppLocalizations.localizationsDelegates.first;
-
-  static final defaultLocale = AppLocalizations.supportedLocales.first;
-
   const LanguageResourceData._();
 }
