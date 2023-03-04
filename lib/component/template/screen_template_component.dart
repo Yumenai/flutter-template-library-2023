@@ -223,32 +223,10 @@ class _EnvironmentBannerComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String label;
-    final Color color;
-
-    switch(AppController.of(context).environment) {
-      case EnvironmentVariableData.production:
-        label = 'PROD';
-        color = Colors.green;
-        break;
-      case EnvironmentVariableData.userAcceptanceTest:
-        label = 'UAT';
-        color = Colors.blue;
-        break;
-      case EnvironmentVariableData.systemIntegrationTest:
-        label = 'SIT';
-        color = Colors.orange;
-        break;
-      case EnvironmentVariableData.development:
-        label = 'DEV';
-        color = Colors.red;
-        break;
-    }
-
     return Banner(
       location: BannerLocation.topStart,
-      message: label,
-      color: color,
+      message: AppController.of(context).environment.code,
+      color: AppController.of(context).environment.color,
       child: child,
     );
   }
