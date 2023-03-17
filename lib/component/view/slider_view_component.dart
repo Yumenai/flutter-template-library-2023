@@ -10,14 +10,16 @@ class SliderViewComponent extends StatefulWidget {
   final bool enableAutoplay;
   final bool enableWindowMode;
   final bool enableAnimation;
+  final bool enableNavigatorSpacing;
 
   const SliderViewComponent({
     Key? key,
     this.children = const [],
     this.indicatorColor,
     this.enableAutoplay = false,
-    this.enableWindowMode = false,
     this.enableAnimation = true,
+    this.enableWindowMode = false,
+    this.enableNavigatorSpacing = false,
   }) :  itemCount = null,
         itemBuilder = null,
         super(key: key);
@@ -28,8 +30,9 @@ class SliderViewComponent extends StatefulWidget {
     this.itemBuilder,
     this.indicatorColor,
     this.enableAutoplay = false,
-    this.enableWindowMode = false,
     this.enableAnimation = true,
+    this.enableWindowMode = false,
+    this.enableNavigatorSpacing = false,
   }) :  children = const [],
         super(key: key);
 
@@ -42,7 +45,7 @@ class _SliderViewComponentState extends State<SliderViewComponent> {
   late final pageController = PageController(
     viewportFraction: widget.enableWindowMode ? 0.7 : 1,
   );
-  late final Timer timer;
+  Timer? timer;
 
   @override
   void initState() {
@@ -65,7 +68,7 @@ class _SliderViewComponentState extends State<SliderViewComponent> {
   @override
   void dispose() {
     model.dispose();
-    timer.cancel();
+    timer?.cancel();
     super.dispose();
   }
 
@@ -75,34 +78,40 @@ class _SliderViewComponentState extends State<SliderViewComponent> {
 
     return Stack(
       children: [
-        PageView.builder(
-          controller: pageController,
-          onPageChanged: (position) {
-            model.updatePosition(position % constantItemSize);
-          },
-          itemBuilder: (context, indexPosition) {
-            final constantPosition = indexPosition % constantItemSize;
-            final itemWidget = widget.itemBuilder?.call(context, constantPosition) ?? (widget.children.length > constantPosition ? widget.children[constantPosition] : const SizedBox());
+        Positioned.fill(
+          bottom: widget.enableNavigatorSpacing ? 24 : 0,
+          child: PageView.builder(
+            controller: pageController,
+            onPageChanged: (position) {
+              model.updatePosition(position % constantItemSize);
+            },
+            itemBuilder: (context, indexPosition) {
+              final constantPosition = indexPosition % constantItemSize;
+              final itemWidget = widget.itemBuilder?.call(context, constantPosition) ?? (widget.children.length > constantPosition ? widget.children[constantPosition] : const SizedBox());
 
-            if (widget.enableAnimation) {
-              return AnimatedBuilder(
-                animation: model,
-                child: itemWidget,
-                builder: (context, child) {
-                  return AnimatedPadding(
-                    padding: model.pagePosition == constantPosition ? const EdgeInsets.all(0) : const EdgeInsets.all(24),
-                    curve: Curves.easeInOutCubic,
-                    duration: const Duration(
-                      milliseconds: 250,
-                    ),
-                    child: child,
-                  );
-                },
-              );
-            } else {
-              return itemWidget;
-            }
-          },
+              if (widget.enableAnimation) {
+                return AnimatedBuilder(
+                  animation: model,
+                  child: itemWidget,
+                  builder: (context, child) {
+                    return AnimatedPadding(
+                      padding: model.pagePosition == constantPosition ? const EdgeInsets.all(0) : const EdgeInsets.symmetric(
+                        vertical: 12,
+                        horizontal: 12,
+                      ),
+                      curve: Curves.easeInOutCubic,
+                      duration: const Duration(
+                        milliseconds: 250,
+                      ),
+                      child: child,
+                    );
+                  },
+                );
+              } else {
+                return itemWidget;
+              }
+            },
+          ),
         ),
         Positioned(
           left: 12,
