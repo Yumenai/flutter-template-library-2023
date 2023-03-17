@@ -123,6 +123,7 @@ class CollapsibleScreenTemplateComponent extends StatelessWidget {
   final Widget? infoIconSuffix;
   final List<Widget>? infoActionList;
   final Widget? infoBackground;
+  final double? infoBackgroundHeight;
 
   final Widget? layout;
   final Widget? layoutAction;
@@ -141,6 +142,7 @@ class CollapsibleScreenTemplateComponent extends StatelessWidget {
     this.infoIconSuffix,
     this.infoActionList,
     this.infoBackground,
+    this.infoBackgroundHeight,
     this.layout,
     this.layoutAction,
     this.navigatorLeft,
@@ -165,7 +167,7 @@ class CollapsibleScreenTemplateComponent extends StatelessWidget {
                 pinned: true,
                 floating: false,
                 actions: infoActionList,
-                expandedHeight: MediaQuery.of(context).size.width,
+                expandedHeight: infoBackgroundHeight ?? MediaQuery.of(context).size.width * 2 / 3,
                 foregroundColor: foregroundColor,
                 flexibleSpace: FlexibleSpaceBar(
                   title: LayoutBuilder(
