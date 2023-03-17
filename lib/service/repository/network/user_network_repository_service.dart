@@ -8,13 +8,10 @@ import '../../../route/dialog/alert_dialog_route.dart';
 import '../../../utility/network_utility.dart';
 
 class UserNetworkRepositoryService {
-  final Future<Map<String, String>> Function({bool returnRefreshToken}) getNetworkHeader;
-  final Future<void> Function(BuildContext, NetworkResponse?) handleErrorMessage;
+  final Future<Map<String, String>> Function({bool returnRefreshToken}) _getNetworkHeader;
+  final Future<void> Function(BuildContext, NetworkResponse?) _handleErrorMessage;
 
-  const UserNetworkRepositoryService({
-    required this.getNetworkHeader,
-    required this.handleErrorMessage,
-  });
+  const UserNetworkRepositoryService(this._getNetworkHeader, this._handleErrorMessage,);
 
   Future<UserModel?> get(final BuildContext context) async {
     AlertDialogRoute.showLoading(context);
@@ -22,7 +19,7 @@ class UserNetworkRepositoryService {
     final result = await NetworkUtility.get(
       hostAddress: AppController.of(context).hostAddress,
       apiRoute: 'user/get',
-      headerMap: await getNetworkHeader(),
+      headerMap: await _getNetworkHeader(),
     );
 
     if (context.mounted) Navigator.pop(context);
@@ -30,7 +27,7 @@ class UserNetworkRepositoryService {
     if (NetworkUtility.isSuccess(result)) {
       return UserModel.fromNetworkRepository(jsonDecode(result?.body ?? '{}'));
     } else if (context.mounted) {
-      await handleErrorMessage(context, result);
+      await _handleErrorMessage(context, result);
     }
 
     return null;
@@ -44,7 +41,7 @@ class UserNetworkRepositoryService {
     final result = await NetworkUtility.post(
       hostAddress: AppController.of(context).hostAddress,
       apiRoute: 'user/updateProfile',
-      headerMap: await getNetworkHeader(),
+      headerMap: await _getNetworkHeader(),
     );
 
     if (context.mounted) Navigator.pop(context);
@@ -52,7 +49,7 @@ class UserNetworkRepositoryService {
     if (NetworkUtility.isSuccess(result)) {
       return true;
     } else if (context.mounted) {
-      await handleErrorMessage(context, result);
+      await _handleErrorMessage(context, result);
     }
 
     return false;

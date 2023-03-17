@@ -7,10 +7,7 @@ import '../../utility/network_utility.dart';
 import 'network/user_network_repository_service.dart';
 
 class NetworkRepositoryService {
-  late final user = UserNetworkRepositoryService(
-    getNetworkHeader: _getNetworkHeader,
-    handleErrorMessage: _handleErrorMessage,
-  );
+  late final user = UserNetworkRepositoryService(_getNetworkHeader, _handleErrorMessage,);
 
   final String Function() _getAccessToken;
   final Future<String> Function() _getRefreshToken;
