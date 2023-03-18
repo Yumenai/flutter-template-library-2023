@@ -88,6 +88,7 @@ class PaginationViewComponent extends StatefulWidget {
   final Widget? initialisePlaceholder;
   final EdgeInsets? padding;
   final Axis axis;
+  final bool enableRefreshPull;
 
   const PaginationViewComponent.list({
     Key? key,
@@ -97,6 +98,7 @@ class PaginationViewComponent extends StatefulWidget {
     this.padding,
     this.emptyPlaceholder,
     this.initialisePlaceholder,
+    this.enableRefreshPull = true,
   }) :  style = PaginationViewStyle.list,
         rowCount = 0,
         super(key: key);
@@ -110,6 +112,7 @@ class PaginationViewComponent extends StatefulWidget {
     this.padding,
     this.emptyPlaceholder,
     this.initialisePlaceholder,
+    this.enableRefreshPull = true,
   }) :  style = PaginationViewStyle.grid,
         super(key: key);
 
@@ -121,6 +124,7 @@ class PaginationViewComponent extends StatefulWidget {
     this.padding,
     this.emptyPlaceholder,
     this.initialisePlaceholder,
+    this.enableRefreshPull = true,
   }) :  style = PaginationViewStyle.page,
         rowCount = 0,
         super(key: key);
@@ -171,13 +175,26 @@ class _PaginationViewComponentState extends State<PaginationViewComponent> {
 
   @override
   Widget build(BuildContext context) {
+    final Widget component;
     switch(widget.style) {
       case PaginationViewStyle.list:
-        return _listStyleComponent;
+        component = _listStyleComponent;
+        break;
       case PaginationViewStyle.grid:
-        return _gridStyleComponent;
+        component = _gridStyleComponent;
+        break;
       case PaginationViewStyle.page:
-        return _pageStyleComponent;
+        component = _pageStyleComponent;
+        break;
+    }
+
+    if (widget.enableRefreshPull) {
+      return RefreshIndicator(
+        onRefresh: refreshPagination,
+        child: component,
+      );
+    } else {
+      return component;
     }
   }
 
@@ -188,155 +205,146 @@ class _PaginationViewComponentState extends State<PaginationViewComponent> {
   }
 
   Widget get _listStyleComponent {
-    return RefreshIndicator(
-      onRefresh: refreshPagination,
-      child: AnimatedBuilder(
-        animation: widget.controller,
-        builder: (context, child) {
-          return _emptyPlaceholder ?? ListView.builder(
-            physics: const AlwaysScrollableScrollPhysics(),
-            controller: _scrollController,
-            itemCount: widget.controller.dataList.length + 1,
-            itemBuilder: (context, indexPosition) {
-              if (widget.controller._isInitialise) {
-                if (widget.controller.dataList.length > indexPosition) {
-                  return widget.itemBuilder(context, indexPosition);
-                } else if (widget.controller.isLoadable) {
-                  return const Padding(
-                    padding: EdgeInsets.all(32.0),
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  );
-                } else {
-                  return const SizedBox();
-                }
+    return AnimatedBuilder(
+      animation: widget.controller,
+      builder: (context, child) {
+        return _emptyPlaceholder ?? ListView.builder(
+          physics: const AlwaysScrollableScrollPhysics(),
+          controller: _scrollController,
+          itemCount: widget.controller.dataList.length + 1,
+          itemBuilder: (context, indexPosition) {
+            if (widget.controller._isInitialise) {
+              if (widget.controller.dataList.length > indexPosition) {
+                return widget.itemBuilder(context, indexPosition);
+              } else if (widget.controller.isLoadable) {
+                return const Padding(
+                  padding: EdgeInsets.all(32.0),
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
               } else {
-                if (widget.initialisePlaceholder is Widget) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: List.generate(3, (index) {
-                      return widget.initialisePlaceholder ?? const SizedBox();
-                    },),
-                  );
-                } else {
-                  return const Padding(
-                    padding: EdgeInsets.all(32.0),
-                    child: Align(
-                      alignment: Alignment.topCenter,
-                      child: CircularProgressIndicator(),
-                    ),
-                  );
-                }
+                return const SizedBox();
               }
-            },
-            padding: widget.padding,
-          );
-        },
-      ),
+            } else {
+              if (widget.initialisePlaceholder is Widget) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: List.generate(3, (index) {
+                    return widget.initialisePlaceholder ?? const SizedBox();
+                  },),
+                );
+              } else {
+                return const Padding(
+                  padding: EdgeInsets.all(32.0),
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }
+            }
+          },
+          padding: widget.padding,
+        );
+      },
     );
   }
 
   Widget get _gridStyleComponent {
-    return RefreshIndicator(
-      onRefresh: refreshPagination,
-      child: AnimatedBuilder(
-        animation: widget.controller,
-        builder: (context, child) {
-          if (widget.initialisePlaceholder is Widget) {
-            if (widget.controller._isLoading) {
-              if (widget.controller.dataList.isEmpty) {
-                return widget.initialisePlaceholder ?? const SizedBox();
-              }
+    return AnimatedBuilder(
+      animation: widget.controller,
+      builder: (context, child) {
+        if (widget.initialisePlaceholder is Widget) {
+          if (widget.controller._isLoading) {
+            if (widget.controller.dataList.isEmpty) {
+              return widget.initialisePlaceholder ?? const SizedBox();
             }
           }
+        }
 
-          final verticalCount = (widget.controller.dataList.length / widget.rowCount).ceil();
+        final verticalCount = (widget.controller.dataList.length / widget.rowCount).ceil();
 
-          return  _emptyPlaceholder ?? ListView.builder(
-            physics: const AlwaysScrollableScrollPhysics(),
-            controller: _scrollController,
-            itemCount: widget.controller._isInitialise ? verticalCount + 1 : 9,
-            itemBuilder: (context, indexPosition) {
-              if (widget.controller._isInitialise) {
-                if (verticalCount > indexPosition) {
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: List.generate(widget.rowCount, (rowPosition) {
-                      final itemCount = (indexPosition * widget.rowCount) + rowPosition;
+        return  _emptyPlaceholder ?? ListView.builder(
+          physics: const AlwaysScrollableScrollPhysics(),
+          controller: _scrollController,
+          itemCount: widget.controller._isInitialise ? verticalCount + 1 : 9,
+          itemBuilder: (context, indexPosition) {
+            if (widget.controller._isInitialise) {
+              if (verticalCount > indexPosition) {
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: List.generate(widget.rowCount, (rowPosition) {
+                    final itemCount = (indexPosition * widget.rowCount) + rowPosition;
 
-                      if (itemCount < widget.controller.dataList.length) {
-                        return Expanded(
-                          child: widget.itemBuilder(context, itemCount),
-                        );
-                      } else {
-                        return const Expanded(
-                          child: SizedBox(),
-                        );
-                      }
-                    },),
-                  );
-                } else if (widget.controller.isLoadable) {
-                  return const Padding(
-                    padding: EdgeInsets.all(32.0),
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  );
-                } else {
-                  return const SizedBox();
-                }
-              } else {
-                if (widget.initialisePlaceholder is Widget) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: List.generate(3, (index) {
-                      return Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: List.generate(widget.rowCount, (rowPosition) {
-                          return Expanded(
-                            child: widget.initialisePlaceholder ?? const SizedBox(),
-                          );
-                        },),
+                    if (itemCount < widget.controller.dataList.length) {
+                      return Expanded(
+                        child: widget.itemBuilder(context, itemCount),
                       );
-                    },),
-                  );
-                } else {
-                  return const Padding(
-                    padding: EdgeInsets.all(32.0),
-                    child: Align(
-                      alignment: Alignment.topCenter,
-                      child: CircularProgressIndicator(),
-                    ),
-                  );
-                }
+                    } else {
+                      return const Expanded(
+                        child: SizedBox(),
+                      );
+                    }
+                  },),
+                );
+              } else if (widget.controller.isLoadable) {
+                return const Padding(
+                  padding: EdgeInsets.all(32.0),
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              } else {
+                return const SizedBox();
               }
-            },
-            padding: widget.padding,
-          );
-        },
-      ),
+            } else {
+              if (widget.initialisePlaceholder is Widget) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: List.generate(3, (index) {
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: List.generate(widget.rowCount, (rowPosition) {
+                        return Expanded(
+                          child: widget.initialisePlaceholder ?? const SizedBox(),
+                        );
+                      },),
+                    );
+                  },),
+                );
+              } else {
+                return const Padding(
+                  padding: EdgeInsets.all(32.0),
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }
+            }
+          },
+          padding: widget.padding,
+        );
+      },
     );
   }
 
   Widget get _pageStyleComponent {
-    return RefreshIndicator(
-      onRefresh: refreshPagination,
-      child: AnimatedBuilder(
-        animation: widget.controller,
-        builder: (context, child) {
-          if (widget.controller._isInitialise) {
-            return widget.initialisePlaceholder ?? const SizedBox();
-          }
+    return AnimatedBuilder(
+      animation: widget.controller,
+      builder: (context, child) {
+        if (widget.controller._isInitialise) {
+          return widget.initialisePlaceholder ?? const SizedBox();
+        }
 
-          return  _emptyPlaceholder ?? PageView.builder(
-            physics: const AlwaysScrollableScrollPhysics(),
-            controller: _pageController,
-            itemCount: widget.controller.dataList.length,
-            itemBuilder: widget.itemBuilder,
-          );
-        },
-      ),
+        return  _emptyPlaceholder ?? PageView.builder(
+          physics: const AlwaysScrollableScrollPhysics(),
+          controller: _pageController,
+          itemCount: widget.controller.dataList.length,
+          itemBuilder: widget.itemBuilder,
+        );
+      },
     );
   }
 
