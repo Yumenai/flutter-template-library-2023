@@ -200,7 +200,9 @@ class CollapsibleScreenTemplateComponent extends StatelessWidget {
             onTap: () {
               FocusScope.of(context).unfocus();
             },
-            child: layout,
+            child: SafeArea(
+              child: layout ?? const SizedBox(),
+            ),
           ),
         ),
       ),
