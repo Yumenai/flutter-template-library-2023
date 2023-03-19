@@ -10,6 +10,7 @@ class SliderViewComponent extends StatefulWidget {
   final bool enableAutoplay;
   final bool enableWindowMode;
   final bool enableAnimation;
+  final bool enableEndlessScroll;
   final bool enableNavigatorSpacing;
 
   const SliderViewComponent({
@@ -19,6 +20,7 @@ class SliderViewComponent extends StatefulWidget {
     this.enableAutoplay = false,
     this.enableAnimation = true,
     this.enableWindowMode = false,
+    this.enableEndlessScroll = false,
     this.enableNavigatorSpacing = false,
   }) :  itemCount = null,
         itemBuilder = null,
@@ -32,6 +34,7 @@ class SliderViewComponent extends StatefulWidget {
     this.enableAutoplay = false,
     this.enableAnimation = true,
     this.enableWindowMode = false,
+    this.enableEndlessScroll = false,
     this.enableNavigatorSpacing = false,
   }) :  children = const [],
         super(key: key);
@@ -53,12 +56,31 @@ class _SliderViewComponentState extends State<SliderViewComponent> {
       timer = Timer.periodic(const Duration(
         seconds: 3,
       ), (timer) {
-        pageController.nextPage(
-          duration: const Duration(
-            milliseconds: 250,
-          ),
-          curve: Curves.linear,
-        );
+        if (widget.enableEndlessScroll) {
+          pageController.nextPage(
+            duration: const Duration(
+              milliseconds: 250,
+            ),
+            curve: Curves.linear,
+          );
+        } else {
+          if (pageController.position.atEdge && pageController.position.pixels != 0) {
+            pageController.animateToPage(
+              0,
+              duration: const Duration(
+                milliseconds: 250,
+              ),
+              curve: Curves.linear,
+            );
+          } else {
+            pageController.nextPage(
+              duration: const Duration(
+                milliseconds: 250,
+              ),
+              curve: Curves.linear,
+            );
+          }
+        }
       });
     }
 
@@ -74,7 +96,7 @@ class _SliderViewComponentState extends State<SliderViewComponent> {
 
   @override
   Widget build(BuildContext context) {
-    final constantItemSize = widget.itemCount ?? widget.children.length;
+    final itemSize = widget.itemCount ?? widget.children.length;
 
     return Stack(
       children: [
@@ -83,10 +105,11 @@ class _SliderViewComponentState extends State<SliderViewComponent> {
           child: PageView.builder(
             controller: pageController,
             onPageChanged: (position) {
-              model.updatePosition(position % constantItemSize);
+              model.updatePosition(position % itemSize);
             },
+            itemCount: widget.enableEndlessScroll ? null : itemSize,
             itemBuilder: (context, indexPosition) {
-              final constantPosition = indexPosition % constantItemSize;
+              final constantPosition = indexPosition % itemSize;
               final itemWidget = widget.itemBuilder?.call(context, constantPosition) ?? (widget.children.length > constantPosition ? widget.children[constantPosition] : const SizedBox());
 
               if (widget.enableAnimation) {
