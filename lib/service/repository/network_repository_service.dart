@@ -7,15 +7,18 @@ import '../../utility/network_utility.dart';
 import 'network/user_network_repository_service.dart';
 
 class NetworkRepositoryService {
-  late final user = UserNetworkRepositoryService(_getNetworkHeader, _handleErrorMessage,);
+  late final user = UserNetworkRepositoryService(_getHostAddress, _getNetworkHeader, _handleErrorMessage,);
 
+  final String Function() _getHostAddress;
   final String Function() _getAccessToken;
-  final Future<String> Function() _getRefreshToken;
+  final String Function() _getRefreshToken;
 
   NetworkRepositoryService({
+    required final String Function() getHostAddress,
     required final String Function() getAccessToken,
-    required final Future<String> Function() getRefreshToken,
-  }) :  _getAccessToken = getAccessToken,
+    required final String Function() getRefreshToken,
+  }) :  _getHostAddress = getHostAddress,
+        _getAccessToken = getAccessToken,
         _getRefreshToken = getRefreshToken;
 
   Future<Map<String, String>> _getNetworkHeader({
@@ -23,7 +26,7 @@ class NetworkRepositoryService {
   }) async {
     return {
       'access-token': _getAccessToken(),
-      if (returnRefreshToken) 'refresh-token': await _getRefreshToken(),
+      if (returnRefreshToken) 'refresh-token': _getRefreshToken(),
     };
   }
 

@@ -4,7 +4,6 @@ import '../../../component/button/text_button_component.dart';
 import '../../../component/input/text_input_component.dart';
 import '../../../component/template/screen_template_component.dart';
 import '../../../component/view/image_view_component.dart';
-import '../../../component/view/text_view_component.dart';
 import '../../../controller/app_controller.dart';
 import '../../../service/repository_service.dart';
 import '../../../utility/app_utility.dart';
@@ -52,9 +51,9 @@ class AuthenticateEntryScreenRoute extends StatelessWidget {
             const SizedBox(
               height: 12,
             ),
-            TextViewComponent.future(
+            Text(
               AppUtility.name,
-              align: TextAlign.center,
+              textAlign: TextAlign.center,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
@@ -95,10 +94,10 @@ class _ScreenController {
   _ScreenController._();
 
   void signIn(final BuildContext context) async {
-    await RepositoryService.storage.key.setRefreshToken('accessToken');
+    await RepositoryService.key.setSessionRefreshToken('accessToken');
 
-    if (!context.mounted) return;
-
-    SplashEntryScreenRoute.navigate(context);
+    if (context.mounted) {
+      SplashEntryScreenRoute.navigate(context);
+    }
   }
 }

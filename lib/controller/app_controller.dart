@@ -6,13 +6,12 @@ import '../data/app_data.dart';
 import '../data/resource/color_resource_data.dart';
 import '../data/resource/image_resource_data.dart';
 import '../data/resource/language_resource_data.dart';
-import '../data/variable/environment_variable_data.dart';
 import '../service/repository_service.dart';
 
 class AppController extends ChangeNotifier {
   static Future<AppController> initialise() async {
 
-    final languageCode = await RepositoryService.storage.key.appLanguageCode;
+    final languageCode = RepositoryService.key.appLanguageCode;
 
     final locale = LanguageResourceData.supportedLocaleList.firstWhere((locale) {
       return locale.languageCode == languageCode;
@@ -20,7 +19,7 @@ class AppController extends ChangeNotifier {
       return AppData.defaultLocale;
     });
 
-    final themeMode = await RepositoryService.storage.key.appThemeMode ?? AppData.defaultThemeMode;
+    final themeMode = RepositoryService.key.appThemeMode ?? AppData.defaultThemeMode;
     final ColorResourceData colorResourceData;
     final ImageResourceData imageResourceData;
 
@@ -79,29 +78,13 @@ class AppController extends ChangeNotifier {
   AppLocalizations? _text;
   AppLocalizations? get text => _text;
 
-  EnvironmentVariableData _environment = EnvironmentVariableData.development;
-  EnvironmentVariableData get environment => _environment;
-
-  String get hostAddress {
-    switch(_environment) {
-      case EnvironmentVariableData.production:
-        return AppData.hostAddressProduction;
-      case EnvironmentVariableData.userAcceptanceTest:
-        return AppData.hostAddressUserAcceptanceTest;
-      case EnvironmentVariableData.systemIntegrationTest:
-        return AppData.hostAddressSystemIntegrationTest;
-      case EnvironmentVariableData.development:
-        return AppData.hostAddressDevelopment;
-    }
-  }
-
   AppController._(this._themeMode, this._locale, this._color, this._image, this._text,);
 
   void updateTheme(final ThemeMode themeMode) async {
     /// If the locale is the same, skip this update
     if (themeMode == _themeMode) return;
 
-    await RepositoryService.storage.key.setAppThemeMode(themeMode);
+    await RepositoryService.key.setAppThemeMode(themeMode);
     _themeMode = themeMode;
 
     if (_themeMode == ThemeMode.system) {
@@ -111,27 +94,6 @@ class AppController extends ChangeNotifier {
     } else if (_themeMode == ThemeMode.dark) {
       updateBrightness(Brightness.dark);
     }
-  }
-
-  void updateEnvironment({
-    final bool toProduction = false,
-    final bool toUserAcceptanceTest = false,
-    final bool toSystemIntegrationTest = false,
-    final bool toDevelopment = false,
-  }) async {
-    if (toProduction) {
-      _environment = EnvironmentVariableData.production;
-    } else if (toUserAcceptanceTest) {
-      _environment = EnvironmentVariableData.userAcceptanceTest;
-    } else if (toSystemIntegrationTest) {
-      _environment = EnvironmentVariableData.systemIntegrationTest;
-    } else if (toDevelopment) {
-      _environment = EnvironmentVariableData.development;
-    } else {
-      return;
-    }
-
-    await RepositoryService.storage.key.setEnvironmentData(_environment);
   }
 
   void updateLanguage(final String languageCode) async {
@@ -144,7 +106,7 @@ class AppController extends ChangeNotifier {
     /// If the locale is the same, skip this update
     if (locale == _locale) return;
 
-    await RepositoryService.storage.key.setAppLanguageCode(languageCode);
+    await RepositoryService.key.setAppLanguageCode(languageCode);
     _locale = locale;
 
     final textResource = await LanguageResourceData.localizationDelegateList.first.load(locale);

@@ -2,22 +2,22 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-import '../../../controller/app_controller.dart';
 import '../../../model/user_model.dart';
 import '../../../route/dialog/alert_dialog_route.dart';
 import '../../../utility/network_utility.dart';
 
 class UserNetworkRepositoryService {
+  final String Function() _getHostAddress;
   final Future<Map<String, String>> Function({bool returnRefreshToken}) _getNetworkHeader;
   final Future<void> Function(BuildContext, NetworkResponse?) _handleErrorMessage;
 
-  const UserNetworkRepositoryService(this._getNetworkHeader, this._handleErrorMessage,);
+  const UserNetworkRepositoryService(this._getHostAddress, this._getNetworkHeader, this._handleErrorMessage,);
 
   Future<UserModel?> get(final BuildContext context) async {
     AlertDialogRoute.showLoading(context);
 
     final result = await NetworkUtility.get(
-      hostAddress: AppController.of(context).hostAddress,
+      hostAddress: _getHostAddress(),
       apiRoute: 'user/get',
       headerMap: await _getNetworkHeader(),
     );
@@ -39,7 +39,7 @@ class UserNetworkRepositoryService {
     AlertDialogRoute.showLoading(context);
 
     final result = await NetworkUtility.post(
-      hostAddress: AppController.of(context).hostAddress,
+      hostAddress: _getHostAddress(),
       apiRoute: 'user/updateProfile',
       headerMap: await _getNetworkHeader(),
     );

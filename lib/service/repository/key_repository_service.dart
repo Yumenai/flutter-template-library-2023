@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../data/variable/environment_variable_data.dart';
-import '../../../utility/storage/key_storage_utility.dart';
+import '../../data/variable/environment_variable_data.dart';
+import '../../utility/storage/key_storage_utility.dart';
 
 const _appThemeKey = 'app-theme';
 const _appThemeDarkValue = 1;
@@ -15,14 +15,15 @@ const _appEnvironmentSystemIntegrationTestValue = 3;
 const _appEnvironmentDevelopmentValue = 4;
 
 const _appLanguageKey = 'app-language';
-const _refreshTokenKey = 'refresh-token';
+const _sessionAccessTokenKey = 'access-token';
+const _sessionRefreshTokenKey = 'refresh-token';
 
 
-class KeyStorageRepositoryService {
-  const KeyStorageRepositoryService();
+class KeyRepositoryService {
+  const KeyRepositoryService();
 
-  Future<ThemeMode?> get appThemeMode async {
-    final value = await KeyStorageUtility.getInt(_appThemeKey);
+  ThemeMode? get appThemeMode {
+    final value = KeyStorageUtility.getInt(_appThemeKey);
 
     if (value == _appThemeDarkValue) {
       return ThemeMode.dark;
@@ -35,8 +36,8 @@ class KeyStorageRepositoryService {
     }
   }
 
-  Future<EnvironmentVariableData?> get appEnvironmentData async {
-    final environmentCode = await KeyStorageUtility.getInt(_appEnvironmentKey);
+  EnvironmentVariableData? get appEnvironmentData {
+    final environmentCode = KeyStorageUtility.getInt(_appEnvironmentKey);
 
     if (environmentCode == _appEnvironmentProductionValue) {
       return EnvironmentVariableData.production;
@@ -44,19 +45,21 @@ class KeyStorageRepositoryService {
       return EnvironmentVariableData.userAcceptanceTest;
     } else if (environmentCode == _appEnvironmentSystemIntegrationTestValue) {
       return EnvironmentVariableData.systemIntegrationTest;
-    } else if (environmentCode == _appEnvironmentDevelopmentValue) {
+    } else {
       return EnvironmentVariableData.development;
     }
-
-    return null;
   }
 
-  Future<String> get appLanguageCode async {
-    return await KeyStorageUtility.getString(_appLanguageKey) ?? '';
+  String get appLanguageCode {
+    return KeyStorageUtility.getString(_appLanguageKey) ?? '';
   }
 
-  Future<String> get refreshToken async {
-    return await KeyStorageUtility.getString(_refreshTokenKey) ?? '';
+  String get sessionAccessToken {
+    return KeyStorageUtility.getString(_sessionAccessTokenKey) ?? '';
+  }
+
+  String get sessionRefreshToken {
+    return KeyStorageUtility.getString(_sessionRefreshTokenKey) ?? '';
   }
 
   Future<void> setAppThemeMode(final ThemeMode? themeMode) async {
@@ -85,8 +88,12 @@ class KeyStorageRepositoryService {
     await KeyStorageUtility.setString(_appLanguageKey, languageCode ?? '');
   }
 
-  Future<void> setRefreshToken(final String? refreshToken) async {
-    await KeyStorageUtility.setString(_refreshTokenKey, refreshToken ?? '');
+  Future<void> setSessionAccessToken(final String? refreshToken) async {
+    await KeyStorageUtility.setString(_sessionAccessTokenKey, refreshToken ?? '');
+  }
+
+  Future<void> setSessionRefreshToken(final String? refreshToken) async {
+    await KeyStorageUtility.setString(_sessionRefreshTokenKey, refreshToken ?? '');
   }
 
   Future<void> clear() async {

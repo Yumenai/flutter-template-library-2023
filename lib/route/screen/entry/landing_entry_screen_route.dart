@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../../component/button/text_button_component.dart';
 import '../../../component/template/screen_template_component.dart';
 import '../../../component/view/image_view_component.dart';
-import '../../../component/view/text_view_component.dart';
 import '../../../controller/app_controller.dart';
 import '../../../utility/app_utility.dart';
 import '../../../utility/navigator_utility.dart';
@@ -41,9 +40,9 @@ class LandingEntryScreenRoute extends StatelessWidget {
             const SizedBox(
               height: 24,
             ),
-            TextViewComponent.future(
+            Text(
               AppUtility.name,
-              align: TextAlign.center,
+              textAlign: TextAlign.center,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(

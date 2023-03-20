@@ -46,7 +46,7 @@ class _ScreenController {
   const _ScreenController._();
 
   void signOut(final BuildContext context) async {
-    await RepositoryService.storage.key.clear();
+    await RepositoryService.key.clear();
 
     if (!context.mounted) return;
 
