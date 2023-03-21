@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../data/variable/environment_variable_data.dart';
+import '../../data/environment_data.dart';
 import '../../utility/storage/key_storage_utility.dart';
 
 const _appThemeKey = 'app-theme';
@@ -36,17 +36,17 @@ class KeyRepositoryService {
     }
   }
 
-  EnvironmentVariableData? get appEnvironmentData {
+  EnvironmentData? get appEnvironmentData {
     final environmentCode = KeyStorageUtility.getInt(_appEnvironmentKey);
 
     if (environmentCode == _appEnvironmentProductionValue) {
-      return EnvironmentVariableData.production;
+      return EnvironmentData.production;
     } else if (environmentCode == _appEnvironmentUserAcceptanceTestValue) {
-      return EnvironmentVariableData.userAcceptanceTest;
+      return EnvironmentData.userAcceptanceTest;
     } else if (environmentCode == _appEnvironmentSystemIntegrationTestValue) {
-      return EnvironmentVariableData.systemIntegrationTest;
+      return EnvironmentData.systemIntegrationTest;
     } else {
-      return EnvironmentVariableData.development;
+      return EnvironmentData.development;
     }
   }
 
@@ -72,14 +72,14 @@ class KeyRepositoryService {
     }
   }
 
-  Future<void> setEnvironmentData(final EnvironmentVariableData? data) async {
-    if (data == EnvironmentVariableData.production) {
+  Future<void> setEnvironmentData(final EnvironmentData? data) async {
+    if (data == EnvironmentData.production) {
       await KeyStorageUtility.setInt(_appEnvironmentKey, _appEnvironmentProductionValue);
-    } else if (data == EnvironmentVariableData.userAcceptanceTest) {
+    } else if (data == EnvironmentData.userAcceptanceTest) {
       await KeyStorageUtility.setInt(_appEnvironmentKey, _appEnvironmentUserAcceptanceTestValue);
-    } else if (data == EnvironmentVariableData.systemIntegrationTest) {
+    } else if (data == EnvironmentData.systemIntegrationTest) {
       await KeyStorageUtility.setInt(_appEnvironmentKey, _appEnvironmentSystemIntegrationTestValue);
-    } else if (data == EnvironmentVariableData.development) {
+    } else if (data == EnvironmentData.development) {
       await KeyStorageUtility.setInt(_appEnvironmentKey, _appEnvironmentDevelopmentValue);
     }
   }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'resource/language_resource_data.dart';
 
-class AppData {
+class ConfigurationData {
   static const hostAddressProduction = 'https://www.yumenai.com/api';
   static const hostAddressUserAcceptanceTest = 'https://www.yumenai.com/api/uat';
   static const hostAddressSystemIntegrationTest = 'https://www.yumenai.com/api/sit';
@@ -18,5 +18,5 @@ class AppData {
 
   static bool get isDevelopmentMode => true;
 
-  const AppData._();
+  const ConfigurationData._();
 }

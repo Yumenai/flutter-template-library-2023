@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../data/app_data.dart';
-import '../../data/variable/environment_variable_data.dart';
+import '../../data/configuration_data.dart';
 import '../../service/repository_service.dart';
 
 Widget? _infoComponent({
@@ -109,7 +108,7 @@ class ScreenTemplateComponent extends StatelessWidget {
       bottomNavigationBar: navigatorBottom,
     );
 
-    if (AppData.isDevelopmentMode) {
+    if (ConfigurationData.isDevelopmentMode) {
       return _EnvironmentBannerComponent(component);
     } else {
       return component;
@@ -212,7 +211,7 @@ class CollapsibleScreenTemplateComponent extends StatelessWidget {
       bottomNavigationBar: navigatorBottom,
     );
 
-    if (AppData.isDevelopmentMode) {
+    if (ConfigurationData.isDevelopmentMode) {
       return _EnvironmentBannerComponent(component);
     } else {
       return component;

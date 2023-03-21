@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';
 import 'package:provider/provider.dart';
 
-import '../data/app_data.dart';
+import '../data/configuration_data.dart';
 import '../data/resource/color_resource_data.dart';
 import '../data/resource/image_resource_data.dart';
 import '../data/resource/language_resource_data.dart';
@@ -16,10 +16,10 @@ class AppController extends ChangeNotifier {
     final locale = LanguageResourceData.supportedLocaleList.firstWhere((locale) {
       return locale.languageCode == languageCode;
     }, orElse: () {
-      return AppData.defaultLocale;
+      return ConfigurationData.defaultLocale;
     });
 
-    final themeMode = RepositoryService.key.appThemeMode ?? AppData.defaultThemeMode;
+    final themeMode = RepositoryService.key.appThemeMode ?? ConfigurationData.defaultThemeMode;
     final ColorResourceData colorResourceData;
     final ImageResourceData imageResourceData;
 
@@ -48,7 +48,7 @@ class AppController extends ChangeNotifier {
       locale,
       colorResourceData,
       imageResourceData,
-      await AppData.defaultLocalizationDelegate.load(locale),
+      await ConfigurationData.defaultLocalizationDelegate.load(locale),
     );
   }
 
@@ -100,7 +100,7 @@ class AppController extends ChangeNotifier {
     final locale = LanguageResourceData.supportedLocaleList.firstWhere((locale) {
       return locale.languageCode == languageCode;
     }, orElse: () {
-      return AppData.defaultLocale;
+      return ConfigurationData.defaultLocale;
     });
 
     /// If the locale is the same, skip this update
