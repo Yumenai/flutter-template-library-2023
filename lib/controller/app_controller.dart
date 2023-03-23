@@ -10,7 +10,6 @@ import '../service/repository_service.dart';
 
 class AppController extends ChangeNotifier {
   static Future<AppController> initialise() async {
-
     final languageCode = RepositoryService.key.appLanguageCode;
 
     final locale = LanguageResourceData.supportedLocaleList.firstWhere((locale) {
@@ -44,8 +43,6 @@ class AppController extends ChangeNotifier {
     }
 
     return AppController._(
-      themeMode,
-      locale,
       colorResourceData,
       imageResourceData,
       await ConfigurationData.defaultLocalizationDelegate.load(locale),
@@ -63,12 +60,6 @@ class AppController extends ChangeNotifier {
     return Provider.of<AppController>(context);
   }
 
-  ThemeMode _themeMode;
-  ThemeMode get themeMode => _themeMode;
-
-  Locale _locale;
-  Locale? get locale => _locale;
-
   ColorResourceData _color;
   ColorResourceData get color => _color;
 
@@ -78,36 +69,52 @@ class AppController extends ChangeNotifier {
   AppLocalizations? _text;
   AppLocalizations? get text => _text;
 
-  AppController._(this._themeMode, this._locale, this._color, this._image, this._text,);
+  AppController._(this._color, this._image, this._text,);
+
+  Locale get locale {
+    final languageCode = RepositoryService.key.appLanguageCode;
+
+    return LanguageResourceData.supportedLocaleList.firstWhere((locale) {
+      return locale.languageCode == languageCode;
+    }, orElse: () {
+      return ConfigurationData.defaultLocale;
+    });
+  }
+
+  ThemeMode get themeMode {
+    return RepositoryService.key.appThemeMode ?? ConfigurationData.defaultThemeMode;
+  }
 
   void updateTheme(final ThemeMode themeMode) async {
     /// If the locale is the same, skip this update
-    if (themeMode == _themeMode) return;
+    if (themeMode == RepositoryService.key.appThemeMode) return;
 
     await RepositoryService.key.setAppThemeMode(themeMode);
-    _themeMode = themeMode;
 
-    if (_themeMode == ThemeMode.system) {
-      updateBrightness(WidgetsBinding.instance.window.platformBrightness);
-    } else if (_themeMode == ThemeMode.light) {
-      updateBrightness(Brightness.light);
-    } else if (_themeMode == ThemeMode.dark) {
-      updateBrightness(Brightness.dark);
+    switch(themeMode) {
+      case ThemeMode.system:
+        updateBrightness(WidgetsBinding.instance.window.platformBrightness);
+        break;
+      case ThemeMode.light:
+        updateBrightness(Brightness.light);
+        break;
+      case ThemeMode.dark:
+        updateBrightness(Brightness.dark);
+        break;
     }
   }
 
   void updateLanguage(final String languageCode) async {
+    /// If the locale is the same, skip this update
+    if (languageCode == RepositoryService.key.appLanguageCode) return;
+
     final locale = LanguageResourceData.supportedLocaleList.firstWhere((locale) {
       return locale.languageCode == languageCode;
     }, orElse: () {
       return ConfigurationData.defaultLocale;
     });
 
-    /// If the locale is the same, skip this update
-    if (locale == _locale) return;
-
     await RepositoryService.key.setAppLanguageCode(languageCode);
-    _locale = locale;
 
     final textResource = await LanguageResourceData.localizationDelegateList.first.load(locale);
 
