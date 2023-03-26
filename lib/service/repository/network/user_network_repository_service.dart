@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import '../../../model/user_model.dart';
-import '../../../route/dialog/alert_dialog_route.dart';
+import '../../../dialog/alert_dialog_route.dart';
 import '../../../utility/network_utility.dart';
 
 class UserNetworkRepositoryService {

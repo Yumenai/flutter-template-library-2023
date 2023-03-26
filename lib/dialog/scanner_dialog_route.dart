@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
-import '../../component/template/screen_template_component.dart';
-import '../../utility/navigator_utility.dart';
+import '../component/template/screen_template_component.dart';
+import '../utility/navigator_utility.dart';
 
 class ScannerDialogRoute extends StatefulWidget {
   static Future<String> show(final BuildContext context) async {

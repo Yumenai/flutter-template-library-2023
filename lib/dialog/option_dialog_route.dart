@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import '../../component/template/dialog_template_component.dart';
-import '../../utility/file_utility.dart';
-import '../../utility/navigator_utility.dart';
+import '../component/template/dialog_template_component.dart';
+import '../utility/file_utility.dart';
+import '../utility/navigator_utility.dart';
 
 class OptionDialogRoute {
   static Future<int?> select(final BuildContext context, {

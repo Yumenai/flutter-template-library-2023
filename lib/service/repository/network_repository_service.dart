@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-import '../../route/dialog/alert_dialog_route.dart';
+import '../../dialog/alert_dialog_route.dart';
 import '../../utility/network_utility.dart';
 import 'network/user_network_repository_service.dart';
 
