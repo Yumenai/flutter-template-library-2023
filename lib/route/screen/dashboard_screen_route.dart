@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../component/button/icon_button_component.dart';
 import '../../component/template/screen_template_component.dart';
-import '../../service/repository_service.dart';
 import '../../utility/navigator_utility.dart';
-import 'entry/splash_entry_screen_route.dart';
+import 'setting/dashboard_setting_screen_route.dart';
 
 class DashboardScreenRoute extends StatefulWidget {
   static void navigate(final BuildContext context) {
@@ -31,10 +30,10 @@ class _DashboardScreenRouteState extends State<DashboardScreenRoute> {
       infoTitle: 'Flutter Template Library',
       infoActionList: [
         IconButtonComponent(
-          icon: const Icon(Icons.exit_to_app),
-          hint: 'Sign Out',
+          icon: const Icon(Icons.settings),
+          hint: 'Settings',
           onPressed: () {
-            widget.controller.signOut(context);
+            widget.controller.viewSettings(context);
           },
         ),
       ],
@@ -45,11 +44,7 @@ class _DashboardScreenRouteState extends State<DashboardScreenRoute> {
 class _ScreenController {
   const _ScreenController._();
 
-  void signOut(final BuildContext context) async {
-    await RepositoryService.key.clear();
-
-    if (!context.mounted) return;
-
-    SplashEntryScreenRoute.navigate(context);
+  void viewSettings(final BuildContext context) async {
+    DashboardSettingScreenRoute.navigate(context);
   }
 }
