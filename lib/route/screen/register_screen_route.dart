@@ -1,27 +1,19 @@
 import 'package:flutter/material.dart';
 
-import '../../../component/button/text_button_component.dart';
-import '../../../component/input/text_input_component.dart';
-import '../../../component/template/screen_template_component.dart';
-import '../../../component/view/image_view_component.dart';
-import '../../../controller/app_controller.dart';
-import '../../../service/repository_service.dart';
-import '../../../utility/app_utility.dart';
-import '../../../utility/navigator_utility.dart';
-import 'splash_entry_screen_route.dart';
+import '../../component/button/text_button_component.dart';
+import '../../component/input/text_input_component.dart';
+import '../../component/template/screen_template_component.dart';
+import '../../component/view/image_view_component.dart';
+import '../../controller/app_controller.dart';
+import '../../utility/app_utility.dart';
+import '../controller/register_controller_route.dart';
 
-class RegisterEntryScreenRoute extends StatelessWidget {
-  static void navigate(final BuildContext context) {
-    NavigatorUtility.screen.next(
-      context,
-      screen: RegisterEntryScreenRoute(),
-    );
-  }
+class RegisterScreenRoute extends StatelessWidget {
+  final RegisterControllerRoute controller;
 
-  final controller = _ScreenController._();
-
-  RegisterEntryScreenRoute({
+  const RegisterScreenRoute({
     super.key,
+    required this.controller,
   });
 
   @override
@@ -96,23 +88,5 @@ class RegisterEntryScreenRoute extends StatelessWidget {
       ),
       enableOverlapHeader: true,
     );
-  }
-}
-
-class _ScreenController {
-  final idInputController = TextEditingController();
-  final nameInputController = TextEditingController();
-  final emailInputController = TextEditingController();
-  final passwordInputController = TextEditingController();
-  final confirmPasswordInputController = TextEditingController();
-
-  _ScreenController._();
-
-  void signUp(final BuildContext context) async {
-    await RepositoryService.key.setSessionRefreshToken('accessToken');
-
-    if (!context.mounted) return;
-
-    SplashEntryScreenRoute.navigate(context);
   }
 }

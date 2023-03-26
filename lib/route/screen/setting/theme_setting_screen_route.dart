@@ -3,19 +3,15 @@ import 'package:flutter/material.dart';
 import '../../../component/template/screen_template_component.dart';
 import '../../../controller/app_controller.dart';
 import '../../../item/menu_item_component.dart';
-import '../../../utility/navigator_utility.dart';
+import '../../controller/setting/theme_setting_controller_route.dart';
 
 class ThemeSettingScreenRoute extends StatelessWidget {
-  static void navigate(final BuildContext context) {
-    NavigatorUtility.screen.next(
-      context,
-      screen: const ThemeSettingScreenRoute(),
-    );
-  }
+  final ThemeSettingControllerRoute controller;
 
-  final controller = const _ScreenController._();
-
-  const ThemeSettingScreenRoute({Key? key}) : super(key: key);
+  const ThemeSettingScreenRoute({
+    super.key,
+    required this.controller,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -59,13 +55,5 @@ class ThemeSettingScreenRoute extends StatelessWidget {
         ],
       )
     );
-  }
-}
-
-class _ScreenController {
-  const _ScreenController._();
-
-  void updateTheme(final BuildContext context, final ThemeMode themeMode) {
-    AppController.of(context).updateTheme(themeMode);
   }
 }

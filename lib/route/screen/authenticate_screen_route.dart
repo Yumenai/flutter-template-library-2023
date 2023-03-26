@@ -1,27 +1,19 @@
 import 'package:flutter/material.dart';
 
-import '../../../component/button/text_button_component.dart';
-import '../../../component/input/text_input_component.dart';
-import '../../../component/template/screen_template_component.dart';
-import '../../../component/view/image_view_component.dart';
-import '../../../controller/app_controller.dart';
-import '../../../service/repository_service.dart';
-import '../../../utility/app_utility.dart';
-import '../../../utility/navigator_utility.dart';
-import 'splash_entry_screen_route.dart';
+import '../../component/button/text_button_component.dart';
+import '../../component/input/text_input_component.dart';
+import '../../component/template/screen_template_component.dart';
+import '../../component/view/image_view_component.dart';
+import '../../controller/app_controller.dart';
+import '../../utility/app_utility.dart';
+import '../controller/authenticate_controller_route.dart';
 
-class AuthenticateEntryScreenRoute extends StatelessWidget {
-  static void navigate(final BuildContext context) {
-    NavigatorUtility.screen.next(
-      context,
-      screen: AuthenticateEntryScreenRoute(),
-    );
-  }
+class AuthenticateScreenRoute extends StatelessWidget {
+  final AuthenticationControllerRoute controller;
 
-  final controller = _ScreenController._();
-
-  AuthenticateEntryScreenRoute({
+  const AuthenticateScreenRoute({
     super.key,
+    required this.controller,
   });
 
   @override
@@ -84,20 +76,5 @@ class AuthenticateEntryScreenRoute extends StatelessWidget {
       ),
       enableOverlapHeader: true,
     );
-  }
-}
-
-class _ScreenController {
-  final idInputController = TextEditingController();
-  final passwordInputController = TextEditingController();
-
-  _ScreenController._();
-
-  void signIn(final BuildContext context) async {
-    await RepositoryService.key.setSessionRefreshToken('accessToken');
-
-    if (context.mounted) {
-      SplashEntryScreenRoute.navigate(context);
-    }
   }
 }

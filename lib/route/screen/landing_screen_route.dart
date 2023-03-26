@@ -1,26 +1,18 @@
 import 'package:flutter/material.dart';
 
-import '../../../component/button/text_button_component.dart';
-import '../../../component/template/screen_template_component.dart';
-import '../../../component/view/image_view_component.dart';
-import '../../../controller/app_controller.dart';
-import '../../../utility/app_utility.dart';
-import '../../../utility/navigator_utility.dart';
-import 'authenticate_entry_screen_route.dart';
-import 'register_entry_screen_route.dart';
+import '../../component/button/text_button_component.dart';
+import '../../component/template/screen_template_component.dart';
+import '../../component/view/image_view_component.dart';
+import '../../controller/app_controller.dart';
+import '../../utility/app_utility.dart';
+import '../controller/landing_controller_route.dart';
 
-class LandingEntryScreenRoute extends StatelessWidget {
-  static void navigate(final BuildContext context) {
-    NavigatorUtility.screen.nextSession(
-      context,
-      screen: const LandingEntryScreenRoute(),
-    );
-  }
+class LandingScreenRoute extends StatelessWidget {
+  final LandingControllerRoute controller;
 
-  final controller = const _ScreenController._();
-
-  const LandingEntryScreenRoute({
+  const LandingScreenRoute({
     super.key,
+    required this.controller,
   });
 
   @override
@@ -77,17 +69,5 @@ class LandingEntryScreenRoute extends StatelessWidget {
       ),
       enableOverlapHeader: true,
     );
-  }
-}
-
-class _ScreenController {
-  const _ScreenController._();
-
-  void signIn(final BuildContext context) {
-    AuthenticateEntryScreenRoute.navigate(context);
-  }
-
-  void signUp(final BuildContext context) {
-    RegisterEntryScreenRoute.navigate(context);
   }
 }

@@ -4,25 +4,15 @@ import '../../../component/template/screen_template_component.dart';
 import '../../../component/view/image_view_component.dart';
 import '../../../controller/app_controller.dart';
 import '../../../item/menu_item_component.dart';
-import '../../../service/repository_service.dart';
 import '../../../utility/app_utility.dart';
-import '../../../utility/navigator_utility.dart';
-import '../entry/splash_entry_screen_route.dart';
-import 'language_setting_screen_route.dart';
-import 'theme_setting_screen_route.dart';
+import '../../controller/setting/dashboard_setting_controller_route.dart';
 
 class DashboardSettingScreenRoute extends StatelessWidget {
-  static void navigate(final BuildContext context) {
-    NavigatorUtility.screen.nextSession(
-      context,
-      screen: const DashboardSettingScreenRoute(),
-    );
-  }
-
-  final controller = const _ScreenController._();
+  final DashboardSettingControllerRoute controller;
 
   const DashboardSettingScreenRoute({
     super.key,
+    required this.controller,
   });
 
   @override
@@ -113,41 +103,5 @@ class DashboardSettingScreenRoute extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-class _ScreenController {
-  const _ScreenController._();
-
-  void viewProfile(final BuildContext context) {
-
-  }
-
-  void updatePassword(final BuildContext context) {
-
-  }
-
-  void viewTheme(final BuildContext context) {
-    ThemeSettingScreenRoute.navigate(context);
-  }
-
-  void viewLanguage(final BuildContext context) {
-    LanguageSettingScreenRoute.navigate(context);
-  }
-
-  void signOut(final BuildContext context) async {
-    await RepositoryService.key.clear();
-
-    if (!context.mounted) return;
-
-    SplashEntryScreenRoute.navigate(context);
-  }
-
-  void deleteAccount(final BuildContext context) async {
-    await RepositoryService.key.clear();
-
-    if (!context.mounted) return;
-
-    SplashEntryScreenRoute.navigate(context);
   }
 }

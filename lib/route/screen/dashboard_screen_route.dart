@@ -2,21 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../../component/button/icon_button_component.dart';
 import '../../component/template/screen_template_component.dart';
-import '../../utility/navigator_utility.dart';
-import 'setting/dashboard_setting_screen_route.dart';
+import '../controller/dashboard_controller_route.dart';
 
 class DashboardScreenRoute extends StatefulWidget {
-  static void navigate(final BuildContext context) {
-    NavigatorUtility.screen.nextSession(
-      context,
-      screen: const DashboardScreenRoute(),
-    );
-  }
-
-  final controller = const _ScreenController._();
+  final DashboardControllerRoute controller;
 
   const DashboardScreenRoute({
     super.key,
+    required this.controller,
   });
 
   @override
@@ -38,13 +31,5 @@ class _DashboardScreenRouteState extends State<DashboardScreenRoute> {
         ),
       ],
     );
-  }
-}
-
-class _ScreenController {
-  const _ScreenController._();
-
-  void viewSettings(final BuildContext context) async {
-    DashboardSettingScreenRoute.navigate(context);
   }
 }

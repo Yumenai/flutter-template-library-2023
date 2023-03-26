@@ -4,19 +4,15 @@ import '../../../component/template/screen_template_component.dart';
 import '../../../controller/app_controller.dart';
 import '../../../data/resource/language_resource_data.dart';
 import '../../../item/menu_item_component.dart';
-import '../../../utility/navigator_utility.dart';
+import '../../controller/setting/language_setting_controller_route.dart';
 
 class LanguageSettingScreenRoute extends StatelessWidget {
-  static void navigate(final BuildContext context) {
-    NavigatorUtility.screen.next(
-      context,
-      screen: const LanguageSettingScreenRoute(),
-    );
-  }
+  final LanguageSettingControllerRoute controller;
 
-  final controller = const _ScreenController._();
-
-  const LanguageSettingScreenRoute({Key? key}) : super(key: key);
+  const LanguageSettingScreenRoute({
+    super.key,
+    required this.controller,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -38,13 +34,5 @@ class LanguageSettingScreenRoute extends StatelessWidget {
         },
       ),
     );
-  }
-}
-
-class _ScreenController {
-  const _ScreenController._();
-
-  void viewItem(final BuildContext context, final int position) {
-    AppController.of(context).updateLanguage(LanguageResourceData.supportedInformationList.keys.elementAt(position));
   }
 }
