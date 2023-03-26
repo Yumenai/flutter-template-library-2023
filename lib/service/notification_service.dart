@@ -6,8 +6,14 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-class NotificationUtility {
+class NotificationService {
+  static bool isInitialise = false;
+
   static Future<void> initialise() async {
+    if (isInitialise) return;
+
+    isInitialise = true;
+
     await Firebase.initializeApp();
 
     /// When user open the app through the notification
@@ -70,5 +76,5 @@ class NotificationUtility {
     return await FirebaseMessaging.instance.getToken() ?? '';
   }
 
-  const NotificationUtility._();
+  const NotificationService._();
 }

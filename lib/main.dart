@@ -5,12 +5,14 @@ import 'component/template/app_template_component.dart';
 import 'controller/app_controller.dart';
 import 'route/access_route.dart';
 import 'service/app_service.dart';
+import 'service/notification_service.dart';
 import 'utility/storage/key_storage_utility.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await AppService.initialise();
+  await NotificationService.initialise();
   await KeyStorageUtility.initialise();
 
   final appController = await AppController.initialise();
