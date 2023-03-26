@@ -82,7 +82,7 @@ class _SettingRoute {
   const _SettingRoute._();
 
   void dashboard(final BuildContext context) {
-    NavigatorUtility.screen.nextSession(
+    NavigatorUtility.screen.next(
       context,
       screen: const DashboardSettingScreenRoute(
         controller: DashboardSettingControllerRoute(),
