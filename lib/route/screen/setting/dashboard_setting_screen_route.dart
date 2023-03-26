@@ -8,6 +8,7 @@ import '../../../service/repository_service.dart';
 import '../../../utility/app_utility.dart';
 import '../../../utility/navigator_utility.dart';
 import '../entry/splash_entry_screen_route.dart';
+import 'language_setting_screen_route.dart';
 import 'theme_setting_screen_route.dart';
 
 class DashboardSettingScreenRoute extends StatelessWidget {
@@ -131,7 +132,7 @@ class _ScreenController {
   }
 
   void viewLanguage(final BuildContext context) {
-
+    LanguageSettingScreenRoute.navigate(context);
   }
 
   void signOut(final BuildContext context) async {
