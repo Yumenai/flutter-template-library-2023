@@ -8,6 +8,7 @@ import '../../../service/repository_service.dart';
 import '../../../utility/app_utility.dart';
 import '../../../utility/navigator_utility.dart';
 import '../entry/splash_entry_screen_route.dart';
+import 'theme_setting_screen_route.dart';
 
 class DashboardSettingScreenRoute extends StatelessWidget {
   static void navigate(final BuildContext context) {
@@ -126,7 +127,7 @@ class _ScreenController {
   }
 
   void viewTheme(final BuildContext context) {
-
+    ThemeSettingScreenRoute.navigate(context);
   }
 
   void viewLanguage(final BuildContext context) {
