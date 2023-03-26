@@ -4,13 +4,13 @@ import 'package:provider/provider.dart';
 import 'component/template/app_template_component.dart';
 import 'controller/app_controller.dart';
 import 'route/access_route.dart';
-import 'utility/app_utility.dart';
+import 'service/app_service.dart';
 import 'utility/storage/key_storage_utility.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await AppUtility.initialise();
+  await AppService.initialise();
   await KeyStorageUtility.initialise();
 
   final appController = await AppController.initialise();
@@ -25,7 +25,7 @@ void main() async {
         ),
       ],
       child: AppTemplateComponent(
-        name: AppUtility.name,
+        name: AppService.instance?.name ?? '',
         layout: AccessRoute.screen.splash,
       ),
     ),

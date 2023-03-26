@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../component/template/screen_template_component.dart';
 import '../../component/view/image_view_component.dart';
 import '../../controller/app_controller.dart';
-import '../../utility/app_utility.dart';
+import '../../service/app_service.dart';
 import '../controller/splash_controller_route.dart';
 
 class SplashScreenRoute extends StatefulWidget {
@@ -45,7 +45,7 @@ class _SplashScreenRouteState extends State<SplashScreenRoute> {
               height: 24,
             ),
             Text(
-              AppUtility.name,
+              AppService.instance?.name ?? '',
               textAlign: TextAlign.center,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,

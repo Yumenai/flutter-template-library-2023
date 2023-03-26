@@ -4,7 +4,7 @@ import '../../../component/template/screen_template_component.dart';
 import '../../../component/view/image_view_component.dart';
 import '../../../controller/app_controller.dart';
 import '../../../item/menu_item_component.dart';
-import '../../../utility/app_utility.dart';
+import '../../../service/app_service.dart';
 import '../../controller/setting/dashboard_setting_controller_route.dart';
 
 class DashboardSettingScreenRoute extends StatelessWidget {
@@ -93,9 +93,9 @@ class DashboardSettingScreenRoute extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(AppUtility.version),
+                Text(AppService.instance?.version ?? ''),
                 const Text(' ('),
-                Text(AppUtility.code),
+                Text(AppService.instance?.code ?? ''),
                 const Text(')'),
               ],
             ),

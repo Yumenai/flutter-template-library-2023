@@ -5,7 +5,7 @@ import '../../component/input/text_input_component.dart';
 import '../../component/template/screen_template_component.dart';
 import '../../component/view/image_view_component.dart';
 import '../../controller/app_controller.dart';
-import '../../utility/app_utility.dart';
+import '../../service/app_service.dart';
 import '../controller/authenticate_controller_route.dart';
 
 class AuthenticateScreenRoute extends StatelessWidget {
@@ -44,7 +44,7 @@ class AuthenticateScreenRoute extends StatelessWidget {
               height: 12,
             ),
             Text(
-              AppUtility.name,
+              AppService.instance?.name ?? '',
               textAlign: TextAlign.center,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
