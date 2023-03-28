@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../model/user_model.dart';
 import '../../dialog/alert_dialog_route.dart';
 import '../../service/network_service.dart';
+import 'model/user_registration_model.dart';
 
 class UserRepositoryService {
   final String Function() _getHostAddress;
@@ -33,25 +34,34 @@ class UserRepositoryService {
     return null;
   }
 
-  Future<bool> updateProfile(final BuildContext context, {
-    final String name = '',
+  Future<UserRegistrationModel?> register(final BuildContext context, {
+    required final String id,
+    required final String name,
+    required final String email,
+    required final String password,
   }) async {
     AlertDialogRoute.showLoading(context);
 
-    final result = await NetworkService.post(
+    final result = await NetworkService.get(
       hostAddress: _getHostAddress(),
-      apiRoute: 'user/updateProfile',
+      apiRoute: 'user/register',
       headerMap: _getNetworkHeader(),
+      bodyMap: {
+        'id': id,
+        'name': name,
+        'email': email,
+        'password': password,
+      },
     );
 
     if (context.mounted) Navigator.pop(context);
 
     if (NetworkService.isSuccess(result)) {
-      return true;
+      return UserRegistrationModel.fromJson(jsonDecode(result?.body ?? '{}'));
     } else if (context.mounted) {
       await _handleErrorMessage(context, result);
     }
 
-    return false;
+    return null;
   }
 }

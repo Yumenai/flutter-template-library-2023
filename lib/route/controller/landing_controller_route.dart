@@ -6,10 +6,10 @@ class LandingControllerRoute {
   const LandingControllerRoute();
 
   void signIn(final BuildContext context) {
-    AccessRoute.authenticate(context);
+    AccessRoute.authenticate.user(context);
   }
 
   void signUp(final BuildContext context) {
-    AccessRoute.register(context);
+    AccessRoute.user.registration(context);
   }
 }

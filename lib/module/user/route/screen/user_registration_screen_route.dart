@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
-import '../../component/button/text_button_component.dart';
-import '../../component/input/text_input_component.dart';
-import '../../component/template/screen_template_component.dart';
-import '../../component/view/image_view_component.dart';
-import '../../controller/app_controller.dart';
-import '../../service/app_service.dart';
-import '../controller/register_controller_route.dart';
+import '../../../../component/button/text_button_component.dart';
+import '../../../../component/input/text_input_component.dart';
+import '../../../../component/template/screen_template_component.dart';
+import '../../../../component/view/image_view_component.dart';
+import '../../../../controller/app_controller.dart';
+import '../../../../service/app_service.dart';
+import '../controller/user_registration_controller_route.dart';
 
-class RegisterScreenRoute extends StatelessWidget {
-  final RegisterControllerRoute controller;
+class UserRegistrationScreenRoute extends StatelessWidget {
+  final UserRegistrationControllerRoute controller;
 
-  const RegisterScreenRoute({
+  const UserRegistrationScreenRoute({
     super.key,
     required this.controller,
   });

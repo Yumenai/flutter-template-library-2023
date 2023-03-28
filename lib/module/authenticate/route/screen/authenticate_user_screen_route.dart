@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
-import '../../component/button/text_button_component.dart';
-import '../../component/input/text_input_component.dart';
-import '../../component/template/screen_template_component.dart';
-import '../../component/view/image_view_component.dart';
-import '../../controller/app_controller.dart';
-import '../../service/app_service.dart';
-import '../controller/authenticate_controller_route.dart';
+import '../../../../component/button/text_button_component.dart';
+import '../../../../component/input/text_input_component.dart';
+import '../../../../component/template/screen_template_component.dart';
+import '../../../../component/view/image_view_component.dart';
+import '../../../../controller/app_controller.dart';
+import '../../../../service/app_service.dart';
+import '../controller/authenticate_user_controller_route.dart';
 
-class AuthenticateScreenRoute extends StatelessWidget {
-  final AuthenticationControllerRoute controller;
+class AuthenticateUserScreenRoute extends StatelessWidget {
+  final AuthenticationUserControllerRoute controller;
 
-  const AuthenticateScreenRoute({
+  const AuthenticateUserScreenRoute({
     super.key,
     required this.controller,
   });
