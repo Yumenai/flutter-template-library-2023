@@ -13,7 +13,7 @@ class RegisterControllerRoute {
   RegisterControllerRoute();
 
   void signUp(final BuildContext context) async {
-    await RepositoryService.key.setSessionRefreshToken('accessToken');
+    await RepositoryService.instance.setSessionRefreshToken('accessToken');
 
     if (!context.mounted) return;
 

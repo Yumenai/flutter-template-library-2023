@@ -13,7 +13,7 @@ class SplashControllerRoute {
 
     if (!state.mounted) return;
 
-    final accessToken = RepositoryService.key.sessionRefreshToken;
+    final accessToken = RepositoryService.instance.sessionRefreshToken;
 
     if (!state.mounted) return;
 

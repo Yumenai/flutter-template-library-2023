@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localization.dart';
 import 'package:provider/provider.dart';
 
 import '../data/configuration_data.dart';
+import '../data/environment_data.dart';
 import '../data/resource/color_resource_data.dart';
 import '../data/resource/image_resource_data.dart';
 import '../data/resource/language_resource_data.dart';
@@ -10,7 +11,7 @@ import '../service/repository_service.dart';
 
 class AppController extends ChangeNotifier {
   static Future<AppController> initialise() async {
-    final languageCode = RepositoryService.key.appLanguageCode;
+    final languageCode = RepositoryService.instance.languageCode;
 
     final locale = LanguageResourceData.supportedLocaleList.firstWhere((locale) {
       return locale.languageCode == languageCode;
@@ -18,7 +19,8 @@ class AppController extends ChangeNotifier {
       return ConfigurationData.defaultLocale;
     });
 
-    final themeMode = RepositoryService.key.appThemeMode ?? ConfigurationData.defaultThemeMode;
+    final themeMode = RepositoryService.instance.themeMode;
+
     final ColorResourceData colorResourceData;
     final ImageResourceData imageResourceData;
 
@@ -43,6 +45,9 @@ class AppController extends ChangeNotifier {
     }
 
     return AppController._(
+      locale,
+      themeMode,
+      RepositoryService.instance.environmentData,
       colorResourceData,
       imageResourceData,
       await ConfigurationData.defaultLocalizationDelegate.load(locale),
@@ -60,6 +65,15 @@ class AppController extends ChangeNotifier {
     return Provider.of<AppController>(context);
   }
 
+  Locale _locale;
+  Locale get locale => _locale;
+
+  ThemeMode _themeMode;
+  ThemeMode get themeMode => _themeMode;
+
+  EnvironmentData _environment;
+  EnvironmentData get environment => _environment;
+
   ColorResourceData _color;
   ColorResourceData get color => _color;
 
@@ -69,27 +83,15 @@ class AppController extends ChangeNotifier {
   AppLocalizations? _text;
   AppLocalizations? get text => _text;
 
-  AppController._(this._color, this._image, this._text,);
+  AppController._(this._locale, this._themeMode, this._environment, this._color, this._image, this._text,);
 
-  Locale get locale {
-    final languageCode = RepositoryService.key.appLanguageCode;
-
-    return LanguageResourceData.supportedLocaleList.firstWhere((locale) {
-      return locale.languageCode == languageCode;
-    }, orElse: () {
-      return ConfigurationData.defaultLocale;
-    });
-  }
-
-  ThemeMode get themeMode {
-    return RepositoryService.key.appThemeMode ?? ConfigurationData.defaultThemeMode;
-  }
-
-  void updateTheme(final ThemeMode themeMode) async {
+  Future<void> updateTheme(final ThemeMode themeMode) async {
     /// If the locale is the same, skip this update
-    if (themeMode == RepositoryService.key.appThemeMode) return;
+    if (themeMode == _themeMode) return;
 
-    await RepositoryService.key.setAppThemeMode(themeMode);
+    _themeMode = themeMode;
+
+    await RepositoryService.instance.setThemeMode(themeMode);
 
     switch(themeMode) {
       case ThemeMode.system:
@@ -104,17 +106,17 @@ class AppController extends ChangeNotifier {
     }
   }
 
-  void updateLanguage(final String languageCode) async {
+  Future<void> updateLanguage(final String languageCode) async {
     /// If the locale is the same, skip this update
-    if (languageCode == RepositoryService.key.appLanguageCode) return;
+    if (languageCode == _locale.languageCode) return;
 
-    final locale = LanguageResourceData.supportedLocaleList.firstWhere((locale) {
+    _locale = LanguageResourceData.supportedLocaleList.firstWhere((locale) {
       return locale.languageCode == languageCode;
     }, orElse: () {
       return ConfigurationData.defaultLocale;
     });
 
-    await RepositoryService.key.setAppLanguageCode(languageCode);
+    await RepositoryService.instance.setLanguageCode(languageCode);
 
     final textResource = await LanguageResourceData.localizationDelegateList.first.load(locale);
 
@@ -123,6 +125,14 @@ class AppController extends ChangeNotifier {
     }
 
     notifyListeners();
+  }
+
+  Future<void> updateEnvironment(final EnvironmentData environment) async {
+    if (environment == _environment) return;
+
+    _environment = environment;
+
+    await RepositoryService.instance.setEnvironmentData(_environment);
   }
 
   void updateBrightness(final Brightness brightness) {

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-import '../../../component/template/screen_template_component.dart';
-import '../../../component/view/image_view_component.dart';
-import '../../../controller/app_controller.dart';
-import '../../../item/menu_item_component.dart';
-import '../../../service/app_service.dart';
-import '../../controller/setting/dashboard_setting_controller_route.dart';
+import '../../../../component/template/screen_template_component.dart';
+import '../../../../component/view/image_view_component.dart';
+import '../../../../controller/app_controller.dart';
+import '../../../../item/menu_item_component.dart';
+import '../../../../service/app_service.dart';
+import '../controller/user_setting_controller_route.dart';
 
-class DashboardSettingScreenRoute extends StatelessWidget {
+class UserSettingScreenRoute extends StatelessWidget {
   final DashboardSettingControllerRoute controller;
 
-  const DashboardSettingScreenRoute({
+  const UserSettingScreenRoute({
     super.key,
     required this.controller,
   });

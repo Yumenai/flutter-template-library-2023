@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '../../../component/template/screen_template_component.dart';
-import '../../../controller/app_controller.dart';
-import '../../../item/menu_item_component.dart';
-import '../../controller/setting/theme_setting_controller_route.dart';
+import '../../../../component/template/screen_template_component.dart';
+import '../../../../controller/app_controller.dart';
+import '../../../../item/menu_item_component.dart';
+import '../controller/user_theme_controller_route.dart';
 
-class ThemeSettingScreenRoute extends StatelessWidget {
+class UserThemeScreenRoute extends StatelessWidget {
   final ThemeSettingControllerRoute controller;
 
-  const ThemeSettingScreenRoute({
+  const UserThemeScreenRoute({
     super.key,
     required this.controller,
   });

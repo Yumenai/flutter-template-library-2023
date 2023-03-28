@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 import 'dart:typed_data';
 
 // ignore: depend_on_referenced_packages
@@ -8,7 +10,7 @@ import 'package:http/http.dart' as http;
 
 typedef NetworkResponse = http.Response;
 
-class NetworkUtility {
+class NetworkService {
   static bool isSuccess(final http.Response? response) {
     final statusCode = response?.statusCode ?? -999;
 
@@ -143,12 +145,12 @@ class NetworkUtility {
     final Map<String, Uint8List>? fileMap,
     final String fileType = 'file',
     final MapEntry<String, String>? mediaTypeMapEntry,
-  }) async {
+  }) {
     final url = '$hostAddress/$apiRoute';
 
     log('[Request][Post Multipart] Network Utility: $url : $bodyObject');
 
-    try {
+    return _handleExceptionResponse(() async {
       final request = http.MultipartRequest(
         'POST',
         Uri.parse(url),
@@ -176,11 +178,26 @@ class NetworkUtility {
       log('[Success][Post Multipart] Network Utility: $url : ${response.statusCode} : ${response.body}');
 
       return response;
-    } catch (error) {
-      log('[Error][Post Multipart] Network Utility: $url : $error');
-      return null;
+    }, (message) {
+      log('[Error][Post Multipart] Network Utility: $url : $message');
+    });
+  }
+
+  static Future<http.Response> _handleExceptionResponse(final Future<http.Response> Function() request, final void Function(String) error) async {
+    try {
+      return await request();
+    } on SocketException {
+      const message = 'Could not connect to server. Please check your internet connection.';
+
+      error(message);
+
+      return http.Response(message, -1);
+    } on TimeoutException {
+      return http.Response('Connection timed out. Please try again later.', -2);
+    } on Exception catch (error) {
+      return http.Response('An error occurred: $error', -3);
     }
   }
 
-  const NetworkUtility._();
+  const NetworkService._();
 }

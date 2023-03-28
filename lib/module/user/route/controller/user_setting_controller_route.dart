@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../service/repository_service.dart';
-import '../../access_route.dart';
+import '../../../../service/repository_service.dart';
+import '../../../../route/access_route.dart';
 
 class DashboardSettingControllerRoute {
   const DashboardSettingControllerRoute();
@@ -15,15 +15,15 @@ class DashboardSettingControllerRoute {
   }
 
   void viewTheme(final BuildContext context) {
-    AccessRoute.setting.theme(context);
+    AccessRoute.user.theme(context);
   }
 
   void viewLanguage(final BuildContext context) {
-    AccessRoute.setting.language(context);
+    AccessRoute.user.language(context);
   }
 
   void signOut(final BuildContext context) async {
-    await RepositoryService.key.clear();
+    await RepositoryService.instance.clear();
 
     if (!context.mounted) return;
 
@@ -31,7 +31,7 @@ class DashboardSettingControllerRoute {
   }
 
   void deleteAccount(final BuildContext context) async {
-    await RepositoryService.key.clear();
+    await RepositoryService.instance.clear();
 
     if (!context.mounted) return;
 

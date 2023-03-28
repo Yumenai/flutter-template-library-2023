@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'environment_data.dart';
 import 'resource/language_resource_data.dart';
 
 class ConfigurationData {
@@ -11,6 +12,8 @@ class ConfigurationData {
   static const defaultHostAddress = hostAddressDevelopment;
 
   static const defaultThemeMode = ThemeMode.system;
+
+  static const defaultEnvironment = EnvironmentData.development;
 
   static final defaultLocalizationDelegate = LanguageResourceData.localizationDelegateList.first;
 

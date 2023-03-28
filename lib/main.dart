@@ -6,14 +6,16 @@ import 'controller/app_controller.dart';
 import 'route/access_route.dart';
 import 'service/app_service.dart';
 import 'service/notification_service.dart';
-import 'utility/storage/key_storage_utility.dart';
+import 'service/storage/key_storage_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await AppService.initialise();
+
+  await KeyStorageService.initialise();
+
   await NotificationService.initialise();
-  await KeyStorageUtility.initialise();
 
   final appController = await AppController.initialise();
 

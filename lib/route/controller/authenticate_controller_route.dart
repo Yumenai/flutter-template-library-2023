@@ -10,7 +10,7 @@ class AuthenticationControllerRoute {
   AuthenticationControllerRoute();
 
   void signIn(final BuildContext context) async {
-    await RepositoryService.key.setSessionRefreshToken('accessToken');
+    await RepositoryService.instance.setSessionRefreshToken('accessToken');
 
     if (context.mounted) {
       AccessRoute.splash(context);

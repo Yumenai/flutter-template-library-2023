@@ -228,8 +228,8 @@ class _EnvironmentBannerComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Banner(
       location: BannerLocation.topStart,
-      message: RepositoryService.key.appEnvironmentData?.code ?? '',
-      color: RepositoryService.key.appEnvironmentData?.color ?? Colors.black,
+      message: RepositoryService.instance.environmentData.code,
+      color: RepositoryService.instance.environmentData.color,
       child: child,
     );
   }

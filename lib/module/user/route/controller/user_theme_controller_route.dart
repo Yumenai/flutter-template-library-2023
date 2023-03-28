@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../controller/app_controller.dart';
+import '../../../../controller/app_controller.dart';
 
 class ThemeSettingControllerRoute {
   const ThemeSettingControllerRoute();

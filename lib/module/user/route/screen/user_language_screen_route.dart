@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-import '../../../component/template/screen_template_component.dart';
-import '../../../controller/app_controller.dart';
-import '../../../data/resource/language_resource_data.dart';
-import '../../../item/menu_item_component.dart';
-import '../../controller/setting/language_setting_controller_route.dart';
+import '../../../../component/template/screen_template_component.dart';
+import '../../../../controller/app_controller.dart';
+import '../../../../data/resource/language_resource_data.dart';
+import '../../../../item/menu_item_component.dart';
+import '../controller/user_language_controller_route.dart';
 
-class LanguageSettingScreenRoute extends StatelessWidget {
-  final LanguageSettingControllerRoute controller;
+class UserLanguageScreenRoute extends StatelessWidget {
+  final UserLanguageControllerRoute controller;
 
-  const LanguageSettingScreenRoute({
+  const UserLanguageScreenRoute({
     super.key,
     required this.controller,
   });
