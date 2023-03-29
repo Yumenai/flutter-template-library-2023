@@ -7,14 +7,23 @@ class DialogTemplateComponent extends StatelessWidget {
   final Color? messageColor;
   final Widget? layout;
   final EdgeInsets? layoutPadding;
-  /// Return true to close the dialog
-  final MapEntry<String?, bool Function()>? actionPositive;
+
+  final String? actionPositiveTitle;
   final Color? actionPositiveForegroundColor;
   final Color? actionPositiveBackgroundColor;
 
-  final MapEntry<String?, bool Function()>? actionNegative;
+  final String? actionNegativeTitle;
   final Color? actionNegativeForegroundColor;
   final Color? actionNegativeBackgroundColor;
+
+  final bool enableActionPositive;
+  final bool enableActionNegative;
+
+  final bool enableDismissalPositive;
+  final bool enableDismissalNegative;
+
+  final void Function()? onTapActionPositive;
+  final void Function()? onTapActionNegative;
 
   const DialogTemplateComponent({
     Key? key,
@@ -26,12 +35,18 @@ class DialogTemplateComponent extends StatelessWidget {
     this.layoutPadding = const EdgeInsets.symmetric(
       horizontal: 24,
     ),
-    this.actionPositive,
-    this.actionNegative,
+    this.actionPositiveTitle,
     this.actionPositiveForegroundColor,
     this.actionPositiveBackgroundColor,
+    this.actionNegativeTitle,
     this.actionNegativeForegroundColor,
     this.actionNegativeBackgroundColor,
+    this.enableActionPositive = false,
+    this.enableActionNegative = false,
+    this.enableDismissalPositive = true,
+    this.enableDismissalNegative = true,
+    this.onTapActionPositive,
+    this.onTapActionNegative,
   }) : super(key: key);
 
   @override
@@ -96,36 +111,36 @@ class DialogTemplateComponent extends StatelessWidget {
   List<Widget>? _actionLayout(final BuildContext context) {
     final itemList = <Widget> [];
 
-    if (actionNegative != null) {
+    if (enableActionNegative) {
       itemList.add(TextButton(
         style: TextButton.styleFrom(
           foregroundColor: actionNegativeForegroundColor,
           backgroundColor: actionNegativeBackgroundColor,
         ),
-        child: Text(actionNegative?.key ?? ''),
+        child: Text(actionNegativeTitle ?? 'Dismiss'),
         onPressed: () {
-          final isPressed = actionNegative?.value() == true;
-
-          if (isPressed) {
+          if (enableDismissalNegative) {
             Navigator.pop(context, false);
           }
+
+          onTapActionNegative?.call();
         },
       ));
     }
 
-    if (actionPositive != null) {
+    if (enableActionPositive) {
       itemList.add(TextButton(
         style: TextButton.styleFrom(
           foregroundColor: actionPositiveForegroundColor,
           backgroundColor: actionPositiveBackgroundColor,
         ),
-        child: Text(actionPositive?.key ?? ''),
+        child: Text(actionPositiveTitle ?? 'OK'),
         onPressed: () {
-          final isPressed = actionPositive?.value() == true;
-
-          if (isPressed) {
+          if (enableDismissalPositive) {
             Navigator.pop(context, true);
           }
+
+          onTapActionPositive?.call();
         },
       ));
     }

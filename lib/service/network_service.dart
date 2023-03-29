@@ -10,22 +10,30 @@ import 'package:http/http.dart' as http;
 
 typedef NetworkResponse = http.Response;
 
+const _networkError = -1;
+const _timeoutError = -2;
+const _genericError = -3;
+
 class NetworkService {
-  static bool isSuccess(final http.Response? response) {
-    final statusCode = response?.statusCode ?? -999;
+  static bool isSuccess(final http.Response response) {
+    final statusCode = response.statusCode;
 
     return statusCode >= 200 && statusCode < 300;
   }
 
-  static bool isFailure(final http.Response? response) {
-    return isSuccess(response);
+  static bool isNetworkError(final http.Response response) {
+    return response.statusCode == _networkError;
   }
 
-  static bool isConnectionError(final http.Response? response) {
-    return response == null;
+  static bool isTimeoutError(final http.Response response) {
+    return response.statusCode == _timeoutError;
   }
 
-  static Future<http.Response?> get({
+  static bool isGenericError(final http.Response response) {
+    return response.statusCode == _genericError;
+  }
+
+  static Future<http.Response> get({
     required final String hostAddress,
     required final String apiRoute,
     final Map<String, String>? headerMap,
@@ -42,7 +50,7 @@ class NetworkService {
 
     log('[Request][Get] Network Utility: $url$parameter');
 
-    try {
+    return _handleExceptionResponse(() async {
       final response = await http.get(
         Uri.parse('$url$parameter'),
         headers: headerMap,
@@ -51,13 +59,12 @@ class NetworkService {
       log('[Success][Get] Network Utility: $url : ${response.statusCode} : ${response.body}');
 
       return response;
-    } catch (error) {
-      log('[Error][Get] Network Utility: $url : $error');
-      return null;
-    }
+    }, (message) {
+      log('[Error][Get] Network Utility: $url : $message');
+    });
   }
 
-  static Future<http.Response?> put({
+  static Future<http.Response> put({
     required final String hostAddress,
     required final String apiRoute,
     final Map<String, String>? headerMap,
@@ -67,7 +74,7 @@ class NetworkService {
 
     log('[Request][Put] Network Utility: $url : $bodyObject');
 
-    try {
+    return _handleExceptionResponse(() async {
       final response = await http.put(
         Uri.parse(url),
         headers: headerMap,
@@ -77,13 +84,12 @@ class NetworkService {
       log('[Success][Put] Network Utility: $url : ${response.statusCode} : ${response.body}');
 
       return response;
-    } catch (error) {
-      log('[Error][Put] Network Utility: $url : $error');
-      return null;
-    }
+    }, (message) {
+      log('[Error][Put] Network Utility: $url : $message');
+    });
   }
 
-  static Future<http.Response?> post({
+  static Future<http.Response> post({
     required final String hostAddress,
     required final String apiRoute,
     final Map<String, String>? headerMap,
@@ -94,7 +100,7 @@ class NetworkService {
 
     log('[Request][Post] Network Utility: $url : $bodyObject');
 
-    try {
+    return _handleExceptionResponse(() async {
       final response = await http.post(
         Uri.parse(url),
         headers: headerMap,
@@ -104,13 +110,12 @@ class NetworkService {
       log('[Success][Post] Network Utility: $url : ${response.statusCode} : ${response.body}');
 
       return response;
-    } catch (error) {
-      log('[Error][Post] Network Utility: $url : $error');
-      return null;
-    }
+    }, (message) {
+      log('[Error][Post] Network Utility: $url : $message');
+    });
   }
 
-  static Future<http.Response?> delete({
+  static Future<http.Response> delete({
     required final String hostAddress,
     required final String apiRoute,
     final Map<String, String>? headerMap,
@@ -120,7 +125,7 @@ class NetworkService {
 
     log('[Request][Delete] Network Utility: $url : $bodyObject');
 
-    try {
+    return _handleExceptionResponse(() async {
       final response = await http.delete(
         Uri.parse(url),
         headers: headerMap,
@@ -130,14 +135,13 @@ class NetworkService {
       log('[Success][Delete] Network Utility: $url : ${response.statusCode} : ${response.body}');
 
       return response;
-    } catch (error) {
-      log('[Error][Delete] Network Utility: $url : $error');
-      return null;
-    }
+    }, (message) {
+      log('[Error][Delete] Network Utility: $url : $message');
+    });
   }
 
 
-  static Future<http.Response?> postMultipart({
+  static Future<http.Response> postMultipart({
     required final String hostAddress,
     required final String apiRoute,
     final Map<String, String>? headerMap,
@@ -191,11 +195,19 @@ class NetworkService {
 
       error(message);
 
-      return http.Response(message, -1);
+      return http.Response(message, _networkError);
     } on TimeoutException {
-      return http.Response('Connection timed out. Please try again later.', -2);
-    } on Exception catch (error) {
-      return http.Response('An error occurred: $error', -3);
+      const message = 'Connection timed out. Please try again later.';
+
+      error(message);
+
+      return http.Response(message, _timeoutError);
+    } on Exception catch (e) {
+      final message = 'An error occurred: $e';
+
+      error(message);
+
+      return http.Response(message, _genericError);
     }
   }
 

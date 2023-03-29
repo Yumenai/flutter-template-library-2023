@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import '../../model/user_model.dart';
-import '../../dialog/alert_dialog_route.dart';
 import '../../service/network_service.dart';
+import '../../utility/dialog_utility.dart';
 import 'model/user_registration_model.dart';
 
 class UserRepositoryService {
@@ -15,7 +15,7 @@ class UserRepositoryService {
   const UserRepositoryService(this._getHostAddress, this._getNetworkHeader, this._handleErrorMessage,);
 
   Future<UserModel?> get(final BuildContext context) async {
-    AlertDialogRoute.showLoading(context);
+    DialogUtility.showLoading(context);
 
     final result = await NetworkService.get(
       hostAddress: _getHostAddress(),
@@ -26,7 +26,7 @@ class UserRepositoryService {
     if (context.mounted) Navigator.pop(context);
 
     if (NetworkService.isSuccess(result)) {
-      return UserModel.fromNetworkRepository(jsonDecode(result?.body ?? '{}'));
+      return UserModel.fromNetworkRepository(jsonDecode(result.body));
     } else if (context.mounted) {
       await _handleErrorMessage(context, result);
     }
@@ -40,7 +40,7 @@ class UserRepositoryService {
     required final String email,
     required final String password,
   }) async {
-    AlertDialogRoute.showLoading(context);
+    DialogUtility.showLoading(context);
 
     final result = await NetworkService.get(
       hostAddress: _getHostAddress(),
@@ -57,7 +57,7 @@ class UserRepositoryService {
     if (context.mounted) Navigator.pop(context);
 
     if (NetworkService.isSuccess(result)) {
-      return UserRegistrationModel.fromJson(jsonDecode(result?.body ?? '{}'));
+      return UserRegistrationModel.fromJson(jsonDecode(result.body));
     } else if (context.mounted) {
       await _handleErrorMessage(context, result);
     }

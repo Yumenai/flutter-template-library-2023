@@ -62,11 +62,14 @@ dependencies:
   # Provide feature to select file
   file_picker: ^5.2.4
 
-  barcode: ^2.2.3
-
+  # Provide SVG support
   flutter_svg: ^1.1.6
 
-  mobile_scanner: ^2.1.0
+  # Provide barcode generator
+  barcode: ^2.2.3
+
+  # Provide barcode scanner
+  mobile_scanner: ^3.1.1
 
 dev_dependencies:
   flutter_test:

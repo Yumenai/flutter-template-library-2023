@@ -5,9 +5,11 @@ import '../module/user/route/user_access_route.dart';
 import '../utility/navigator_utility.dart';
 import 'controller/dashboard_controller_route.dart';
 import 'controller/landing_controller_route.dart';
+import 'controller/scanner_controller_route.dart';
 import 'controller/splash_controller_route.dart';
 import 'screen/dashboard_screen_route.dart';
 import 'screen/landing_screen_route.dart';
+import 'screen/scanner_screen_route.dart';
 import 'screen/splash_screen_route.dart';
 
 class AccessRoute {
@@ -40,6 +42,15 @@ class AccessRoute {
       context,
       screen: const DashboardScreenRoute(
         controller: DashboardControllerRoute(),
+      ),
+    );
+  }
+
+  static void scanner(final BuildContext context) {
+    NavigatorUtility.screen.next(
+      context,
+      screen: ScannerScreenRoute(
+        controller: ScannerControllerRoute(),
       ),
     );
   }

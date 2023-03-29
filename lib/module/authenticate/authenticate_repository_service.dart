@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-import '../../dialog/alert_dialog_route.dart';
 import '../../service/network_service.dart';
+import '../../utility/dialog_utility.dart';
 import 'model/authenticate_user_model.dart';
 
 class AuthenticateRepositoryService {
@@ -17,7 +17,7 @@ class AuthenticateRepositoryService {
     required final String id,
     required final String password,
   }) async {
-    AlertDialogRoute.showLoading(context);
+    DialogUtility.showLoading(context);
 
     final result = await NetworkService.get(
       hostAddress: _getHostAddress(),
@@ -32,7 +32,7 @@ class AuthenticateRepositoryService {
     if (context.mounted) Navigator.pop(context);
 
     if (NetworkService.isSuccess(result)) {
-      return AuthenticateUserModel.fromJson(jsonDecode(result?.body ?? '{}'));
+      return AuthenticateUserModel.fromJson(jsonDecode(result.body));
     } else if (context.mounted) {
       await _handleErrorMessage(context, result);
     }
