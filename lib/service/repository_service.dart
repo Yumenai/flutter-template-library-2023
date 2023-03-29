@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
+import '../controller/app_controller.dart';
 import '../data/configuration_data.dart';
 import '../data/environment_data.dart';
 import '../module/authenticate/authenticate_repository_service.dart';
@@ -168,6 +169,8 @@ class RepositoryService {
       context,
       title: title,
       message: message,
+      color: AppController.of(context).color.error,
+      onColor: AppController.of(context).color.onError,
     );
   }
 }

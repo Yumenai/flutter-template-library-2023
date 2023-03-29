@@ -1,52 +1,11 @@
 import 'package:flutter/material.dart';
 
 class NavigatorUtility {
-  static const dialog = _DialogNavigator._();
-
   static const link = _LinkNavigator._();
 
   static const screen = _ScreenNavigator._();
 
   const NavigatorUtility._();
-}
-
-class _DialogNavigator {
-  /// Show popup dialog
-  Future<dynamic> showPopup(final BuildContext context, {
-    required final Widget widget,
-    final bool dismissible = true,
-  }) {
-    return showDialog(
-      context: context,
-      barrierDismissible: dismissible,
-      builder: (context) {
-        if (!dismissible) {
-          return WillPopScope(
-            child: widget,
-            onWillPop: () async {
-              return false;
-            },
-          );
-        } else {
-          return widget;
-        }
-      },
-    );
-  }
-
-  void showMessage(final BuildContext context, {
-    required final String? message,
-    final Duration duration = const Duration(
-      seconds: 1,
-    ),
-  }) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(message ?? ''),
-      duration: duration,
-    ));
-  }
-
-  const _DialogNavigator._();
 }
 
 class _LinkNavigator {
