@@ -150,7 +150,9 @@ class RepositoryController {
     };
   }
 
-  Future<void> _handleErrorMessage(final BuildContext context, final NetworkResponse? response) async {
+  Future<void> _handleErrorMessage(final BuildContext context, final NetworkResponse? response, [
+    final void Function(Map)? formResponse,
+  ]) async {
     if (response == null) return;
 
     final String title;
@@ -159,10 +161,16 @@ class RepositoryController {
       title = 'API Web Error';
       message = response.body;
     } else {
-      final errorMap = jsonDecode(response.body);
+      final errorMap = jsonDecode(response.body)?['error'];
 
       title = errorMap?['title']?.toString() ?? 'Error ${response.statusCode}';
       message = errorMap?['message']?.toString() ?? 'Something unexpected happened. Please try again.';
+
+      final formErrorMap = errorMap?['form'];
+
+      if (formErrorMap != null) {
+        formResponse?.call(formErrorMap);
+      }
     }
 
     await DialogUtility.showAlert(

@@ -9,7 +9,7 @@ import 'model/authenticate_user_model.dart';
 class AuthenticateRepositoryService {
   final String Function() _getHostAddress;
   final Map<String, String> Function() _getNetworkHeader;
-  final Future<void> Function(BuildContext, NetworkResponse?) _handleErrorMessage;
+  final Future<dynamic> Function(BuildContext, NetworkResponse?, [void Function(Map)?]) _handleErrorMessage;
 
   const AuthenticateRepositoryService(this._getHostAddress, this._getNetworkHeader, this._handleErrorMessage,);
 
