@@ -85,6 +85,7 @@ InputDecoration _inputDecoration({
       child: suffixIcon,
     ),
     alignLabelWithHint: true,
+    errorMaxLines: 3,
   );
 }
 
@@ -573,7 +574,7 @@ class SecureTextInputComponent extends StatelessWidget {
           onValidate: onValidate,
           style: style,
         );
-      }
+      },
     );
   }
 }
