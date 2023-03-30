@@ -8,7 +8,7 @@ import '../../../../service/app_service.dart';
 import '../controller/user_setting_controller_route.dart';
 
 class UserSettingScreenRoute extends StatelessWidget {
-  final DashboardSettingControllerRoute controller;
+  final UserSettingControllerRoute controller;
 
   const UserSettingScreenRoute({
     super.key,

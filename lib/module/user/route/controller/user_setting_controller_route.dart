@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../../controller/repository_controller.dart';
 import '../../../../route/access_route.dart';
 
-class DashboardSettingControllerRoute {
-  const DashboardSettingControllerRoute();
+class UserSettingControllerRoute {
+  const UserSettingControllerRoute();
 
   void viewProfile(final BuildContext context) {
 

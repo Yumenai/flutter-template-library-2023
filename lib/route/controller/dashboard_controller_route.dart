@@ -6,6 +6,6 @@ class DashboardControllerRoute {
   const DashboardControllerRoute();
 
   void viewSettings(final BuildContext context) async {
-    AccessRoute.user.dashboard(context);
+    AccessRoute.user.setting(context);
   }
 }

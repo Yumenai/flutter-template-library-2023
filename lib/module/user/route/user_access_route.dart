@@ -22,11 +22,11 @@ class UserAccessRoute {
     );
   }
 
-  void dashboard(final BuildContext context) {
+  void setting(final BuildContext context) {
     NavigatorUtility.screen.next(
       context,
       screen: const UserSettingScreenRoute(
-        controller: DashboardSettingControllerRoute(),
+        controller: UserSettingControllerRoute(),
       ),
     );
   }
