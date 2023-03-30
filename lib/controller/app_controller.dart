@@ -7,11 +7,11 @@ import '../data/environment_data.dart';
 import '../data/resource/color_resource_data.dart';
 import '../data/resource/image_resource_data.dart';
 import '../data/resource/language_resource_data.dart';
-import '../service/repository_service.dart';
+import 'repository_controller.dart';
 
 class AppController extends ChangeNotifier {
   static Future<AppController> initialise() async {
-    final languageCode = RepositoryService.instance.languageCode;
+    final languageCode = RepositoryController.instance.languageCode;
 
     final locale = LanguageResourceData.supportedLocaleList.firstWhere((locale) {
       return locale.languageCode == languageCode;
@@ -19,7 +19,7 @@ class AppController extends ChangeNotifier {
       return ConfigurationData.defaultLocale;
     });
 
-    final themeMode = RepositoryService.instance.themeMode;
+    final themeMode = RepositoryController.instance.themeMode;
 
     final ColorResourceData colorResourceData;
     final ImageResourceData imageResourceData;
@@ -47,7 +47,7 @@ class AppController extends ChangeNotifier {
     return AppController._(
       locale,
       themeMode,
-      RepositoryService.instance.environmentData,
+      RepositoryController.instance.environmentData,
       colorResourceData,
       imageResourceData,
       await ConfigurationData.defaultLocalizationDelegate.load(locale),
@@ -91,7 +91,7 @@ class AppController extends ChangeNotifier {
 
     _themeMode = themeMode;
 
-    await RepositoryService.instance.setThemeMode(themeMode);
+    await RepositoryController.instance.setThemeMode(themeMode);
 
     switch(themeMode) {
       case ThemeMode.system:
@@ -116,7 +116,7 @@ class AppController extends ChangeNotifier {
       return ConfigurationData.defaultLocale;
     });
 
-    await RepositoryService.instance.setLanguageCode(languageCode);
+    await RepositoryController.instance.setLanguageCode(languageCode);
 
     final textResource = await LanguageResourceData.localizationDelegateList.first.load(locale);
 
@@ -132,7 +132,7 @@ class AppController extends ChangeNotifier {
 
     _environment = environment;
 
-    await RepositoryService.instance.setEnvironmentData(_environment);
+    await RepositoryController.instance.setEnvironmentData(_environment);
   }
 
   void updateBrightness(final Brightness brightness) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../access_route.dart';
-import '../../service/repository_service.dart';
+import '../../controller/repository_controller.dart';
 
 class SplashControllerRoute {
   const SplashControllerRoute();
@@ -13,7 +13,7 @@ class SplashControllerRoute {
 
     if (!state.mounted) return;
 
-    final accessToken = RepositoryService.instance.sessionRefreshToken;
+    final accessToken = RepositoryController.instance.sessionRefreshToken;
 
     if (!state.mounted) return;
 

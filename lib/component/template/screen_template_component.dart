@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../data/configuration_data.dart';
-import '../../service/repository_service.dart';
+import '../../controller/repository_controller.dart';
 
 Widget? _infoComponent({
   required final Widget? infoIconPrefix,
@@ -228,8 +228,8 @@ class _EnvironmentBannerComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Banner(
       location: BannerLocation.topStart,
-      message: RepositoryService.instance.environmentData.code,
-      color: RepositoryService.instance.environmentData.color,
+      message: RepositoryController.instance.environmentData.code,
+      color: RepositoryController.instance.environmentData.color,
       child: child,
     );
   }

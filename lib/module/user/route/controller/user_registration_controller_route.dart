@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../service/repository_service.dart';
+import '../../../../controller/repository_controller.dart';
 import '../../../../route/access_route.dart';
 
 class UserRegistrationControllerRoute {
@@ -27,7 +27,7 @@ class UserRegistrationControllerRoute {
     //
     // await RepositoryService.instance.setSessionRefreshToken(result.refreshToken);
 
-    await RepositoryService.instance.setSessionRefreshToken('sample-refresh-token');
+    await RepositoryController.instance.setSessionRefreshToken('sample-refresh-token');
 
     if (!context.mounted) return;
 

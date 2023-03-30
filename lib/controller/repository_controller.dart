@@ -2,14 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-import '../controller/app_controller.dart';
+import 'app_controller.dart';
 import '../data/configuration_data.dart';
 import '../data/environment_data.dart';
 import '../module/authenticate/authenticate_repository_service.dart';
 import '../module/user/user_repository_service.dart';
 import '../utility/dialog_utility.dart';
-import 'storage/key_storage_service.dart';
-import 'network_service.dart';
+import '../service/storage/key_storage_service.dart';
+import '../service/network_service.dart';
 
 const _themeKey = 'app-theme';
 const _themeDarkValue = 1;
@@ -27,15 +27,15 @@ const _environmentDevelopmentValue = 4;
 const _sessionAccessTokenKey = 'access-token';
 const _sessionRefreshTokenKey = 'refresh-token';
 
-class RepositoryService {
-  static final instance = RepositoryService._();
+class RepositoryController {
+  static final instance = RepositoryController._();
 
   late final authenticate = AuthenticateRepositoryService(_getHostAddress, _getNetworkHeader, _handleErrorMessage);
   late final user = UserRepositoryService(_getHostAddress, _getNetworkHeader, _handleErrorMessage);
 
-  RepositoryService._();
+  RepositoryController._();
 
-  factory RepositoryService() {
+  factory RepositoryController() {
     return instance;
   }
 
