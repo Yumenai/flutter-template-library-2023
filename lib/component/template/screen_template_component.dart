@@ -133,6 +133,7 @@ class CollapsibleScreenTemplateComponent extends StatelessWidget {
 
   final Color? foregroundColor;
   final Color? backgroundColor;
+  final CollapseMode collapseMode;
 
   const CollapsibleScreenTemplateComponent({
     Key? key,
@@ -149,6 +150,7 @@ class CollapsibleScreenTemplateComponent extends StatelessWidget {
     this.navigatorBottom,
     this.foregroundColor,
     this.backgroundColor,
+    this.collapseMode = CollapseMode.parallax,
   }) : super(key: key);
 
   @override
@@ -186,6 +188,7 @@ class CollapsibleScreenTemplateComponent extends StatelessWidget {
                   ),
                   centerTitle: true,
                   background: infoBackground,
+                  collapseMode: collapseMode,
                 ),
               ),
             ),
