@@ -208,44 +208,26 @@ class _PaginationViewComponentState extends State<PaginationViewComponent> {
     return AnimatedBuilder(
       animation: widget.controller,
       builder: (context, child) {
-        return _emptyPlaceholder ?? ListView.builder(
+        return _initialPlaceholder ?? _emptyPlaceholder ?? ListView.builder(
           physics: const AlwaysScrollableScrollPhysics(),
           controller: _scrollController,
           itemCount: widget.controller.dataList.length + 1,
           itemBuilder: (context, indexPosition) {
-            if (widget.controller._isInitialise) {
-              if (widget.controller.dataList.length > indexPosition) {
-                return widget.itemBuilder(context, indexPosition);
-              } else if (widget.controller.isLoadable) {
-                return const Padding(
-                  padding: EdgeInsets.all(32.0),
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                );
-              } else {
-                return const SizedBox();
-              }
+            if (widget.controller.dataList.length > indexPosition) {
+              return widget.itemBuilder(context, indexPosition);
+            } else if (widget.controller.isLoadable) {
+              return const Padding(
+                padding: EdgeInsets.all(32.0),
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
             } else {
-              if (widget.initialisePlaceholder is Widget) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: List.generate(3, (index) {
-                    return widget.initialisePlaceholder ?? const SizedBox();
-                  },),
-                );
-              } else {
-                return const Padding(
-                  padding: EdgeInsets.all(32.0),
-                  child: Align(
-                    alignment: Alignment.topCenter,
-                    child: CircularProgressIndicator(),
-                  ),
-                );
-              }
+              return const SizedBox();
             }
           },
           padding: widget.padding,
+          scrollDirection: widget.axis,
         );
       },
     );
@@ -255,23 +237,15 @@ class _PaginationViewComponentState extends State<PaginationViewComponent> {
     return AnimatedBuilder(
       animation: widget.controller,
       builder: (context, child) {
-        if (widget.initialisePlaceholder is Widget) {
-          if (widget.controller._isLoading) {
-            if (widget.controller.dataList.isEmpty) {
-              return widget.initialisePlaceholder ?? const SizedBox();
-            }
-          }
-        }
-
         final verticalCount = (widget.controller.dataList.length / widget.rowCount).ceil();
 
-        return  _emptyPlaceholder ?? ListView.builder(
+        return  _initialPlaceholder ?? _emptyPlaceholder ?? ListView.builder(
           physics: const AlwaysScrollableScrollPhysics(),
           controller: _scrollController,
-          itemCount: widget.controller._isInitialise ? verticalCount + 1 : 9,
+          itemCount: verticalCount + 1,
           itemBuilder: (context, indexPosition) {
-            if (widget.controller._isInitialise) {
-              if (verticalCount > indexPosition) {
+            if (verticalCount > indexPosition) {
+              if (widget.axis == Axis.vertical) {
                 return Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: List.generate(widget.rowCount, (rowPosition) {
@@ -288,43 +262,37 @@ class _PaginationViewComponentState extends State<PaginationViewComponent> {
                     }
                   },),
                 );
-              } else if (widget.controller.isLoadable) {
-                return const Padding(
-                  padding: EdgeInsets.all(32.0),
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                );
               } else {
-                return const SizedBox();
-              }
-            } else {
-              if (widget.initialisePlaceholder is Widget) {
                 return Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: List.generate(3, (index) {
-                    return Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: List.generate(widget.rowCount, (rowPosition) {
-                        return Expanded(
-                          child: widget.initialisePlaceholder ?? const SizedBox(),
-                        );
-                      },),
-                    );
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: List.generate(widget.rowCount, (rowPosition) {
+                    final itemCount = (indexPosition * widget.rowCount) + rowPosition;
+
+                    if (itemCount < widget.controller.dataList.length) {
+                      return Expanded(
+                        child: widget.itemBuilder(context, itemCount),
+                      );
+                    } else {
+                      return const Expanded(
+                        child: SizedBox(),
+                      );
+                    }
                   },),
                 );
-              } else {
-                return const Padding(
-                  padding: EdgeInsets.all(32.0),
-                  child: Align(
-                    alignment: Alignment.topCenter,
-                    child: CircularProgressIndicator(),
-                  ),
-                );
               }
+            } else if (widget.controller.isLoadable) {
+              return const Padding(
+                padding: EdgeInsets.all(32.0),
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            } else {
+              return const SizedBox();
             }
           },
           padding: widget.padding,
+          scrollDirection: widget.axis,
         );
       },
     );
@@ -338,11 +306,12 @@ class _PaginationViewComponentState extends State<PaginationViewComponent> {
           return widget.initialisePlaceholder ?? const SizedBox();
         }
 
-        return  _emptyPlaceholder ?? PageView.builder(
+        return _initialPlaceholder ?? _emptyPlaceholder ?? PageView.builder(
           physics: const AlwaysScrollableScrollPhysics(),
           controller: _pageController,
           itemCount: widget.controller.dataList.length,
           itemBuilder: widget.itemBuilder,
+          scrollDirection: widget.axis,
         );
       },
     );
@@ -352,6 +321,16 @@ class _PaginationViewComponentState extends State<PaginationViewComponent> {
     if (widget.controller.isListEmpty) {
       if (!widget.controller.isLoadable) {
         return widget.emptyPlaceholder;
+      }
+    }
+
+    return null;
+  }
+
+  Widget? get _initialPlaceholder {
+    if (widget.controller.isListEmpty) {
+      if (widget.controller.isLoading) {
+        return widget.initialisePlaceholder;
       }
     }
 
