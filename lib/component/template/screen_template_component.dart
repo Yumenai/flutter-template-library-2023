@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../data/configuration_data.dart';
 import '../../controller/repository_controller.dart';
+import '../button/icon_button_component.dart';
 
 Widget? _infoComponent({
   required final Widget? infoIconPrefix,
@@ -21,6 +22,9 @@ Widget? _infoComponent({
   if (infoTitle?.isNotEmpty == true) {
     titleWidgetList.add(Text(
       infoTitle ?? '',
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      textAlign: TextAlign.center,
       style: TextStyle(
         color: foregroundColor,
       ),
@@ -168,6 +172,17 @@ class CollapsibleScreenTemplateComponent extends StatelessWidget {
                 pinned: true,
                 floating: false,
                 actions: infoActionList,
+                automaticallyImplyLeading: false,
+                leading: Navigator.canPop(context) ? UnconstrainedBox(
+                  child: IconButtonComponent(
+                    icon: const Icon(Icons.arrow_back_rounded),
+                    hint: 'Back',
+                    size: 38,
+                    margin: EdgeInsets.zero,
+                    style: IconButtonStyle.elevated,
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ) : null,
                 expandedHeight: infoBackgroundHeight ?? MediaQuery.of(context).size.width * 2 / 3,
                 foregroundColor: foregroundColor,
                 flexibleSpace: FlexibleSpaceBar(
@@ -177,11 +192,24 @@ class CollapsibleScreenTemplateComponent extends StatelessWidget {
 
                       return Opacity(
                         opacity: opacity < 0.5 ? 0 : opacity,
-                        child: _infoComponent(
-                          infoIconPrefix: infoIconPrefix,
-                          infoIconSuffix: infoIconSuffix,
-                          infoTitle: infoTitle,
-                          foregroundColor: Theme.of(context).colorScheme.onSurface,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const SizedBox(
+                              width: kToolbarHeight,
+                            ),
+                            Expanded(
+                              child: _infoComponent(
+                                infoIconPrefix: infoIconPrefix,
+                                infoIconSuffix: infoIconSuffix,
+                                infoTitle: infoTitle,
+                                foregroundColor: Theme.of(context).colorScheme.onSurface,
+                              ) ?? const SizedBox(),
+                            ),
+                            const SizedBox(
+                              width: kToolbarHeight,
+                            ),
+                          ],
                         ),
                       );
                     },
