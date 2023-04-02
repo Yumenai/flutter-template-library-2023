@@ -66,6 +66,8 @@ class DialogUtility {
         enableActionNegative: true,
         enableDismissalPositive: enableDismissalPositive,
         enableDismissalNegative: enableDismissalNegative,
+        onTapActionPositive: onPressedPositive,
+        onTapActionNegative: onPressedNegative,
       ),
     ) == true;
   }
