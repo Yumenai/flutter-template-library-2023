@@ -35,7 +35,7 @@ class UserAccessRoute {
     NavigatorUtility.screen.next(
       context,
       screen: const UserThemeScreenRoute(
-        controller: ThemeSettingControllerRoute(),
+        controller: UserThemeControllerRoute(),
       ),
     );
   }

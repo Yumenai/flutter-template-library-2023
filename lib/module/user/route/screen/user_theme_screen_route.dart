@@ -6,7 +6,7 @@ import '../../../../item/menu_item_component.dart';
 import '../controller/user_theme_controller_route.dart';
 
 class UserThemeScreenRoute extends StatelessWidget {
-  final ThemeSettingControllerRoute controller;
+  final UserThemeControllerRoute controller;
 
   const UserThemeScreenRoute({
     super.key,
