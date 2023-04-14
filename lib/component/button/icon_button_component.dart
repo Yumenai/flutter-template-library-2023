@@ -4,6 +4,7 @@ enum IconButtonStyle {
   none,
   elevated,
   outlined,
+  gradient,
 }
 
 class IconButtonComponent extends StatelessWidget {
@@ -18,7 +19,7 @@ class IconButtonComponent extends StatelessWidget {
   final IconButtonStyle style;
 
   const IconButtonComponent({
-    Key? key,
+    super.key,
     required this.icon,
     required this.hint,
     required this.onPressed,
@@ -28,10 +29,10 @@ class IconButtonComponent extends StatelessWidget {
     this.foregroundColor,
     this.backgroundColor,
     this.style = IconButtonStyle.none,
-  }) : super(key: key);
+  });
 
   const IconButtonComponent.large({
-    Key? key,
+    super.key,
     required this.icon,
     required this.hint,
     required this.onPressed,
@@ -40,8 +41,7 @@ class IconButtonComponent extends StatelessWidget {
     this.foregroundColor,
     this.backgroundColor,
     this.style = IconButtonStyle.none,
-  })  : size = 54,
-        super(key: key);
+  })  : size = 54;
 
   @override
   Widget build(BuildContext context) {
@@ -99,6 +99,40 @@ class IconButtonComponent extends StatelessWidget {
             ),
           ),
           child: icon ?? const SizedBox(),
+        );
+      case IconButtonStyle.gradient:
+        final darkBackgroundColor = HSLColor.fromColor(backgroundColor ?? Theme.of(context).colorScheme.primary);
+        final lightBackgroundColor = darkBackgroundColor.withLightness((darkBackgroundColor.lightness + 0.2).clamp(0.0, 1.0));
+
+        return ElevatedButton(
+          onPressed: onPressed,
+          style: ElevatedButton.styleFrom(
+            foregroundColor: foregroundColor ?? Theme.of(context).colorScheme.onPrimary,
+            backgroundColor: Colors.transparent,
+            minimumSize: Size.square(size),
+            shape: const CircleBorder(),
+          ),
+          child: Ink(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  lightBackgroundColor.toColor(),
+                  darkBackgroundColor.toColor(),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              shape: BoxShape.circle,
+            ),
+            padding: padding,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: size,
+                minWidth: size,
+              ),
+              child: icon,
+            ),
+          ),
         );
     }
   }

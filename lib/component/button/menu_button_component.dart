@@ -6,9 +6,9 @@ class MenuButtonComponent extends StatelessWidget {
   final List<MenuButtonItem> itemList;
 
   MenuButtonComponent({
-    Key? key,
+    super.key,
     required this.itemList,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

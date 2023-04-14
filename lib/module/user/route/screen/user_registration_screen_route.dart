@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../../../component/button/text_button_component.dart';
 import '../../../../component/input/text_input_component.dart';
-import '../../../../component/template/screen_template_component.dart';
+import '../../../../view/template/screen_template_view.dart';
 import '../../../../component/view/image_view_component.dart';
-import '../../../../controller/app_controller.dart';
-import '../../../../service/app_service.dart';
+import '../../../../provider/app_provider.dart';
+import '../../../../utility/app_utility.dart';
 import '../controller/user_registration_controller_route.dart';
 
 class UserRegistrationScreenRoute extends StatelessWidget {
@@ -18,14 +18,14 @@ class UserRegistrationScreenRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenTemplateComponent(
+    return ScreenTemplateView(
       layout: Center(
         child: ListView(
           shrinkWrap: true,
           padding: const EdgeInsets.all(24),
           children: [
             ImageViewComponent.asset(
-              AppController.listen(context).image.app.splash,
+              AppProvider.listen(context).image.appSplash,
               fit: BoxFit.contain,
               width: 150,
               height: 150,
@@ -43,14 +43,19 @@ class UserRegistrationScreenRoute extends StatelessWidget {
             const SizedBox(
               height: 12,
             ),
-            Text(
-              AppService.instance?.name ?? '',
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                fontSize: 16,
-              ),
+            FutureBuilder(
+              future: AppUtility.name,
+              builder: (context, asyncSnapshot) {
+                return Text(
+                  asyncSnapshot.data ?? '',
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 16,
+                  ),
+                );
+              },
             ),
             const SizedBox(
               height: 12,

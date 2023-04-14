@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../controller/repository_controller.dart';
-import '../../../../route/access_route.dart';
+import '../../../../directory/repository_directory.dart';
+import '../../../../directory/route_directory.dart';
 
 class AuthenticationUserControllerRoute {
   final idInputController = TextEditingController();
@@ -22,11 +22,11 @@ class AuthenticationUserControllerRoute {
     //
     // await RepositoryService.instance.setSessionRefreshToken(result.refreshToken);
 
-    await RepositoryController.instance.setSessionRefreshToken('sample-refresh-token');
+    RepositoryDirectory.app?.sessionRefreshToken = 'sample-refresh-token';
 
     if (!context.mounted) return;
 
-    AccessRoute.splash(context);
+    RouteDirectory.app.splash();
   }
 }
 

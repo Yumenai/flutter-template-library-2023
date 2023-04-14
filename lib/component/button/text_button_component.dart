@@ -4,6 +4,7 @@ enum TextButtonStyle {
   none,
   elevated,
   outlined,
+  gradient,
 }
 
 class TextButtonComponent extends StatelessWidget {
@@ -20,6 +21,81 @@ class TextButtonComponent extends StatelessWidget {
   final OutlinedBorder? shape;
   final VoidCallback onPressed;
   final TextButtonStyle style;
+
+  const TextButtonComponent({
+    super.key,
+    required this.title,
+    this.titleStyle,
+    required this.onPressed,
+    this.minimumHeight = 40,
+    this.minimumWidth = 0,
+    this.prefixIcon,
+    this.suffixIcon,
+    this.padding,
+    this.margin = const EdgeInsets.all(4),
+    this.shape = const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(
+        Radius.circular(6),
+      ),
+    ),
+    this.foregroundColor,
+    this.backgroundColor,
+    this.style = TextButtonStyle.none,
+  });
+
+  const TextButtonComponent.action({
+    super.key,
+    required this.title,
+    this.titleStyle,
+    required this.onPressed,
+    this.prefixIcon,
+    this.suffixIcon,
+    this.margin = const EdgeInsets.all(4),
+    this.foregroundColor,
+    this.backgroundColor,
+    this.style = TextButtonStyle.none,
+  }) :  minimumHeight = 40,
+        minimumWidth = 0,
+        shape = const StadiumBorder(),
+        padding =  const EdgeInsets.symmetric(
+          horizontal: 24,
+          vertical: 12,
+        );
+  const TextButtonComponent.submit({
+    super.key,
+    required this.title,
+    required this.onPressed,
+    this.prefixIcon,
+    this.suffixIcon,
+    this.margin = const EdgeInsets.all(4),
+    this.foregroundColor,
+    this.backgroundColor,
+    this.style = TextButtonStyle.none,
+  }) :  minimumHeight = 50,
+        minimumWidth = 100,
+        titleStyle = const TextStyle(
+          fontWeight: FontWeight.w500,
+          fontSize: 16,
+        ),
+        padding =  const EdgeInsets.symmetric(
+          horizontal: 24,
+          vertical: 12,
+        ),
+        shape = const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(16),
+          ),
+        );
+
+  @override
+  Widget build(BuildContext context) {
+    if (margin == null) return _setupButtonComponent(context);
+
+    return Padding(
+      padding: margin ?? const EdgeInsets.all(0),
+      child: _setupButtonComponent(context),
+    );
+  }
 
   Widget get _infoWidget {
     final itemList = <Widget> [];
@@ -50,84 +126,6 @@ class TextButtonComponent extends StatelessWidget {
     } else {
       return const SizedBox();
     }
-  }
-
-  const TextButtonComponent({
-    Key? key,
-    required this.title,
-    this.titleStyle,
-    required this.onPressed,
-    this.minimumHeight = 40,
-    this.minimumWidth = 0,
-    this.prefixIcon,
-    this.suffixIcon,
-    this.padding,
-    this.margin = const EdgeInsets.all(4),
-    this.shape = const RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(
-        Radius.circular(6),
-      ),
-    ),
-    this.foregroundColor,
-    this.backgroundColor,
-    this.style = TextButtonStyle.none,
-  }) : super(key: key);
-
-  const TextButtonComponent.action({
-    Key? key,
-    required this.title,
-    this.titleStyle,
-    required this.onPressed,
-    this.prefixIcon,
-    this.suffixIcon,
-    this.margin = const EdgeInsets.all(4),
-    this.foregroundColor,
-    this.backgroundColor,
-    this.style = TextButtonStyle.none,
-  }) :  minimumHeight = 40,
-        minimumWidth = 0,
-        shape = const StadiumBorder(),
-        padding =  const EdgeInsets.symmetric(
-          horizontal: 24,
-          vertical: 12,
-        ),
-        super(key: key);
-
-  const TextButtonComponent.submit({
-    Key? key,
-    required this.title,
-    required this.onPressed,
-    this.prefixIcon,
-    this.suffixIcon,
-    this.margin = const EdgeInsets.all(4),
-    this.foregroundColor,
-    this.backgroundColor,
-    this.style = TextButtonStyle.none,
-  }) :  minimumHeight = 50,
-        minimumWidth = 100,
-        titleStyle = const TextStyle(
-          fontWeight: FontWeight.w500,
-          fontSize: 16,
-        ),
-        padding =  const EdgeInsets.symmetric(
-          horizontal: 24,
-          vertical: 12,
-        ),
-        shape = const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(16),
-          ),
-        ),
-        super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    if (margin == null) return _setupButtonComponent(context);
-
-    return Padding(
-      padding: margin ?? const EdgeInsets.all(0),
-      child: _setupButtonComponent(context),
-    );
   }
 
   Widget _setupButtonComponent(final BuildContext context) {
@@ -174,6 +172,44 @@ class TextButtonComponent extends StatelessWidget {
             ),
           ),
           child: _infoWidget,
+        );
+      case TextButtonStyle.gradient:
+        final darkBackgroundColor = HSLColor.fromColor(backgroundColor ?? Theme.of(context).colorScheme.primary);
+        final lightBackgroundColor = darkBackgroundColor.withLightness((darkBackgroundColor.lightness + 0.2).clamp(0.0, 1.0));
+
+        return ElevatedButton(
+          onPressed: onPressed,
+          clipBehavior: Clip.antiAlias,
+          style: ElevatedButton.styleFrom(
+            foregroundColor: foregroundColor ?? Theme.of(context).colorScheme.onPrimary,
+            backgroundColor: Colors.transparent,
+            minimumSize: Size(minimumWidth, minimumHeight),
+            textStyle: titleStyle,
+            padding: EdgeInsets.zero,
+            shape: shape,
+          ),
+          child: Ink(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  lightBackgroundColor.toColor(),
+                  darkBackgroundColor.toColor(),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+            padding: padding,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: minimumHeight,
+                minWidth: minimumWidth,
+              ),
+              child: Center(
+                child: _infoWidget,
+              ),
+            ),
+          ),
         );
     }
   }

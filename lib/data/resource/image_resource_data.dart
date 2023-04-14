@@ -1,24 +1,20 @@
 const _basePath = 'asset/image';
 
-class ImageResourceData {
-  final ImageResourceApp app;
+enum ImageResourceData {
+  dark(
+    appLogo: '$_basePath/app-logo.png',
+    appSplash: '$_basePath/app-splash.png',
+  ),
+  light(
+    appLogo: '$_basePath/app-logo.png',
+    appSplash: '$_basePath/app-splash.png',
+  );
 
-  const ImageResourceData.dark() :
-        app = const ImageResourceApp.dark();
+  final String appLogo;
+  final String appSplash;
 
-  const ImageResourceData.light() :
-        app = const ImageResourceApp.light();
-}
-
-class ImageResourceApp {
-  final String logo;
-  final String splash;
-
-  const ImageResourceApp.dark() :
-        logo = '$_basePath/app-logo.png',
-        splash= '$_basePath/app-splash.png';
-
-  const ImageResourceApp.light() :
-        logo = '$_basePath/app-logo.png',
-        splash= '$_basePath/app-splash.png';
+  const ImageResourceData({
+    required this.appLogo,
+    required this.appSplash,
+  });
 }

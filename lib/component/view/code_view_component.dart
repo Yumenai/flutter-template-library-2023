@@ -37,186 +37,166 @@ class CodeViewComponent extends StatelessWidget {
 
   /// 1D Code
   const CodeViewComponent.code39({
-    Key? key,
+    super.key,
     required this.data,
     this.foregroundColor,
     this.backgroundColor,
     this.padding,
-  })  : type = CodeViewType.code39,
-        super(key: key);
+  })  : type = CodeViewType.code39;
 
   const CodeViewComponent.code93({
-    Key? key,
+    super.key,
     required this.data,
     this.foregroundColor,
     this.backgroundColor,
     this.padding,
-  })  : type = CodeViewType.code93,
-        super(key: key);
+  })  : type = CodeViewType.code93;
 
   const CodeViewComponent.code128({
-    Key? key,
+    super.key,
     required this.data,
     this.foregroundColor,
     this.backgroundColor,
     this.padding,
-  })  : type = CodeViewType.code128,
-        super(key: key);
+  })  : type = CodeViewType.code128;
 
   const CodeViewComponent.gs1128({
-    Key? key,
+    super.key,
     required this.data,
     this.foregroundColor,
     this.backgroundColor,
     this.padding,
-  })  : type = CodeViewType.gs128,
-        super(key: key);
+  })  : type = CodeViewType.gs128;
 
   const CodeViewComponent.itf({
-    Key? key,
+    super.key,
     required this.data,
     this.foregroundColor,
     this.backgroundColor,
     this.padding,
-  })  : type = CodeViewType.itf,
-        super(key: key);
+  })  : type = CodeViewType.itf;
 
   const CodeViewComponent.itf14({
-    Key? key,
+    super.key,
     required this.data,
     this.foregroundColor,
     this.backgroundColor,
     this.padding,
-  })  : type = CodeViewType.itf14,
-        super(key: key);
+  })  : type = CodeViewType.itf14;
 
   const CodeViewComponent.itf16({
-    Key? key,
+    super.key,
     required this.data,
     this.foregroundColor,
     this.backgroundColor,
     this.padding,
-  })  : type = CodeViewType.itf16,
-        super(key: key);
+  })  : type = CodeViewType.itf16;
 
   const CodeViewComponent.ean13({
-    Key? key,
+    super.key,
     required this.data,
     this.foregroundColor,
     this.backgroundColor,
     this.padding,
-  })  : type = CodeViewType.ean13,
-        super(key: key);
+  })  : type = CodeViewType.ean13;
 
   const CodeViewComponent.ean8({
-    Key? key,
+    super.key,
     required this.data,
     this.foregroundColor,
     this.backgroundColor,
     this.padding,
-  })  : type = CodeViewType.ean8,
-        super(key: key);
+  })  : type = CodeViewType.ean8;
 
   const CodeViewComponent.ean2({
-    Key? key,
+    super.key,
     required this.data,
     this.foregroundColor,
     this.backgroundColor,
     this.padding,
-  })  : type = CodeViewType.ean2,
-        super(key: key);
+  })  : type = CodeViewType.ean2;
 
   const CodeViewComponent.isbn({
-    Key? key,
+    super.key,
     required this.data,
     this.foregroundColor,
     this.backgroundColor,
     this.padding,
-  })  : type = CodeViewType.isbn,
-        super(key: key);
+  })  : type = CodeViewType.isbn;
 
   const CodeViewComponent.upcA({
-    Key? key,
+    super.key,
     required this.data,
     this.foregroundColor,
     this.backgroundColor,
     this.padding,
-  })  : type = CodeViewType.upcA,
-        super(key: key);
+  })  : type = CodeViewType.upcA;
 
   const CodeViewComponent.upcE({
-    Key? key,
+    super.key,
     required this.data,
     this.foregroundColor,
     this.backgroundColor,
     this.padding,
-  })  : type = CodeViewType.upcE,
-        super(key: key);
+  })  : type = CodeViewType.upcE;
 
   const CodeViewComponent.telepen({
-    Key? key,
+    super.key,
     required this.data,
     this.foregroundColor,
     this.backgroundColor,
     this.padding,
-  })  : type = CodeViewType.telepen,
-        super(key: key);
+  })  : type = CodeViewType.telepen;
 
   const CodeViewComponent.codabar({
-    Key? key,
+    super.key,
     required this.data,
     this.foregroundColor,
     this.backgroundColor,
     this.padding,
-  })  : type = CodeViewType.codabar,
-        super(key: key);
+  })  : type = CodeViewType.codabar;
 
   const CodeViewComponent.rm4Scc({
-    Key? key,
+    super.key,
     required this.data,
     this.foregroundColor,
     this.backgroundColor,
     this.padding,
-  })  : type = CodeViewType.rm4Scc,
-        super(key: key);
+  })  : type = CodeViewType.rm4Scc;
 
   const CodeViewComponent.pdf417({
-    Key? key,
+    super.key,
     required this.data,
     this.foregroundColor,
     this.backgroundColor,
     this.padding,
-  })  : type = CodeViewType.pdf417,
-        super(key: key);
+  })  : type = CodeViewType.pdf417;
 
   /// 2D Code
   const CodeViewComponent.qrCode({
-    Key? key,
+    super.key,
     required this.data,
     final double? size,
     this.foregroundColor,
     this.backgroundColor,
     this.padding,
-  })  : type = CodeViewType.qrCode,
-        super(key: key);
+  })  : type = CodeViewType.qrCode;
 
   const CodeViewComponent.dataMatrix({
-    Key? key,
+    super.key,
     required this.data,
     this.foregroundColor,
     this.backgroundColor,
     this.padding,
-  })  : type = CodeViewType.dataMatrix,
-        super(key: key);
+  })  : type = CodeViewType.dataMatrix;
 
   const CodeViewComponent.aztec({
-    Key? key,
+    super.key,
     required this.data,
     this.foregroundColor,
     this.backgroundColor,
     this.padding,
-  })  : type = CodeViewType.aztec,
-        super(key: key);
+  })  : type = CodeViewType.aztec;
 
   @override
   Widget build(BuildContext context) {

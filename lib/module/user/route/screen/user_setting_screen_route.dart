@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../../../component/template/screen_template_component.dart';
+import '../../../../view/template/screen_template_view.dart';
 import '../../../../component/view/image_view_component.dart';
-import '../../../../controller/app_controller.dart';
-import '../../../../item/menu_item_component.dart';
-import '../../../../service/app_service.dart';
+import '../../../../provider/app_provider.dart';
+import '../../../../view/item/menu_item_view.dart';
+import '../../../../utility/app_utility.dart';
 import '../controller/user_setting_controller_route.dart';
 
 class UserSettingScreenRoute extends StatelessWidget {
@@ -17,7 +17,7 @@ class UserSettingScreenRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenTemplateComponent(
+    return ScreenTemplateView(
       infoTitle: 'Settings',
       layout: ListView(
         children: [
@@ -30,7 +30,7 @@ class UserSettingScreenRoute extends StatelessWidget {
                 child: SizedBox.square(
                   dimension: 100,
                   child: ImageViewComponent.asset(
-                    AppController.listen(context).image.app.logo,
+                    AppProvider.listen(context).image.appLogo,
                   ),
                 ),
               ),
@@ -51,39 +51,39 @@ class UserSettingScreenRoute extends StatelessWidget {
           const SizedBox(
             height: 12,
           ),
-          MenuItemComponent(
+          MenuItemView(
             title: 'Profile',
             prefix: const Icon(Icons.person_2_outlined),
             onTap: () => controller.viewProfile(context),
           ),
-          MenuItemComponent(
+          MenuItemView(
             title: 'Change Password',
             prefix: const Icon(Icons.password),
             onTap: () => controller.updatePassword(context),
           ),
-          MenuItemComponent(
+          MenuItemView(
             title: 'Theme',
             prefix: const Icon(Icons.style_outlined),
-            onTap: () => controller.viewTheme(context),
+            onTap: controller.viewTheme,
           ),
-          MenuItemComponent(
+          MenuItemView(
             title: 'Language',
             prefix: const Icon(Icons.translate),
-            onTap: () => controller.viewLanguage(context),
+            onTap: controller.viewLanguage,
           ),
           const SizedBox(
             height: 50,
           ),
-          MenuItemComponent(
+          MenuItemView(
             title: 'Sign Out',
             prefix: const Icon(Icons.exit_to_app_outlined),
-            color: AppController.listen(context).color.error,
+            color: AppProvider.listen(context).color.error,
             onTap: () => controller.signOut(context),
           ),
-          MenuItemComponent(
+          MenuItemView(
             title: 'Delete Account',
             prefix: const Icon(Icons.delete),
-            color: AppController.listen(context).color.error,
+            color: AppProvider.listen(context).color.error,
             onTap: () => controller.deleteAccount(context),
           ),
           const SizedBox(
@@ -93,9 +93,19 @@ class UserSettingScreenRoute extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(AppService.instance?.version ?? ''),
+                FutureBuilder(
+                  future: AppUtility.version,
+                  builder: (context, asyncSnapshot) {
+                    return Text(asyncSnapshot.data ?? '');
+                  },
+                ),
                 const Text(' ('),
-                Text(AppService.instance?.code ?? ''),
+                FutureBuilder(
+                  future: AppUtility.code,
+                  builder: (context, asyncSnapshot) {
+                    return Text(asyncSnapshot.data ?? '');
+                  },
+                ),
                 const Text(')'),
               ],
             ),

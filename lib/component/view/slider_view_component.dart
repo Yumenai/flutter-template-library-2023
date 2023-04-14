@@ -126,12 +126,16 @@ class _SliderViewComponentState extends State<SliderViewComponent> {
                       duration: const Duration(
                         milliseconds: 250,
                       ),
-                      child: child,
+                      child: Center(
+                        child: child,
+                      ),
                     );
                   },
                 );
               } else {
-                return itemWidget;
+                return Center(
+                  child: itemWidget,
+                );
               }
             },
           ),

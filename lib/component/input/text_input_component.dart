@@ -9,86 +9,6 @@ enum TextInputStyle {
   outline,
 }
 
-InputDecoration _inputDecoration({
-  required final String? label,
-  required final String? hint,
-  required final Color? backgroundColor,
-  required final String? prefixText,
-  required final Widget? prefixIcon,
-  required final String? suffixText,
-  required final Widget? suffixIcon,
-  required final bool enablePaddingVertical,
-  required final bool enablePrefixIconConstraint,
-  required final bool enableSuffixIconConstraint,
-  required final Brightness brightness,
-  required final TextInputStyle style,
-}) {
-  final EdgeInsets padding;
-  final InputBorder inputBorder;
-  final FloatingLabelBehavior floatingLabelBehavior;
-  final Color? backgroundColorComponent;
-
-  switch(style) {
-    case TextInputStyle.line:
-      padding = EdgeInsets.zero;
-      inputBorder = const UnderlineInputBorder();
-      floatingLabelBehavior = FloatingLabelBehavior.auto;
-      backgroundColorComponent = backgroundColor;
-      break;
-    case TextInputStyle.fill:
-      padding = enablePaddingVertical ? const EdgeInsets.symmetric(
-        vertical: 8,
-        horizontal: 12,
-      ) : const EdgeInsets.symmetric(
-        horizontal: 12,
-      );
-      inputBorder = const OutlineInputBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(12),
-        ),
-        borderSide: BorderSide.none,
-      );
-      floatingLabelBehavior = FloatingLabelBehavior.never;
-      backgroundColorComponent = backgroundColor ?? (brightness == Brightness.light ? const Color(0xFFEEEEEE) : const Color(0x61000000));
-      break;
-    case TextInputStyle.outline:
-      padding = enablePaddingVertical ? const EdgeInsets.symmetric(
-        vertical: 8,
-        horizontal: 12,
-      ) : const EdgeInsets.symmetric(
-        horizontal: 12,
-      );
-      inputBorder = const OutlineInputBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(12),
-        ),
-      );
-      floatingLabelBehavior = FloatingLabelBehavior.auto;
-      backgroundColorComponent = backgroundColor;
-      break;
-  }
-
-  return InputDecoration(
-    filled: backgroundColorComponent is Color,
-    fillColor: backgroundColorComponent,
-    labelText: label,
-    hintText: hint,
-    border: inputBorder,
-    contentPadding: padding,
-    floatingLabelBehavior: floatingLabelBehavior,
-    prefixIcon: prefixIcon == null ? null : enablePrefixIconConstraint ? prefixIcon : UnconstrainedBox(
-      child: prefixIcon,
-    ),
-    prefixText: prefixText,
-    suffixText: suffixText,
-    suffixIcon: suffixIcon == null ? null : enableSuffixIconConstraint ? suffixIcon : UnconstrainedBox(
-      child: suffixIcon,
-    ),
-    alignLabelWithHint: true,
-    errorMaxLines: 3,
-  );
-}
-
 class TextInputComponent extends StatelessWidget {
   final TextEditingController? controller;
   final String? label;
@@ -123,7 +43,7 @@ class TextInputComponent extends StatelessWidget {
   final TextInputType type;
 
   const TextInputComponent({
-    Key? key,
+    super.key,
     this.controller,
     this.label,
     this.hint,
@@ -154,10 +74,10 @@ class TextInputComponent extends StatelessWidget {
     this.action = TextInputAction.next,
     this.style = TextInputStyle.outline,
     this.type = TextInputType.text,
-  })  : super(key: key);
+  });
 
   const TextInputComponent.name({
-    Key? key,
+    super.key,
     this.controller,
     this.label,
     this.hint,
@@ -187,11 +107,10 @@ class TextInputComponent extends StatelessWidget {
   })  : capitalization = TextCapitalization.words,
         enableObscurity = false,
         enableAutocorrect = false,
-        type = TextInputType.name,
-        super(key: key);
+        type = TextInputType.name;
 
   const TextInputComponent.field({
-    Key? key,
+    super.key,
     this.controller,
     this.label,
     this.hint,
@@ -221,11 +140,10 @@ class TextInputComponent extends StatelessWidget {
         enableObscurity = false,
         enableAutocorrect = false,
         onSubmit = null,
-        type = TextInputType.name,
-        super(key: key);
+        type = TextInputType.name;
 
   const TextInputComponent.email({
-    Key? key,
+    super.key,
     this.controller,
     this.label,
     this.hint,
@@ -253,11 +171,10 @@ class TextInputComponent extends StatelessWidget {
         capitalization = TextCapitalization.none,
         enableObscurity = false,
         enableAutocorrect = false,
-        type = TextInputType.emailAddress,
-        super(key: key);
+        type = TextInputType.emailAddress;
 
   const TextInputComponent.phone({
-    Key? key,
+    super.key,
     this.controller,
     this.label,
     this.hint,
@@ -285,11 +202,10 @@ class TextInputComponent extends StatelessWidget {
         capitalization = TextCapitalization.none,
         enableObscurity = false,
         enableAutocorrect = false,
-        type = TextInputType.phone,
-        super(key: key);
+        type = TextInputType.phone;
 
   const TextInputComponent.number({
-    Key? key,
+    super.key,
     this.controller,
     this.label,
     this.hint,
@@ -317,11 +233,10 @@ class TextInputComponent extends StatelessWidget {
         capitalization = TextCapitalization.none,
         enableObscurity = false,
         enableAutocorrect = false,
-        type = TextInputType.number,
-        super(key: key);
+        type = TextInputType.number;
 
   const TextInputComponent.decimal({
-    Key? key,
+    super.key,
     this.controller,
     this.label,
     this.hint,
@@ -356,8 +271,7 @@ class TextInputComponent extends StatelessWidget {
         type = const TextInputType.numberWithOptions(
           signed: true,
           decimal: true,
-        ),
-        super(key: key);
+        );
 
   @override
   Widget build(BuildContext context) {
@@ -428,7 +342,7 @@ class ActionTextInputComponent extends StatelessWidget {
   final TextInputStyle style;
 
   const ActionTextInputComponent({
-    Key? key,
+    super.key,
     this.controller,
     this.label,
     this.hint,
@@ -443,7 +357,7 @@ class ActionTextInputComponent extends StatelessWidget {
     this.onValidate,
     this.onSelect,
     this.style = TextInputStyle.outline,
-  })  : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -529,7 +443,7 @@ class SecureTextInputComponent extends StatelessWidget {
   final TextInputStyle style;
 
   const SecureTextInputComponent({
-    Key? key,
+    super.key,
     this.controller,
     this.label,
     this.hint,
@@ -544,7 +458,7 @@ class SecureTextInputComponent extends StatelessWidget {
     this.onSubmit,
     this.onValidate,
     this.style = TextInputStyle.outline,
-  })  : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -604,7 +518,7 @@ class OptionTextInputComponent extends StatelessWidget {
   final TextInputStyle style;
 
   const OptionTextInputComponent({
-    Key? key,
+    super.key,
     this.label,
     this.hint,
     this.initialValue,
@@ -627,7 +541,7 @@ class OptionTextInputComponent extends StatelessWidget {
     this.onValidate,
 
     this.style = TextInputStyle.outline,
-  }) : super(key: key);
+  });
 
   List<DropdownMenuItem<int>> get optionItemList {
     final itemList = <DropdownMenuItem<int>> [];
@@ -671,4 +585,84 @@ class OptionTextInputComponent extends StatelessWidget {
       validator: onValidate,
     );
   }
+}
+
+InputDecoration _inputDecoration({
+  required final String? label,
+  required final String? hint,
+  required final Color? backgroundColor,
+  required final String? prefixText,
+  required final Widget? prefixIcon,
+  required final String? suffixText,
+  required final Widget? suffixIcon,
+  required final bool enablePaddingVertical,
+  required final bool enablePrefixIconConstraint,
+  required final bool enableSuffixIconConstraint,
+  required final Brightness brightness,
+  required final TextInputStyle style,
+}) {
+  final EdgeInsets padding;
+  final InputBorder inputBorder;
+  final FloatingLabelBehavior floatingLabelBehavior;
+  final Color? backgroundColorComponent;
+
+  switch(style) {
+    case TextInputStyle.line:
+      padding = EdgeInsets.zero;
+      inputBorder = const UnderlineInputBorder();
+      floatingLabelBehavior = FloatingLabelBehavior.auto;
+      backgroundColorComponent = backgroundColor;
+      break;
+    case TextInputStyle.fill:
+      padding = enablePaddingVertical ? const EdgeInsets.symmetric(
+        vertical: 8,
+        horizontal: 12,
+      ) : const EdgeInsets.symmetric(
+        horizontal: 12,
+      );
+      inputBorder = const OutlineInputBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(12),
+        ),
+        borderSide: BorderSide.none,
+      );
+      floatingLabelBehavior = FloatingLabelBehavior.never;
+      backgroundColorComponent = backgroundColor ?? (brightness == Brightness.light ? const Color(0xFFEEEEEE) : const Color(0x61000000));
+      break;
+    case TextInputStyle.outline:
+      padding = enablePaddingVertical ? const EdgeInsets.symmetric(
+        vertical: 8,
+        horizontal: 12,
+      ) : const EdgeInsets.symmetric(
+        horizontal: 12,
+      );
+      inputBorder = const OutlineInputBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(12),
+        ),
+      );
+      floatingLabelBehavior = FloatingLabelBehavior.auto;
+      backgroundColorComponent = backgroundColor;
+      break;
+  }
+
+  return InputDecoration(
+    filled: backgroundColorComponent is Color,
+    fillColor: backgroundColorComponent,
+    labelText: label,
+    hintText: hint,
+    border: inputBorder,
+    contentPadding: padding,
+    floatingLabelBehavior: floatingLabelBehavior,
+    prefixIcon: prefixIcon == null ? null : enablePrefixIconConstraint ? prefixIcon : UnconstrainedBox(
+      child: prefixIcon,
+    ),
+    prefixText: prefixText,
+    suffixText: suffixText,
+    suffixIcon: suffixIcon == null ? null : enableSuffixIconConstraint ? suffixIcon : UnconstrainedBox(
+      child: suffixIcon,
+    ),
+    alignLabelWithHint: true,
+    errorMaxLines: 3,
+  );
 }

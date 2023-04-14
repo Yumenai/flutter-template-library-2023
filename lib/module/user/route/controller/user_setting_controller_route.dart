@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../controller/repository_controller.dart';
-import '../../../../route/access_route.dart';
+import '../../../../directory/repository_directory.dart';
+import '../../../../directory/route_directory.dart';
 
 class UserSettingControllerRoute {
   const UserSettingControllerRoute();
@@ -14,27 +14,27 @@ class UserSettingControllerRoute {
 
   }
 
-  void viewTheme(final BuildContext context) {
-    AccessRoute.user.theme(context);
+  void viewTheme() {
+    RouteDirectory.app.theme();
   }
 
-  void viewLanguage(final BuildContext context) {
-    AccessRoute.user.language(context);
+  void viewLanguage() {
+    RouteDirectory.app.language();
   }
 
   void signOut(final BuildContext context) async {
-    await RepositoryController.instance.clear();
+    await RepositoryDirectory.clear();
 
     if (!context.mounted) return;
 
-    AccessRoute.splash(context);
+    RouteDirectory.app.splash();
   }
 
   void deleteAccount(final BuildContext context) async {
-    await RepositoryController.instance.clear();
+    await RepositoryDirectory.clear();
 
     if (!context.mounted) return;
 
-    AccessRoute.splash(context);
+    RouteDirectory.app.splash();
   }
 }

@@ -7,13 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationService {
-  static bool isInitialise = false;
-
   static Future<void> initialise() async {
-    if (isInitialise) return;
-
-    isInitialise = true;
-
     await Firebase.initializeApp();
 
     /// When user open the app through the notification
@@ -31,6 +25,8 @@ class NotificationService {
     FirebaseMessaging.instance.subscribeToTopic('all');
 
     if (Platform.isAndroid) {
+      await FlutterLocalNotificationsPlugin().resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.requestPermission();
+
       FirebaseMessaging.onMessage.listen((remoteMessage) {
         final notification = remoteMessage.notification;
         final android = remoteMessage.notification?.android;
