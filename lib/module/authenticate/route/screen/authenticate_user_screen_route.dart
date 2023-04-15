@@ -62,11 +62,13 @@ class AuthenticateUserScreenRoute extends StatelessWidget {
             ),
             TextInputComponent(
               label: 'ID',
-              controller: controller.idInputController,
+              controller: controller.form.idInputController,
+              onValidate: controller.form.validateId,
             ),
             SecureTextInputComponent(
               label: 'Password',
-              controller: controller.passwordInputController,
+              controller: controller.form.passwordInputController,
+              onValidate: controller.form.validatePassword,
             ),
             const SizedBox(
               height: 24,

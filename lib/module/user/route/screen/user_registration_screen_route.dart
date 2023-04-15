@@ -60,25 +60,37 @@ class UserRegistrationScreenRoute extends StatelessWidget {
             const SizedBox(
               height: 12,
             ),
-            TextInputComponent(
-              label: 'ID',
-              controller: controller.idInputController,
-            ),
-            TextInputComponent(
-              label: 'Name',
-              controller: controller.nameInputController,
-            ),
-            TextInputComponent.email(
-              label: 'Email',
-              controller: controller.emailInputController,
-            ),
-            SecureTextInputComponent(
-              label: 'Password',
-              controller: controller.passwordInputController,
-            ),
-            SecureTextInputComponent(
-              label: 'Confirm Password',
-              controller: controller.confirmPasswordInputController,
+            Form(
+              key: controller.form.formStateKey,
+              child: Column(
+                children: [
+                  TextInputComponent(
+                    label: 'ID',
+                    controller: controller.form.idInputController,
+                    onValidate: controller.form.validateId,
+                  ),
+                  TextInputComponent(
+                    label: 'Name',
+                    controller: controller.form.nameInputController,
+                    onValidate: controller.form.validateName,
+                  ),
+                  TextInputComponent.email(
+                    label: 'Email',
+                    controller: controller.form.emailInputController,
+                    onValidate: controller.form.validateEmail,
+                  ),
+                  SecureTextInputComponent(
+                    label: 'Password',
+                    controller: controller.form.passwordInputController,
+                    onValidate: controller.form.validatePassword,
+                  ),
+                  SecureTextInputComponent(
+                    label: 'Confirm Password',
+                    controller: controller.form.confirmPasswordInputController,
+                    onValidate: controller.form.validateConfirmPassword,
+                  ),
+                ],
+              ),
             ),
             const SizedBox(
               height: 24,
