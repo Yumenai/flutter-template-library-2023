@@ -6,10 +6,10 @@ class AppLandingControllerRoute {
   const AppLandingControllerRoute();
 
   void signIn(final BuildContext context) {
-    RouteDirectory.authenticate.user();
+    RouteDirectory.authenticate.navigator.user();
   }
 
   void signUp(final BuildContext context) {
-    RouteDirectory.user.registration();
+    RouteDirectory.user.navigator.registration();
   }
 }

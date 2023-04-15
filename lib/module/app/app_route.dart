@@ -13,7 +13,16 @@ import 'route/screen/app_splash_screen_route.dart';
 import 'route/screen/app_theme_screen_route.dart';
 
 class AppRoute {
+  final screen = const _AppScreenRoute();
+
+  final navigator = const _AppNavigatorRoute();
+
   const AppRoute();
+
+}
+
+class _AppNavigatorRoute {
+  const _AppNavigatorRoute();
 
   void splash() {
     RouteUtility.pushBase(const AppSplashScreenRoute(
@@ -50,4 +59,12 @@ class AppRoute {
       controller: AppScannerControllerRoute(),
     ));
   }
+}
+
+class _AppScreenRoute {
+  const _AppScreenRoute();
+
+  AppSplashScreenRoute get splash => const AppSplashScreenRoute(
+    controller: AppSplashControllerRoute(),
+  );
 }

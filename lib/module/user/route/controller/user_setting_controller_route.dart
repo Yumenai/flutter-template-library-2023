@@ -15,11 +15,11 @@ class UserSettingControllerRoute {
   }
 
   void viewTheme() {
-    RouteDirectory.app.theme();
+    RouteDirectory.app.navigator.theme();
   }
 
   void viewLanguage() {
-    RouteDirectory.app.language();
+    RouteDirectory.app.navigator.language();
   }
 
   void signOut(final BuildContext context) async {
@@ -27,7 +27,7 @@ class UserSettingControllerRoute {
 
     if (!context.mounted) return;
 
-    RouteDirectory.app.splash();
+    RouteDirectory.app.navigator.splash();
   }
 
   void deleteAccount(final BuildContext context) async {
@@ -35,6 +35,6 @@ class UserSettingControllerRoute {
 
     if (!context.mounted) return;
 
-    RouteDirectory.app.splash();
+    RouteDirectory.app.navigator.splash();
   }
 }

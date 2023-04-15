@@ -35,11 +35,13 @@ class _AppSplashScreenRouteState extends State<AppSplashScreenRoute> {
           shrinkWrap: true,
           padding: const EdgeInsets.all(24),
           children: [
-            ImageViewComponent.asset(
-              AppProvider.listen(context).image.appSplash,
-              fit: BoxFit.contain,
-              width: 200,
-              height: 200,
+            Center(
+              child: ImageViewComponent.asset(
+                AppProvider.listen(context).image.appSplash,
+                fit: BoxFit.contain,
+                width: 200,
+                height: 200,
+              ),
             ),
             const SizedBox(
               height: 24,

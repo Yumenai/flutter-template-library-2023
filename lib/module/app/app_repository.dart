@@ -8,8 +8,10 @@ class AppRepository {
   static const _settingSourceData = AppSettingDatasource();
 
   static Future<AppRepository> initialise() async {
+    final languageCode = await _settingSourceData.getLanguageCode();
+
     return AppRepository._(
-      locale: Locale(await _settingSourceData.getLanguageCode()),
+      locale: languageCode.isEmpty ?  ConfigurationData.defaultLocale : Locale(languageCode),
       themeMode: await _settingSourceData.getThemeMode(),
       environmentVariable: await _settingSourceData.getEnvironmentVariable() ?? EnvironmentVariableData.development,
       sessionAccessToken: await _settingSourceData.getSessionAccessToken(),
@@ -65,6 +67,12 @@ class AppRepository {
         _sessionRefreshToken = sessionRefreshToken;
 
   Future<void> clear() async {
+    _locale = null;
+    _themeMode = null;
+    _environmentVariable = null;
+    _sessionAccessToken = '';
+    _sessionRefreshToken = '';
+
     await _settingSourceData.clear();
   }
 }

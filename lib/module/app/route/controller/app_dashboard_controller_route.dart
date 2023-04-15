@@ -4,6 +4,6 @@ class AppDashboardControllerRoute {
   const AppDashboardControllerRoute();
 
   void viewSettings() async {
-    RouteDirectory.user.setting();
+    RouteDirectory.user.navigator.setting();
   }
 }

@@ -13,14 +13,14 @@ class AppSplashControllerRoute {
 
     if (!state.mounted) return;
 
-    final accessToken = RepositoryDirectory.app?.sessionAccessToken ?? '';
+    final refreshToken = RepositoryDirectory.app?.sessionRefreshToken ?? '';
 
     if (!state.mounted) return;
 
-    if (accessToken.isEmpty) {
-      RouteDirectory.app.landing();
+    if (refreshToken.isEmpty) {
+      RouteDirectory.app.navigator.landing();
     } else {
-      RouteDirectory.app.dashboard();
+      RouteDirectory.app.navigator.dashboard();
     }
   }
 }

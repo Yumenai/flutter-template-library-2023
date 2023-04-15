@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../provider/app_provider.dart';
 import '../../data/resource/color_resource_data.dart';
 import '../../data/resource/language_resource_data.dart';
+import '../../utility/route_utility.dart';
 
 class AppTemplateView extends StatefulWidget {
   final String name;
@@ -50,6 +51,7 @@ class _AppTemplateViewState extends State<AppTemplateView> with WidgetsBindingOb
       title: widget.name,
       home: widget.layout,
       themeMode: AppProvider.listen(context).themeMode,
+      navigatorKey: RouteUtility.navigatorKey,
       theme: ThemeData(
         useMaterial3: true,
         brightness: Brightness.light,
