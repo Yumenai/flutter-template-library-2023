@@ -74,17 +74,21 @@ class ImageViewComponent extends StatelessWidget {
       height: height,
       colorBlendMode: colorBlend,
       frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-        if (wasSynchronouslyLoaded) {
-          return _sizeAdjustment(child);
+        if (image is NetworkImage) {
+          if (wasSynchronouslyLoaded) {
+            return _sizeAdjustment(child);
+          } else {
+            return AnimatedCrossFade(
+              firstChild: _sizeAdjustment(loadingPlaceholder ?? const _ImageLoadingPlaceholder()),
+              secondChild: _sizeAdjustment(child),
+              crossFadeState: frame == null ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+              duration: const Duration(
+                milliseconds: 500,
+              ),
+            );
+          }
         } else {
-          return AnimatedCrossFade(
-            firstChild: _sizeAdjustment(loadingPlaceholder ?? const _ImageLoadingPlaceholder()),
-            secondChild: _sizeAdjustment(child),
-            crossFadeState: frame == null ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-            duration: const Duration(
-              milliseconds: 500,
-            ),
-          );
+          return _sizeAdjustment(child);
         }
       },
       errorBuilder: (context, error, stackTrace) {
@@ -95,11 +99,7 @@ class ImageViewComponent extends StatelessWidget {
               return AnimatedOpacity(
                 duration: const Duration(milliseconds: 250),
                 opacity: asyncSnapshot.connectionState == ConnectionState.done ? 1 : 0,
-                child: SizedBox(
-                  height: double.infinity,
-                  width: double.infinity,
-                  child: errorPlaceholder,
-                ),
+                child: _sizeAdjustment(errorPlaceholder ?? const SizedBox()),
               );
             },
           );
@@ -128,10 +128,12 @@ class ImageViewComponent extends StatelessWidget {
     }
 
     if (width != null || height != null) {
-      child = SizedBox(
-        height: height,
-        width: width,
-        child: child,
+      child = Center(
+        child: SizedBox(
+          height: height,
+          width: width,
+          child: child,
+        ),
       );
     }
 
