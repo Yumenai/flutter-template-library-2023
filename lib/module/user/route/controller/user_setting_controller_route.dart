@@ -17,11 +17,11 @@ class UserSettingControllerRoute {
   }
 
   void viewTheme() {
-    RouteDirectory.app.navigator.theme();
+    RouteDirectory.user.navigator.theme();
   }
 
   void viewLanguage() {
-    RouteDirectory.app.navigator.language();
+    RouteDirectory.user.navigator.language();
   }
 
   void signOut(final BuildContext context) async {

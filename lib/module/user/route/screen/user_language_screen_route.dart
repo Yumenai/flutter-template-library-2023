@@ -4,12 +4,12 @@ import '../../../../view/template/screen_template_view.dart';
 import '../../../../provider/app_provider.dart';
 import '../../../../data/resource/language_resource_data.dart';
 import '../../../../view/item/menu_item_view.dart';
-import '../controller/app_language_controller_route.dart';
+import '../controller/user_language_controller_route.dart';
 
-class AppLanguageScreenRoute extends StatelessWidget {
-  final AppLanguageControllerRoute controller;
+class UserLanguageScreenRoute extends StatelessWidget {
+  final UserLanguageControllerRoute controller;
 
-  const AppLanguageScreenRoute({
+  const UserLanguageScreenRoute({
     super.key,
     required this.controller,
   });

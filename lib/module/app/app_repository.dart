@@ -28,7 +28,7 @@ class AppRepository {
 
   ThemeMode? _themeMode;
   ThemeMode get themeMode => _themeMode ?? ConfigurationData.defaultThemeMode;
-  set themeMode(theme) {
+  set themeMode(themeMode) {
     _themeMode = themeMode;
     _settingSourceData.setThemeMode(themeMode);
   }
