@@ -188,23 +188,23 @@ class TextButtonComponent extends StatelessWidget {
             padding: EdgeInsets.zero,
             shape: shape,
           ),
-          child: Ink(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  lightBackgroundColor.toColor(),
-                  darkBackgroundColor.toColor(),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: minimumHeight,
+              minWidth: minimumWidth,
             ),
-            padding: padding,
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minHeight: minimumHeight,
-                minWidth: minimumWidth,
+            child: Ink(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    darkBackgroundColor.toColor(),
+                    lightBackgroundColor.toColor(),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
               ),
+              padding: padding,
               child: Center(
                 child: _infoWidget,
               ),
