@@ -42,11 +42,11 @@ class AppProvider extends ChangeNotifier {
   AppLocalizations? get text => _text;
 
   String _accessToken = '';
-  get accessToken => _accessToken;
+  String get accessToken => _accessToken;
   set accessToken(token) => _accessToken = token;
 
   EnvironmentVariableData? _environment;
-  get environment => _environment ?? ConfigurationData.defaultEnvironment;
+  EnvironmentVariableData get environment => _environment ?? ConfigurationData.defaultEnvironment;
   set environment(environment) {
     _environment = environment;
     _appModule.repository.setEnvironment(environment);
@@ -62,7 +62,7 @@ class AppProvider extends ChangeNotifier {
       viewThemeSettings: () => _userModule.directoryRoute?.navigator.theme(),
       viewLanguageSettings: () => _userModule.directoryRoute?.navigator.language(),
       viewAccountDeletion: () {},
-      getSessionRefreshToken: () async { return ''; },
+      getSessionRefreshToken: _authenticateModule.repository.getSessionRefreshToken,
       onSignOut: () async {
         await _authenticateModule.clear();
         await _userModule.clear();

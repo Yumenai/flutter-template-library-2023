@@ -4,7 +4,9 @@ import 'data/app_repository_data.dart';
 import 'route/app_directory_route.dart';
 
 class AppMaster {
-  static AppMaster Function(BuildContext) of = (context) => AppMaster();
+  static AppMaster Function(BuildContext) _of = (context) => AppMaster();
+
+  static AppMaster of(final BuildContext context) => _of(context);
 
   final repository = const AppRepositoryData();
 
@@ -24,7 +26,7 @@ class AppMaster {
     required final Future<String> Function() getSessionRefreshToken,
     required final Future<void> Function() onSignOut,
   }) {
-    of = provider;
+    _of = provider;
     directoryRoute = AppDirectoryRoute(
       viewSignIn: viewSignIn,
       viewSignUp: viewSignUp,

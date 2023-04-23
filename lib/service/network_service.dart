@@ -164,7 +164,7 @@ class NetworkService {
     final String urlHostAddress;
 
     if (hostAddress.trim().isEmpty) {
-      if (ConfigurationData.isDevelopmentMode) {
+      if (ConfigurationData.isTestMode) {
         switch(AppProvider.of(context).environment) {
           case EnvironmentVariableData.production:
             urlHostAddress = ConfigurationData.hostAddressProduction;

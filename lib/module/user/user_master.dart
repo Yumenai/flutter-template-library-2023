@@ -4,7 +4,9 @@ import 'data/user_repository_data.dart';
 import 'route/user_directory_route.dart';
 
 class UserMaster {
-  static UserMaster Function(BuildContext) of = (context) => UserMaster();
+  static UserMaster Function(BuildContext) _of = (context) => UserMaster();
+
+  static UserMaster of(final BuildContext context) => _of(context);
 
   final repository = const UserRepositoryData();
 
@@ -16,7 +18,7 @@ class UserMaster {
     required final UserMaster Function(BuildContext) provider,
     required final void Function() viewSplash,
   }) {
-    of = provider;
+    _of = provider;
     directoryRoute = const UserDirectoryRoute();
   }
 

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../../../data/configuration_data.dart';
 import '../../../utility/dialog_utility.dart';
 import 'datasource/user_network_datasource_data.dart';
+import 'datasource/user_network_mock_datasource_data.dart';
 import 'datasource/user_setting_datasource_data.dart';
 
 class UserRepositoryData {
   final _networkDatasource = const UserNetworkDatasourceData();
+  final _networkMockDatasource = const UserNetworkMockDatasourceData();
   final _settingDatasource = const UserSettingDatasourceData();
 
   const UserRepositoryData();
@@ -39,15 +42,24 @@ class UserRepositoryData {
     required final String name,
     required final String email,
     required final String password,
+    final void Function(String?)? onFormErrorId,
   }) async {
     DialogUtility.showLoading(context);
 
-    final isSuccessful = await _networkDatasource.registration(
+    final isSuccessful = ConfigurationData.isMockedData ? await _networkMockDatasource.registration(
       context,
       id: id,
       name: name,
       email: email,
       password: password,
+      onFormErrorId: onFormErrorId,
+    ) : await _networkDatasource.registration(
+      context,
+      id: id,
+      name: name,
+      email: email,
+      password: password,
+      onFormErrorId: onFormErrorId,
     );
 
     if (context.mounted) Navigator.pop(context);

@@ -23,7 +23,9 @@ class ConfigurationData {
 
   static final defaultLocale = supportedLocaleList.first;
 
-  static bool get isDevelopmentMode => true;
+  static bool get isTestMode => true;
+
+  static bool get isMockedData => true;
 
   const ConfigurationData._();
 }

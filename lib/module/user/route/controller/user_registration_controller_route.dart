@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../utility/dialog_utility.dart';
 import '../../../../utility/format_utility.dart';
 import '../../../../utility/interface_utility.dart';
+import '../../user_master.dart';
 
 class UserRegistrationControllerRoute {
   final form = _UserRegisterForm();
@@ -18,7 +19,19 @@ class UserRegistrationControllerRoute {
 
     if (!context.mounted) return;
 
+    final isSuccess = await UserMaster.of(context).repository.register(
+      context,
+      id: form.idInputController.text,
+      name: form.nameInputController.text,
+      email: form.emailInputController.text,
+      password: form.passwordInputController.text,
+      onFormErrorId: form.setErrorId,
+    );
 
+    if (!isSuccess) {
+      form.validate();
+      return;
+    }
 
     if (!context.mounted) return;
 

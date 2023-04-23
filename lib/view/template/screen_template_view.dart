@@ -66,7 +66,7 @@ class ScreenTemplateView extends StatelessWidget {
       bottomNavigationBar: navigatorBottom,
     );
 
-    if (ConfigurationData.isDevelopmentMode) {
+    if (ConfigurationData.isTestMode) {
       return _EnvironmentBannerView(component);
     } else {
       return component;
@@ -196,7 +196,7 @@ class CollapsibleScreenTemplate extends StatelessWidget {
       bottomNavigationBar: navigatorBottom,
     );
 
-    if (ConfigurationData.isDevelopmentMode) {
+    if (ConfigurationData.isTestMode) {
       return _EnvironmentBannerView(component);
     } else {
       return component;
@@ -211,12 +211,12 @@ class _EnvironmentBannerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final environmentVariable = AppProvider.of(context).environment ?? ConfigurationData.defaultEnvironment;
+    final environment = AppProvider.of(context).environment;
 
     return Banner(
       location: BannerLocation.topStart,
-      message: environmentVariable.code,
-      color: environmentVariable.color,
+      message: environment.code,
+      color: environment.color,
       child: child,
     );
   }

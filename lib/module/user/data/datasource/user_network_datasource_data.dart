@@ -10,6 +10,7 @@ class UserNetworkDatasourceData {
     required final String name,
     required final String email,
     required final String password,
+    required final void Function(String?)? onFormErrorId,
   }) async {
     final response = await NetworkService.get(
       context,
@@ -19,6 +20,9 @@ class UserNetworkDatasourceData {
         'name': name,
         'email': email,
         'password': password,
+      },
+      errorFormHandler: (errorForm) {
+        onFormErrorId?.call(errorForm['id']);
       },
     );
 

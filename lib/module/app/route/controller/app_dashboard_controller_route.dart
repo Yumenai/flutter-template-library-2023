@@ -7,6 +7,6 @@ class AppDashboardControllerRoute {
   const AppDashboardControllerRoute();
 
   void viewSettings(final BuildContext context) {
-    AppMaster.of(context).directoryRoute?.navigator.splash();
+    AppMaster.of(context).directoryRoute?.navigator.setting();
   }
 }

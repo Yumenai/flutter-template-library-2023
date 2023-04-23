@@ -26,11 +26,13 @@ class AuthenticateUserControllerRoute {
       context,
       id: form.idInputController.text,
       password: form.passwordInputController.text,
+      onErrorId: form.setErrorId,
+      onErrorPassword: form.setErrorPassword,
     );
 
-    if (!isSuccessful) return;
+    form.validate();
 
-    if (!context.mounted) return;
+    if (!isSuccessful) return;
 
     viewSplash();
   }
