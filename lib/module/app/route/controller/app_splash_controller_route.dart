@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../../../../directory/repository_directory.dart';
-import '../../../../directory/route_directory.dart';
+import '../../app_master.dart';
 
 class AppSplashControllerRoute {
-  const AppSplashControllerRoute();
+  final Future<String> Function() getSessionRefreshToken;
+
+  const AppSplashControllerRoute({
+    required this.getSessionRefreshToken,
+  });
 
   void initialise(final State state) async {
     await Future.delayed(const Duration(
@@ -13,14 +16,14 @@ class AppSplashControllerRoute {
 
     if (!state.mounted) return;
 
-    final refreshToken = RepositoryDirectory.app?.sessionRefreshToken ?? '';
+    final refreshToken = await getSessionRefreshToken();
 
     if (!state.mounted) return;
 
     if (refreshToken.isEmpty) {
-      RouteDirectory.app.navigator.landing();
+      AppMaster.of(state.context).directoryRoute?.navigator.landing();
     } else {
-      RouteDirectory.app.navigator.dashboard();
+      AppMaster.of(state.context).directoryRoute?.navigator.dashboard();
     }
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class RouteUtility {
+class RouteService {
   static final navigatorKey = GlobalKey<NavigatorState>();
 
   static Future<dynamic>? push(final Widget screen) {
@@ -24,5 +24,5 @@ class RouteUtility {
     );
   }
 
-  const RouteUtility._();
+  const RouteService._();
 }

@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 
-import '../../../../directory/repository_directory.dart';
-import '../../../../directory/route_directory.dart';
 import '../../../../utility/format_utility.dart';
 import '../../../../utility/interface_utility.dart';
+import '../../authenticate_master.dart';
 
-class AuthenticationUserControllerRoute {
+class AuthenticateUserControllerRoute {
   final form = _AuthenticateUserForm();
 
-  AuthenticationUserControllerRoute();
+  final void Function() viewSplash;
+
+  AuthenticateUserControllerRoute({
+    required this.viewSplash,
+  });
 
   void signIn(final BuildContext context) async {
     final isClearing = await InterfaceUtility.isFocusClearing(context);
@@ -17,11 +20,19 @@ class AuthenticationUserControllerRoute {
 
     if (form.isNotValid()) return;
 
-    RepositoryDirectory.app?.sessionRefreshToken = 'sample-refresh-token';
+    if (!context.mounted) return;
+
+    final isSuccessful = await AuthenticateMaster.of(context).repository.user(
+      context,
+      id: form.idInputController.text,
+      password: form.passwordInputController.text,
+    );
+
+    if (!isSuccessful) return;
 
     if (!context.mounted) return;
 
-    RouteDirectory.app.navigator.splash();
+    viewSplash();
   }
 }
 

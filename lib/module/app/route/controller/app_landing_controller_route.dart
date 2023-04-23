@@ -1,15 +1,9 @@
-import 'package:flutter/material.dart';
-
-import '../../../../directory/route_directory.dart';
-
 class AppLandingControllerRoute {
-  const AppLandingControllerRoute();
+  final void Function() onSignIn;
+  final void Function() onSignUp;
 
-  void signIn(final BuildContext context) {
-    RouteDirectory.authenticate.navigator.user();
-  }
-
-  void signUp(final BuildContext context) {
-    RouteDirectory.user.navigator.registration();
-  }
+  const AppLandingControllerRoute({
+    required this.onSignIn,
+    required this.onSignUp,
+  });
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../data/configuration_data.dart';
 import '../../provider/app_provider.dart';
-import '../../data/resource/color_resource_data.dart';
-import '../../data/resource/language_resource_data.dart';
-import '../../utility/route_utility.dart';
+import '../../data/variable/color_variable_data.dart';
+import '../../service/route_service.dart';
 
 class AppTemplateView extends StatefulWidget {
   final String name;
@@ -51,70 +51,70 @@ class _AppTemplateViewState extends State<AppTemplateView> with WidgetsBindingOb
       title: widget.name,
       home: widget.layout,
       themeMode: AppProvider.listen(context).themeMode,
-      navigatorKey: RouteUtility.navigatorKey,
+      navigatorKey: RouteService.navigatorKey,
       theme: ThemeData(
         useMaterial3: true,
         brightness: Brightness.light,
-        primaryColor: ColorResourceData.light.primary,
+        primaryColor: ColorVariableData.light.primary,
         colorScheme: ColorScheme.light(
           brightness: Brightness.light,
-          primary: ColorResourceData.light.primary,
-          onPrimary: ColorResourceData.light.onPrimary,
-          primaryContainer: ColorResourceData.light.primaryContainer,
-          onPrimaryContainer: ColorResourceData.light.onPrimaryContainer,
-          secondary: ColorResourceData.light.secondary,
-          onSecondary: ColorResourceData.light.onSecondary,
-          secondaryContainer: ColorResourceData.light.secondaryContainer,
-          onSecondaryContainer: ColorResourceData.light.onSecondaryContainer,
-          error: ColorResourceData.light.error,
-          onError: ColorResourceData.light.onError,
-          errorContainer: ColorResourceData.light.errorContainer,
-          onErrorContainer: ColorResourceData.light.onErrorContainer,
-          background: ColorResourceData.light.background,
-          onBackground: ColorResourceData.light.onBackground,
-          surface: ColorResourceData.light.surface,
-          onSurface: ColorResourceData.light.onSurface,
+          primary: ColorVariableData.light.primary,
+          onPrimary: ColorVariableData.light.onPrimary,
+          primaryContainer: ColorVariableData.light.primaryContainer,
+          onPrimaryContainer: ColorVariableData.light.onPrimaryContainer,
+          secondary: ColorVariableData.light.secondary,
+          onSecondary: ColorVariableData.light.onSecondary,
+          secondaryContainer: ColorVariableData.light.secondaryContainer,
+          onSecondaryContainer: ColorVariableData.light.onSecondaryContainer,
+          error: ColorVariableData.light.error,
+          onError: ColorVariableData.light.onError,
+          errorContainer: ColorVariableData.light.errorContainer,
+          onErrorContainer: ColorVariableData.light.onErrorContainer,
+          background: ColorVariableData.light.background,
+          onBackground: ColorVariableData.light.onBackground,
+          surface: ColorVariableData.light.surface,
+          onSurface: ColorVariableData.light.onSurface,
         ),
         radioTheme: RadioThemeData(
-          fillColor: MaterialStateProperty.all(ColorResourceData.light.primary),
+          fillColor: MaterialStateProperty.all(ColorVariableData.light.primary),
         ),
         checkboxTheme: CheckboxThemeData(
-          checkColor: MaterialStateProperty.all(ColorResourceData.light.primary),
+          checkColor: MaterialStateProperty.all(ColorVariableData.light.primary),
         ),
       ),
       darkTheme: ThemeData.dark(
         useMaterial3: true,
       ).copyWith(
-        primaryColor: ColorResourceData.dark.primary,
+        primaryColor: ColorVariableData.dark.primary,
         colorScheme: ColorScheme.dark(
           brightness: Brightness.dark,
-          primary: ColorResourceData.dark.primary,
-          onPrimary: ColorResourceData.dark.onPrimary,
-          primaryContainer: ColorResourceData.dark.primaryContainer,
-          onPrimaryContainer: ColorResourceData.dark.onPrimaryContainer,
-          secondary: ColorResourceData.dark.secondary,
-          onSecondary: ColorResourceData.dark.onSecondary,
-          secondaryContainer: ColorResourceData.dark.secondaryContainer,
-          onSecondaryContainer: ColorResourceData.dark.onSecondaryContainer,
-          error: ColorResourceData.dark.error,
-          onError: ColorResourceData.dark.onError,
-          errorContainer: ColorResourceData.dark.errorContainer,
-          onErrorContainer: ColorResourceData.dark.onErrorContainer,
-          background: ColorResourceData.dark.background,
-          onBackground: ColorResourceData.dark.onBackground,
-          surface: ColorResourceData.dark.surface,
-          onSurface: ColorResourceData.dark.onSurface,
+          primary: ColorVariableData.dark.primary,
+          onPrimary: ColorVariableData.dark.onPrimary,
+          primaryContainer: ColorVariableData.dark.primaryContainer,
+          onPrimaryContainer: ColorVariableData.dark.onPrimaryContainer,
+          secondary: ColorVariableData.dark.secondary,
+          onSecondary: ColorVariableData.dark.onSecondary,
+          secondaryContainer: ColorVariableData.dark.secondaryContainer,
+          onSecondaryContainer: ColorVariableData.dark.onSecondaryContainer,
+          error: ColorVariableData.dark.error,
+          onError: ColorVariableData.dark.onError,
+          errorContainer: ColorVariableData.dark.errorContainer,
+          onErrorContainer: ColorVariableData.dark.onErrorContainer,
+          background: ColorVariableData.dark.background,
+          onBackground: ColorVariableData.dark.onBackground,
+          surface: ColorVariableData.dark.surface,
+          onSurface: ColorVariableData.dark.onSurface,
         ),
         radioTheme: RadioThemeData(
-          fillColor: MaterialStateProperty.all(ColorResourceData.dark.primary),
+          fillColor: MaterialStateProperty.all(ColorVariableData.dark.primary),
         ),
         checkboxTheme: CheckboxThemeData(
-          checkColor: MaterialStateProperty.all(ColorResourceData.dark.primary),
+          checkColor: MaterialStateProperty.all(ColorVariableData.dark.primary),
         ),
       ),
       locale: AppProvider.listen(context).locale,
-      supportedLocales: LanguageResourceData.supportedLocaleList,
-      localizationsDelegates: LanguageResourceData.localizationDelegateList,
+      supportedLocales: ConfigurationData.supportedLocaleList,
+      localizationsDelegates: ConfigurationData.localizationDelegateList,
     );
   }
 }

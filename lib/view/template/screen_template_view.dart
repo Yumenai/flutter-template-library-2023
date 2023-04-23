@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../data/configuration_data.dart';
-import '../../directory/repository_directory.dart';
 import '../../component/button/icon_button_component.dart';
+import '../../provider/app_provider.dart';
 
 class ScreenTemplateView extends StatelessWidget {
   final String? infoTitle;
@@ -211,7 +211,7 @@ class _EnvironmentBannerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final environmentVariable = RepositoryDirectory.app?.environmentVariable ?? ConfigurationData.defaultEnvironment;
+    final environmentVariable = AppProvider.of(context).environment ?? ConfigurationData.defaultEnvironment;
 
     return Banner(
       location: BannerLocation.topStart,

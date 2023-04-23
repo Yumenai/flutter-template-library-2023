@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum ColorResourceData {
+enum ColorVariableData {
   dark(
     primary: Color(0xFFD0BCFF),
     onPrimary: Color(0xFF381E72),
@@ -61,7 +61,7 @@ enum ColorResourceData {
   final Color system;
   final Color onSystem;
 
-  const ColorResourceData({
+  const ColorVariableData({
     required this.primary,
     required this.onPrimary,
     required this.primaryContainer,

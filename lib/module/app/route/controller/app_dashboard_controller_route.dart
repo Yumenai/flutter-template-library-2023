@@ -1,9 +1,12 @@
-import '../../../../directory/route_directory.dart';
+import 'package:flutter/material.dart';
+
+import '../../app_master.dart';
 
 class AppDashboardControllerRoute {
+
   const AppDashboardControllerRoute();
 
-  void viewSettings() async {
-    RouteDirectory.user.navigator.setting();
+  void viewSettings(final BuildContext context) {
+    AppMaster.of(context).directoryRoute?.navigator.splash();
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localization.dart';
 
 import 'variable/environment_variable_data.dart';
-import 'resource/language_resource_data.dart';
 
 class ConfigurationData {
   static const hostAddressProduction = 'https://www.yumenai.com/api';
@@ -9,15 +9,19 @@ class ConfigurationData {
   static const hostAddressSystemIntegrationTest = 'https://www.yumenai.com/api/sit';
   static const hostAddressDevelopment = 'https://www.yumenai.com/api/development';
 
+  static const localizationDelegateList = AppLocalizations.localizationsDelegates;
+
+  static const supportedLocaleList = AppLocalizations.supportedLocales;
+
   static const defaultHostAddress = hostAddressDevelopment;
 
   static const defaultThemeMode = ThemeMode.system;
 
   static const defaultEnvironment = EnvironmentVariableData.development;
 
-  static final defaultLocalizationDelegate = LanguageResourceData.localizationDelegateList.first;
+  static final defaultLocalizationDelegate = localizationDelegateList.first;
 
-  static final defaultLocale = LanguageResourceData.supportedLocaleList.first;
+  static final defaultLocale = supportedLocaleList.first;
 
   static bool get isDevelopmentMode => true;
 

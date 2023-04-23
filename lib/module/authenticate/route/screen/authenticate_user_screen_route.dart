@@ -9,7 +9,7 @@ import '../../../../utility/app_utility.dart';
 import '../controller/authenticate_user_controller_route.dart';
 
 class AuthenticateUserScreenRoute extends StatelessWidget {
-  final AuthenticationUserControllerRoute controller;
+  final AuthenticateUserControllerRoute controller;
 
   const AuthenticateUserScreenRoute({
     super.key,

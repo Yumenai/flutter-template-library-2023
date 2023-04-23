@@ -3,7 +3,7 @@ class AuthenticateUserModel {
     if (json == null) return null;
 
     return AuthenticateUserModel(
-      refreshToken: json['data']?['session_refresh_token']?.toString() ?? '',
+      refreshToken: json['session_refresh_token']?.toString() ?? '',
     );
   }
 

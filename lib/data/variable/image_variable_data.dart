@@ -1,6 +1,6 @@
 const _basePath = 'asset/image';
 
-enum ImageResourceData {
+enum ImageVariableData {
   dark(
     appLogo: '$_basePath/app-logo.png',
     appSplash: '$_basePath/app-splash.png',
@@ -13,7 +13,7 @@ enum ImageResourceData {
   final String appLogo;
   final String appSplash;
 
-  const ImageResourceData({
+  const ImageVariableData({
     required this.appLogo,
     required this.appSplash,
   });

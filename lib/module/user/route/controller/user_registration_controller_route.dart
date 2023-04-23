@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../directory/repository_directory.dart';
-import '../../../../directory/route_directory.dart';
+import '../../../../utility/dialog_utility.dart';
 import '../../../../utility/format_utility.dart';
 import '../../../../utility/interface_utility.dart';
 
@@ -17,11 +16,21 @@ class UserRegistrationControllerRoute {
 
     if (form.isNotValid()) return;
 
-    RepositoryDirectory.app?.sessionRefreshToken = 'sample-refresh-token';
+    if (!context.mounted) return;
+
+
 
     if (!context.mounted) return;
 
-    RouteDirectory.app.navigator.splash();
+    await DialogUtility.showAlert(
+      context,
+      title: 'Registration Success',
+      message: 'Please verify your email before proceeding to login'
+    );
+
+    if (!context.mounted) return;
+
+    Navigator.pop(context);
   }
 }
 

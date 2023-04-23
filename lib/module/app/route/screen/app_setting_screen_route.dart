@@ -5,12 +5,12 @@ import '../../../../component/view/image_view_component.dart';
 import '../../../../provider/app_provider.dart';
 import '../../../../view/item/menu_item_view.dart';
 import '../../../../utility/app_utility.dart';
-import '../controller/user_setting_controller_route.dart';
+import '../controller/app_setting_controller_route.dart';
 
-class UserSettingScreenRoute extends StatelessWidget {
-  final UserSettingControllerRoute controller;
+class AppSettingScreenRoute extends StatelessWidget {
+  final AppSettingControllerRoute controller;
 
-  const UserSettingScreenRoute({
+  const AppSettingScreenRoute({
     super.key,
     required this.controller,
   });
@@ -54,22 +54,22 @@ class UserSettingScreenRoute extends StatelessWidget {
           MenuItemView(
             title: 'Profile',
             prefix: const Icon(Icons.person_2_outlined),
-            onTap: () => controller.viewProfile(context),
+            onTap: controller.viewProfileSettings,
           ),
           MenuItemView(
             title: 'Change Password',
             prefix: const Icon(Icons.password),
-            onTap: () => controller.updatePassword(context),
+            onTap: controller.viewPasswordSettings,
           ),
           MenuItemView(
             title: 'Theme',
             prefix: const Icon(Icons.style_outlined),
-            onTap: controller.viewTheme,
+            onTap: controller.viewThemeSettings,
           ),
           MenuItemView(
             title: 'Language',
             prefix: const Icon(Icons.translate),
-            onTap: controller.viewLanguage,
+            onTap: controller.viewLanguageSettings,
           ),
           const SizedBox(
             height: 50,
@@ -84,7 +84,7 @@ class UserSettingScreenRoute extends StatelessWidget {
             title: 'Delete Account',
             prefix: const Icon(Icons.delete),
             color: AppProvider.listen(context).color.error,
-            onTap: () => controller.deleteAccount(context),
+            onTap: controller.viewAccountDeletion,
           ),
           const SizedBox(
             height: 24,
@@ -101,7 +101,7 @@ class UserSettingScreenRoute extends StatelessWidget {
                 ),
                 const Text(' ('),
                 FutureBuilder(
-                  future: AppUtility.code,
+                  future: AppUtility.version,
                   builder: (context, asyncSnapshot) {
                     return Text(asyncSnapshot.data ?? '');
                   },

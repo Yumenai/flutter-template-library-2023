@@ -3,44 +3,14 @@ import 'package:flutter_gen/gen_l10n/app_localization.dart';
 import 'package:provider/provider.dart';
 
 import '../data/configuration_data.dart';
-import '../data/resource/color_resource_data.dart';
-import '../data/resource/image_resource_data.dart';
+import '../data/variable/color_variable_data.dart';
 import '../data/variable/environment_variable_data.dart';
-import '../data/resource/language_resource_data.dart';
-import '../directory/repository_directory.dart';
+import '../data/variable/image_variable_data.dart';
+import '../module/app/app_master.dart';
+import '../module/authenticate/authenticate_master.dart';
+import '../module/user/user_master.dart';
 
 class AppProvider extends ChangeNotifier {
-  static Future<AppProvider> initialise() async {
-    final ColorResourceData colorResource;
-    final ImageResourceData imageResource;
-
-    switch(RepositoryDirectory.app?.themeMode ?? ConfigurationData.defaultThemeMode) {
-      case ThemeMode.system:
-        if (WidgetsBinding.instance.window.platformBrightness == Brightness.light) {
-          colorResource = ColorResourceData.light;
-          imageResource = ImageResourceData.light;
-        } else {
-          colorResource = ColorResourceData.dark;
-          imageResource = ImageResourceData.dark;
-        }
-        break;
-      case ThemeMode.light:
-        colorResource = ColorResourceData.light;
-        imageResource = ImageResourceData.light;
-        break;
-      case ThemeMode.dark:
-        colorResource = ColorResourceData.dark;
-        imageResource = ImageResourceData.dark;
-        break;
-    }
-
-    return AppProvider._(
-      colorResource,
-      imageResource,
-      await ConfigurationData.defaultLocalizationDelegate.load(RepositoryDirectory.app?.locale ?? ConfigurationData.defaultLocale),
-    );
-  }
-
   static AppProvider of(final BuildContext context) {
     return Provider.of<AppProvider>(
       context,
@@ -52,26 +22,79 @@ class AppProvider extends ChangeNotifier {
     return Provider.of<AppProvider>(context);
   }
 
-  Locale get locale => RepositoryDirectory.app?.locale ?? ConfigurationData.defaultLocale;
+  final _appModule = AppMaster();
+  final _authenticateModule = AuthenticateMaster();
+  final _userModule = UserMaster();
 
-  ThemeMode get themeMode => RepositoryDirectory.app?.themeMode ?? ConfigurationData.defaultThemeMode;
+  Locale? _locale;
+  Locale get locale => _locale ?? ConfigurationData.defaultLocale;
 
-  ColorResourceData _color;
-  ColorResourceData get color => _color;
+  ThemeMode? _themeMode;
+  ThemeMode get themeMode => _themeMode ?? ConfigurationData.defaultThemeMode;
 
-  ImageResourceData _image;
-  ImageResourceData get image => _image;
+  ColorVariableData? _color;
+  ColorVariableData get color => _color ?? ColorVariableData.light;
+
+  ImageVariableData? _image;
+  ImageVariableData get image => _image ?? ImageVariableData.light;
 
   AppLocalizations? _text;
   AppLocalizations? get text => _text;
 
-  AppProvider._(this._color, this._image, this._text,);
+  String _accessToken = '';
+  get accessToken => _accessToken;
+  set accessToken(token) => _accessToken = token;
 
-  Future<void> updateTheme(final ThemeMode themeMode) async {
+  EnvironmentVariableData? _environment;
+  get environment => _environment ?? ConfigurationData.defaultEnvironment;
+  set environment(environment) {
+    _environment = environment;
+    _appModule.repository.setEnvironment(environment);
+  }
+
+  Future<AppProvider> setup() async {
+    _appModule.initialise(
+      provider: (context) => _appModule,
+      viewSignIn: () => _authenticateModule.directoryRoute?.navigator.user(),
+      viewSignUp: () => _userModule.directoryRoute?.navigator.registration(),
+      viewProfileSettings: () {},
+      viewPasswordSettings: () => _userModule.directoryRoute?.navigator.password(),
+      viewThemeSettings: () => _userModule.directoryRoute?.navigator.theme(),
+      viewLanguageSettings: () => _userModule.directoryRoute?.navigator.language(),
+      viewAccountDeletion: () {},
+      getSessionRefreshToken: () async { return ''; },
+      onSignOut: () async {
+        await _authenticateModule.clear();
+        await _userModule.clear();
+      },
+    );
+
+    _authenticateModule.initialise(
+      provider: (context) => _authenticateModule,
+      viewSplash: () => _appModule.directoryRoute?.navigator.splash(),
+    );
+
+    _userModule.initialise(
+      provider: (context) => _userModule,
+      viewSplash: () => _appModule.directoryRoute?.navigator.splash(),
+    );
+
+    await updateTheme(await _userModule.repository.getThemeMode() ?? ConfigurationData.defaultThemeMode, false);
+    await updateLanguage((await _userModule.repository.getLocale() ?? ConfigurationData.defaultLocale).languageCode, false);
+
+    return this;
+  }
+
+  Widget? setupScreen() => _appModule.directoryRoute?.screen.splash;
+
+  Future<void> updateTheme(final ThemeMode themeMode, [
+    final bool notifyChange = true,
+  ]) async {
     /// If the locale is the same, skip this update
-    if (themeMode == RepositoryDirectory.app?.themeMode) return;
+    if (themeMode == _themeMode) return;
 
-    RepositoryDirectory.app?.themeMode = themeMode;
+    _themeMode = themeMode;
+    await _userModule.repository.setThemeMode(themeMode);
 
     switch(themeMode) {
       case ThemeMode.system:
@@ -86,42 +109,45 @@ class AppProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> updateLanguage(final String languageCode) async {
+  Future<void> updateLanguage(final String languageCode, [
+    final bool notifyChange = true,
+  ]) async {
     /// If the locale is the same, skip this update
-    if (languageCode == RepositoryDirectory.app?.locale.languageCode) return;
+    if (languageCode == _locale?.languageCode) return;
 
-    final locale = LanguageResourceData.supportedLocaleList.firstWhere((locale) {
+    final locale = ConfigurationData.supportedLocaleList.firstWhere((locale) {
       return locale.languageCode == languageCode;
     }, orElse: () {
       return ConfigurationData.defaultLocale;
     });
 
-    RepositoryDirectory.app?.locale = locale;
+    _locale = locale;
+    await _userModule.repository.setLocale(locale);
 
-    final textResource = await LanguageResourceData.localizationDelegateList.first.load(locale);
+    final textResource = await ConfigurationData.localizationDelegateList.first.load(locale);
 
     if (textResource is AppLocalizations) {
       _text = textResource;
     }
 
-    notifyListeners();
+    if (notifyChange) {
+      notifyListeners();
+    }
   }
 
-  Future<void> updateEnvironment(final EnvironmentVariableData environment) async {
-    if (environment == RepositoryDirectory.app?.environmentVariable) return;
-
-    RepositoryDirectory.app?.environmentVariable = environment;
-  }
-
-  void updateBrightness(final Brightness brightness) {
+  void updateBrightness(final Brightness brightness, [
+    final bool notifyChange = true,
+  ]) {
     if (brightness == Brightness.dark) {
-      _color = ColorResourceData.dark;
-      _image = ImageResourceData.dark;
+      _color = ColorVariableData.dark;
+      _image = ImageVariableData.dark;
     } else {
-      _color = ColorResourceData.light;
-      _image = ImageResourceData.light;
+      _color = ColorVariableData.light;
+      _image = ImageVariableData.light;
     }
 
-    notifyListeners();
+    if (notifyChange) {
+      notifyListeners(); 
+    }
   }
 }

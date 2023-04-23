@@ -25,7 +25,7 @@ class _AppDashboardScreenRouteState extends State<AppDashboardScreenRoute> {
         IconButtonComponent(
           icon: const Icon(Icons.settings),
           hint: 'Settings',
-          onPressed: widget.controller.viewSettings,
+          onPressed: () => widget.controller.viewSettings(context),
         ),
       ],
     );

@@ -40,6 +40,7 @@ dependencies:
 
   # Provide network connection
   http: ^0.13.5
+  http_parser: ^4.0.2
 
   # Provide notification message
   firebase_messaging: ^14.1.2
