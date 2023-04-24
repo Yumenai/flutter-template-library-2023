@@ -50,4 +50,22 @@ class UserNetworkDatasourceData {
 
     return response?.statusCode == 200;
   }
+
+  Future<bool> deleteAccount(final BuildContext context, {
+    required final String password,
+    required final void Function(String?)? onFormErrorPassword,
+  }) async {
+    final response = await NetworkService.post(
+      context,
+      apiRoute: 'user/deleteAccount',
+      bodyObject: {
+        'password': password,
+      },
+      errorFormHandler: (errorForm) {
+        onFormErrorPassword?.call(errorForm['password']);
+      },
+    );
+
+    return response?.statusCode == 200;
+  }
 }

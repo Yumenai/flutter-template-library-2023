@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../utility/dialog_utility.dart';
 import '../../../../utility/format_utility.dart';
 import '../../../../utility/interface_utility.dart';
-import '../../user_master.dart';
+import '../../user_module.dart';
 
 class UserRegistrationControllerRoute {
   final form = _UserRegisterForm();
@@ -19,7 +19,7 @@ class UserRegistrationControllerRoute {
 
     if (!context.mounted) return;
 
-    final isSuccess = await UserMaster.of(context).repository.register(
+    final isSuccess = await UserModule.of(context).repository.register(
       context,
       id: form.idInputController.text,
       name: form.nameInputController.text,

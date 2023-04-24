@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../app_master.dart';
+import '../../app_module.dart';
 
 class AppSplashControllerRoute {
   final Future<String> Function() getSessionRefreshToken;
@@ -21,9 +21,9 @@ class AppSplashControllerRoute {
     if (!state.mounted) return;
 
     if (refreshToken.isEmpty) {
-      AppMaster.of(state.context).directoryRoute?.navigator.landing();
+      AppModule.of(state.context).directoryRoute?.navigator.landing();
     } else {
-      AppMaster.of(state.context).directoryRoute?.navigator.dashboard();
+      AppModule.of(state.context).directoryRoute?.navigator.dashboard();
     }
   }
 }

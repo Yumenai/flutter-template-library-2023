@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../../app_master.dart';
+import '../../app_module.dart';
 
 class AppDashboardControllerRoute {
 
   const AppDashboardControllerRoute();
 
   void viewSettings(final BuildContext context) {
-    AppMaster.of(context).directoryRoute?.navigator.setting();
+    AppModule.of(context).directoryRoute?.navigator.setting();
   }
 }

@@ -95,4 +95,35 @@ class UserNetworkMockDatasourceData {
 
     return false;
   }
+
+  Future<bool> deleteAccount(final BuildContext context, {
+    required final String password,
+    required final void Function(String?)? onFormErrorPassword,
+  }) async {
+    await MockNetworkData.mockLoading();
+
+    for (int i = 0; i < MockNetworkData.userList.length; i++) {
+      final data = MockNetworkData.userList[i];
+      if (data['authenticate_password'] == password) {
+        MockNetworkData.userList.removeAt(i);
+
+        return true;
+      }
+    }
+
+    if (!context.mounted) return false;
+
+    await DialogUtility.showAlert(
+      context,
+      title: 'Invalid Password',
+      message: 'Your current password does not matched your registered password.',
+      color: AppProvider.of(context).color.error,
+      onColor: AppProvider.of(context).color.onError,
+    );
+
+    onFormErrorPassword?.call('Invalid Password');
+
+    return false;
+  }
+
 }

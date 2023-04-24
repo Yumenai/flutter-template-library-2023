@@ -3,19 +3,19 @@ import 'package:flutter/material.dart';
 import 'data/app_repository_data.dart';
 import 'route/app_directory_route.dart';
 
-class AppMaster {
-  static AppMaster Function(BuildContext) _of = (context) => AppMaster();
+class AppModule {
+  static AppModule Function(BuildContext) _of = (context) => AppModule();
 
-  static AppMaster of(final BuildContext context) => _of(context);
+  static AppModule of(final BuildContext context) => _of(context);
 
   final repository = const AppRepositoryData();
 
   AppDirectoryRoute? directoryRoute;
 
-  AppMaster();
+  AppModule();
 
   void initialise({
-    required final AppMaster Function(BuildContext) provider,
+    required final AppModule Function(BuildContext) provider,
     required final void Function() viewSignIn,
     required final void Function() viewSignUp,
     required final void Function() viewProfileSettings,
@@ -38,5 +38,9 @@ class AppMaster {
       getSessionRefreshToken: getSessionRefreshToken,
       onSignOut: onSignOut,
     );
+  }
+
+  Future<void> clear() async {
+    await repository.clear();
   }
 }

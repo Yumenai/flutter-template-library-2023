@@ -5,12 +5,17 @@ import '../../../../utility/format_utility.dart';
 import '../../../../utility/interface_utility.dart';
 import '../../user_module.dart';
 
-class UserPasswordControllerRoute {
+class UserDeletionControllerRoute {
   final form = _UserPasswordForm();
+  final void Function() viewSplash;
+  final Future<void> Function() onDeleteAccount;
 
-  UserPasswordControllerRoute();
+  UserDeletionControllerRoute({
+    required this.viewSplash,
+    required this.onDeleteAccount,
+  });
 
-  void update(final BuildContext context) async {
+  void delete(final BuildContext context) async {
     final isClearing = await InterfaceUtility.isFocusClearing(context);
 
     if (isClearing) return;
@@ -19,10 +24,9 @@ class UserPasswordControllerRoute {
 
     if (!context.mounted) return;
 
-    final isSuccess = await UserModule.of(context).repository.updatePassword(
+    final isSuccess = await UserModule.of(context).repository.deleteAccount(
       context,
-      currentPassword: form.currentPasswordInputController.text,
-      replacePassword: form.replacePasswordInputController.text,
+      password: form.currentPasswordInputController.text,
     );
 
     if (!isSuccess) return;
@@ -31,13 +35,13 @@ class UserPasswordControllerRoute {
 
     await DialogUtility.showAlert(
       context,
-      title: 'Success',
-      message: 'Password Updated!',
+      title: 'Account Deleted!',
+      message: 'Thank you for giving this application a try. Do come back next time for a try.',
     );
 
-    if (!context.mounted) return;
+    await onDeleteAccount();
 
-    Navigator.pop(context);
+    viewSplash();
   }
 }
 
@@ -45,11 +49,9 @@ class _UserPasswordForm {
   final formStateKey = GlobalKey<FormState>();
 
   final currentPasswordInputController = TextEditingController();
-  final replacePasswordInputController = TextEditingController();
   final confirmPasswordInputController = TextEditingController();
 
   String errorCurrentPassword = '';
-  String errorReplacePassword = '';
   String errorConfirmPassword = '';
 
   bool isValid() {
@@ -70,15 +72,15 @@ class _UserPasswordForm {
   }
 
   String? validateReplacePassword(final String? text) {
-    if (replacePasswordInputController.text != confirmPasswordInputController.text) {
+    if (currentPasswordInputController.text != confirmPasswordInputController.text) {
       return 'Please ensure the password matched the confirm password input fields';
     }
 
-    return errorReplacePassword.isEmpty ? _validate(text) : errorReplacePassword;
+    return errorCurrentPassword.isEmpty ? _validate(text) : errorCurrentPassword;
   }
 
   String? validateConfirmPassword(final String? text) {
-    if (replacePasswordInputController.text != confirmPasswordInputController.text) {
+    if (currentPasswordInputController.text != confirmPasswordInputController.text) {
       return 'Please ensure the confirm password matched the password input fields';
     }
 
@@ -87,13 +89,10 @@ class _UserPasswordForm {
 
   void setErrorCurrentPassword(final String? text) => errorCurrentPassword = text ?? '';
 
-  void setErrorReplacePassword(final String? text) => errorReplacePassword = text ?? '';
-
   void setErrorConfirmPassword(final String? text) => errorConfirmPassword = text ?? '';
 
   void reset() {
     errorCurrentPassword = '';
-    errorReplacePassword = '';
     errorConfirmPassword = '';
   }
 

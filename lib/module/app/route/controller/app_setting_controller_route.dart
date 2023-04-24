@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../utility/dialog_utility.dart';
 import '../../../../provider/app_provider.dart';
-import '../../app_master.dart';
+import '../../app_module.dart';
 
 class AppSettingControllerRoute {
   final void Function() viewProfileSettings;
@@ -37,6 +37,6 @@ class AppSettingControllerRoute {
 
     if (!context.mounted) return;
 
-    AppMaster.of(context).directoryRoute?.navigator.splash();
+    AppModule.of(context).directoryRoute?.navigator.splash();
   }
 }

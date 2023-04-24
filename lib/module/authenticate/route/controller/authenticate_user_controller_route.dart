@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../utility/format_utility.dart';
 import '../../../../utility/interface_utility.dart';
-import '../../authenticate_master.dart';
+import '../../authenticate_module.dart';
 
 class AuthenticateUserControllerRoute {
   final form = _AuthenticateUserForm();
@@ -22,7 +22,7 @@ class AuthenticateUserControllerRoute {
 
     if (!context.mounted) return;
 
-    final isSuccessful = await AuthenticateMaster.of(context).repository.user(
+    final isSuccessful = await AuthenticateModule.of(context).repository.user(
       context,
       id: form.idInputController.text,
       password: form.passwordInputController.text,

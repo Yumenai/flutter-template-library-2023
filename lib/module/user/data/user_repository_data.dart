@@ -93,4 +93,29 @@ class UserRepositoryData {
 
     return isSuccessful;
   }
+
+  Future<bool> deleteAccount(final BuildContext context, {
+    required final String password,
+    final void Function(String?)? onFormErrorPassword,
+  }) async {
+    DialogUtility.showLoading(context);
+
+    final isSuccessful = ConfigurationData.isMockedData ? await _networkMockDatasource.deleteAccount(
+      context,
+      password: password,
+      onFormErrorPassword: onFormErrorPassword,
+    ) : await _networkDatasource.deleteAccount(
+      context,
+      password: password,
+      onFormErrorPassword: onFormErrorPassword,
+    );
+
+    if (context.mounted) Navigator.pop(context);
+
+    return isSuccessful;
+  }
+
+  Future<void> clear() async {
+    await _settingDatasource.clear();
+  }
 }

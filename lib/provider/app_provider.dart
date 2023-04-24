@@ -6,9 +6,9 @@ import '../data/configuration_data.dart';
 import '../data/variable/color_variable_data.dart';
 import '../data/variable/environment_variable_data.dart';
 import '../data/variable/image_variable_data.dart';
-import '../module/app/app_master.dart';
-import '../module/authenticate/authenticate_master.dart';
-import '../module/user/user_master.dart';
+import '../module/app/app_module.dart';
+import '../module/authenticate/authenticate_module.dart';
+import '../module/user/user_module.dart';
 
 class AppProvider extends ChangeNotifier {
   static AppProvider of(final BuildContext context) {
@@ -22,9 +22,9 @@ class AppProvider extends ChangeNotifier {
     return Provider.of<AppProvider>(context);
   }
 
-  final _appModule = AppMaster();
-  final _authenticateModule = AuthenticateMaster();
-  final _userModule = UserMaster();
+  final _appModule = AppModule();
+  final _authenticateModule = AuthenticateModule();
+  final _userModule = UserModule();
 
   Locale? _locale;
   Locale get locale => _locale ?? ConfigurationData.defaultLocale;
@@ -54,29 +54,35 @@ class AppProvider extends ChangeNotifier {
 
   Future<AppProvider> setup() async {
     _appModule.initialise(
-      provider: (context) => _appModule,
+      provider: (context) => of(context)._appModule,
       viewSignIn: () => _authenticateModule.directoryRoute?.navigator.user(),
       viewSignUp: () => _userModule.directoryRoute?.navigator.registration(),
       viewProfileSettings: () {},
       viewPasswordSettings: () => _userModule.directoryRoute?.navigator.password(),
       viewThemeSettings: () => _userModule.directoryRoute?.navigator.theme(),
       viewLanguageSettings: () => _userModule.directoryRoute?.navigator.language(),
-      viewAccountDeletion: () {},
+      viewAccountDeletion: () => _userModule.directoryRoute?.navigator.delete(),
       getSessionRefreshToken: _authenticateModule.repository.getSessionRefreshToken,
       onSignOut: () async {
+        await _appModule.clear();
         await _authenticateModule.clear();
         await _userModule.clear();
       },
     );
 
     _authenticateModule.initialise(
-      provider: (context) => _authenticateModule,
+      provider: (context) => of(context)._authenticateModule,
       viewSplash: () => _appModule.directoryRoute?.navigator.splash(),
     );
 
     _userModule.initialise(
-      provider: (context) => _userModule,
+      provider: (context) => of(context)._userModule,
       viewSplash: () => _appModule.directoryRoute?.navigator.splash(),
+      onDeleteAccount: () async {
+        await _appModule.clear();
+        await _authenticateModule.clear();
+        await _userModule.clear();
+      },
     );
 
     await updateTheme(await _userModule.repository.getThemeMode() ?? ConfigurationData.defaultThemeMode, false);
