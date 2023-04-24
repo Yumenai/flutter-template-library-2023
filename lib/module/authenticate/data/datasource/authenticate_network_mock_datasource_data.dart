@@ -20,7 +20,7 @@ class AuthenticateNetworkMockDatasourceData {
       if (user['authenticate_id'] == id) {
         if (user['authenticate_password'] == password) {
           return AuthenticateUserModel(
-            refreshToken: user['refresh_token']?.toString() ?? '',
+            refreshToken: user['session_refresh_token']?.toString() ?? '',
           );
         }
       }

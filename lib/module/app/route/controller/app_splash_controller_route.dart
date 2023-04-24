@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import '../../app_module.dart';
 
 class AppSplashControllerRoute {
-  final Future<String> Function() getSessionRefreshToken;
+  final Future<bool> Function(BuildContext) onSetup;
 
   const AppSplashControllerRoute({
-    required this.getSessionRefreshToken,
+    required this.onSetup,
   });
 
   void initialise(final State state) async {
@@ -16,14 +16,14 @@ class AppSplashControllerRoute {
 
     if (!state.mounted) return;
 
-    final refreshToken = await getSessionRefreshToken();
+    final isUserAccessEnabled = await onSetup(state.context);
 
     if (!state.mounted) return;
 
-    if (refreshToken.isEmpty) {
-      AppModule.of(state.context).directoryRoute?.navigator.landing();
-    } else {
+    if (isUserAccessEnabled) {
       AppModule.of(state.context).directoryRoute?.navigator.dashboard();
+    } else {
+      AppModule.of(state.context).directoryRoute?.navigator.landing();
     }
   }
 }

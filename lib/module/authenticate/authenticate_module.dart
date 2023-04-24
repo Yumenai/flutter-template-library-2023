@@ -14,10 +14,10 @@ class AuthenticateModule {
 
   AuthenticateModule();
 
-  void initialise({
+  Future<void> initialise({
     required final AuthenticateModule Function(BuildContext) provider,
     required final void Function() viewSplash,
-  }) {
+  }) async {
     _of = provider;
     directoryRoute = AuthenticateDirectoryRoute(
       viewSplash: viewSplash,

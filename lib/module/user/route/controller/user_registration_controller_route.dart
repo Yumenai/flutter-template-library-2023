@@ -26,6 +26,10 @@ class UserRegistrationControllerRoute {
       email: form.emailInputController.text,
       password: form.passwordInputController.text,
       onFormErrorId: form.setErrorId,
+      onFormErrorName: form.setErrorName,
+      onFormErrorEmail: form.setErrorEmail,
+      onFormErrorPassword: form.setErrorPassword,
+      onFormErrorConfirmPassword: form.setErrorConfirmPassword,
     );
 
     if (!isSuccess) {
@@ -107,13 +111,13 @@ class _UserRegisterForm {
 
   void setErrorId(final String? text) => errorId = text ?? '';
 
-  void setErrorName(final String? text) => errorPassword = text ?? '';
+  void setErrorName(final String? text) => errorName = text ?? '';
 
   void setErrorEmail(final String? text) => errorPassword = text ?? '';
 
   void setErrorPassword(final String? text) => errorPassword = text ?? '';
 
-  void setErrorConfirmPassword(final String? text) => errorPassword = text ?? '';
+  void setErrorConfirmPassword(final String? text) => errorConfirmPassword = text ?? '';
 
   void reset() {
     errorId = '';

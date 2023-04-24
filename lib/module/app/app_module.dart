@@ -14,7 +14,7 @@ class AppModule {
 
   AppModule();
 
-  void initialise({
+  Future<void> initialise({
     required final AppModule Function(BuildContext) provider,
     required final void Function() viewSignIn,
     required final void Function() viewSignUp,
@@ -23,9 +23,9 @@ class AppModule {
     required final void Function() viewThemeSettings,
     required final void Function() viewLanguageSettings,
     required final void Function() viewAccountDeletion,
-    required final Future<String> Function() getSessionRefreshToken,
+    required final Future<bool> Function(BuildContext) onSetup,
     required final Future<void> Function() onSignOut,
-  }) {
+  }) async {
     _of = provider;
     directoryRoute = AppDirectoryRoute(
       viewSignIn: viewSignIn,
@@ -35,7 +35,7 @@ class AppModule {
       viewThemeSettings: viewThemeSettings,
       viewLanguageSettings: viewLanguageSettings,
       viewAccountDeletion: viewAccountDeletion,
-      getSessionRefreshToken: getSessionRefreshToken,
+      onSetup: onSetup,
       onSignOut: onSignOut,
     );
   }

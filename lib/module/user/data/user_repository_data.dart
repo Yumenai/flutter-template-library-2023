@@ -2,39 +2,47 @@ import 'package:flutter/material.dart';
 
 import '../../../data/configuration_data.dart';
 import '../../../utility/dialog_utility.dart';
+import '../model/user_profile_model.dart';
+import 'datasource/user_memory_datasource_data.dart';
 import 'datasource/user_network_datasource_data.dart';
 import 'datasource/user_network_mock_datasource_data.dart';
 import 'datasource/user_setting_datasource_data.dart';
 
 class UserRepositoryData {
+  final _memoryDatasource = UserMemoryDatasourceData();
   final _networkDatasource = const UserNetworkDatasourceData();
   final _networkMockDatasource = const UserNetworkMockDatasourceData();
   final _settingDatasource = const UserSettingDatasourceData();
 
-  const UserRepositoryData();
+  UserRepositoryData();
 
-  Future<Locale?> getLocale() async {
-    final languageCode = await _settingDatasource.getLanguageCode();
-
-    if (languageCode.isEmpty) return null;
-
-    return Locale(languageCode);
-  }
-
-  Future<ThemeMode?> getThemeMode() async {
-    return _settingDatasource.getThemeMode();
-  }
-
-  Future<void> setLocale(final Locale? locale) async {
+  Locale? get locale => _memoryDatasource.locale;
+  set locale(final Locale? locale) {
     if (locale == null) return;
 
-    await _settingDatasource.setLanguageCode(locale.languageCode);
+    _memoryDatasource.locale = locale;
+    _settingDatasource.setLanguageCode(locale.languageCode);
   }
 
-  Future<void> setThemeMode(final ThemeMode? themeMode) async {
+  ThemeMode? get themeMode => _memoryDatasource.themeMode;
+  set themeMode(final ThemeMode? themeMode) {
     if (themeMode == null) return;
 
-    await _settingDatasource.setThemeMode(themeMode);
+    _memoryDatasource.themeMode = themeMode;
+    _settingDatasource.setThemeMode(themeMode);
+  }
+
+  UserProfileModel? get profileModel => _memoryDatasource.profileModel;
+
+  String get sessionAccessToken => _memoryDatasource.sessionAccessToken;
+
+  Future<void> initialise() async {
+    final languageCode = await _settingDatasource.getLanguageCode();
+    if (languageCode.isNotEmpty) {
+      locale = Locale(languageCode);
+    }
+
+    themeMode = await _settingDatasource.getThemeMode();
   }
 
   Future<bool> register(final BuildContext context, {
@@ -43,6 +51,10 @@ class UserRepositoryData {
     required final String email,
     required final String password,
     final void Function(String?)? onFormErrorId,
+    final void Function(String?)? onFormErrorName,
+    final void Function(String?)? onFormErrorEmail,
+    final void Function(String?)? onFormErrorPassword,
+    final void Function(String?)? onFormErrorConfirmPassword,
   }) async {
     DialogUtility.showLoading(context);
 
@@ -60,11 +72,76 @@ class UserRepositoryData {
       email: email,
       password: password,
       onFormErrorId: onFormErrorId,
+      onFormErrorName: onFormErrorName,
+      onFormErrorEmail: onFormErrorEmail,
+      onFormErrorPassword: onFormErrorPassword,
+      onFormErrorConfirmPassword: onFormErrorConfirmPassword,
     );
 
     if (context.mounted) Navigator.pop(context);
 
     return isSuccessful;
+  }
+
+  Future<void> setup(final BuildContext context, {
+    required final String sessionRefreshToken,
+  }) async {
+    final model = ConfigurationData.isMockedData ? await _networkMockDatasource.setup(
+      context,
+      sessionRefreshToken: sessionRefreshToken,
+    ) : await _networkDatasource.setup(
+      context,
+      sessionRefreshToken: sessionRefreshToken,
+    );
+
+    _memoryDatasource.profileModel = model?.profileModel;
+    _memoryDatasource.sessionAccessToken = model?.sessionAccessToken ?? '';
+  }
+
+  Future<UserProfileModel?> getProfile(final BuildContext context, [
+    final bool enableLoadingDialog = true,
+  ]) async {
+    if (enableLoadingDialog) DialogUtility.showLoading(context);
+
+    final model = ConfigurationData.isMockedData ? await _networkMockDatasource.getProfile(context) : await _networkDatasource.getProfile(context);
+
+    if (enableLoadingDialog) if (context.mounted) Navigator.pop(context);
+
+    if (model == null) return null;
+
+    return _memoryDatasource.profileModel = model;
+  }
+
+  Future<UserProfileModel?> updateProfile(final BuildContext context, {
+    required final String name,
+    required final String email,
+    required final DateTime? birthdate,
+    final void Function(String?)? onFormErrorName,
+    final void Function(String?)? onFormErrorEmail,
+  }) async {
+    DialogUtility.showLoading(context);
+
+    final model = ConfigurationData.isMockedData ? await _networkMockDatasource.updateProfile(
+      context,
+      name: name,
+      email: email,
+      birthdate: birthdate,
+      onFormErrorName: onFormErrorName,
+      onFormErrorEmail: onFormErrorEmail,
+    ) : await _networkDatasource.updateProfile(
+      context,
+      name: name,
+      email: email,
+      birthdate: birthdate,
+      onFormErrorName: onFormErrorName,
+      onFormErrorEmail: onFormErrorEmail,
+    );
+
+    if (context.mounted) Navigator.pop(context);
+
+    if (model == null) return null;
+
+    return _memoryDatasource.profileModel = model;
   }
 
   Future<bool> updatePassword(final BuildContext context, {

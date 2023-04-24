@@ -337,7 +337,8 @@ class ActionTextInputComponent extends StatelessWidget {
   final void Function(String?)? onEdit;
   final void Function(String?)? onSubmit;
   final String? Function(String?)? onValidate;
-  final FutureOr<void>? Function(bool)? onSelect;
+  final FutureOr<void>? Function()? onSelect;
+  final FutureOr<void>? Function()? onClear;
 
   final TextInputStyle style;
 
@@ -356,6 +357,7 @@ class ActionTextInputComponent extends StatelessWidget {
     this.onSubmit,
     this.onValidate,
     this.onSelect,
+    this.onClear,
     this.style = TextInputStyle.outline,
   });
 
@@ -374,14 +376,26 @@ class ActionTextInputComponent extends StatelessWidget {
         builder: (context, child) {
           final isSelected = controller?.text.isNotEmpty == true;
 
-          return ElevatedButton(
-            onPressed: () async {
-              FocusScope.of(context).unfocus();
-              await onSelect?.call(isSelected);
-            },
-            style: actionButtonStyle,
-            child: isSelected ? Text(actionClear ?? 'Clear') : Text(actionSelect ?? 'Select'),
-          );
+          if (onClear != null && isSelected) {
+            return ElevatedButton(
+              onPressed: () async {
+                FocusScope.of(context).unfocus();
+                await onClear?.call();
+                controller?.text = '';
+              },
+              style: actionButtonStyle,
+              child: Text(actionClear ?? 'Clear'),
+            );
+          } else {
+            return ElevatedButton(
+              onPressed: () async {
+                FocusScope.of(context).unfocus();
+                await onSelect?.call();
+              },
+              style: actionButtonStyle,
+              child: Text(actionSelect ?? 'Select'),
+            );
+          }
         },
       ),
       backgroundColor: backgroundColor,

@@ -26,11 +26,8 @@ class AppProvider extends ChangeNotifier {
   final _authenticateModule = AuthenticateModule();
   final _userModule = UserModule();
 
-  Locale? _locale;
-  Locale get locale => _locale ?? ConfigurationData.defaultLocale;
-
-  ThemeMode? _themeMode;
-  ThemeMode get themeMode => _themeMode ?? ConfigurationData.defaultThemeMode;
+  Locale get locale => _userModule.repository.locale ?? ConfigurationData.defaultLocale;
+  ThemeMode get themeMode => _userModule.repository.themeMode ?? ConfigurationData.defaultThemeMode;
 
   ColorVariableData? _color;
   ColorVariableData get color => _color ?? ColorVariableData.light;
@@ -41,9 +38,7 @@ class AppProvider extends ChangeNotifier {
   AppLocalizations? _text;
   AppLocalizations? get text => _text;
 
-  String _accessToken = '';
-  String get accessToken => _accessToken;
-  set accessToken(token) => _accessToken = token;
+  String get accessToken => _userModule.repository.sessionAccessToken;
 
   EnvironmentVariableData? _environment;
   EnvironmentVariableData get environment => _environment ?? ConfigurationData.defaultEnvironment;
@@ -53,16 +48,16 @@ class AppProvider extends ChangeNotifier {
   }
 
   Future<AppProvider> setup() async {
-    _appModule.initialise(
+    await _appModule.initialise(
       provider: (context) => of(context)._appModule,
       viewSignIn: () => _authenticateModule.directoryRoute?.navigator.user(),
       viewSignUp: () => _userModule.directoryRoute?.navigator.registration(),
-      viewProfileSettings: () {},
+      viewProfileSettings: () => _userModule.directoryRoute?.navigator.profile(),
       viewPasswordSettings: () => _userModule.directoryRoute?.navigator.password(),
       viewThemeSettings: () => _userModule.directoryRoute?.navigator.theme(),
       viewLanguageSettings: () => _userModule.directoryRoute?.navigator.language(),
       viewAccountDeletion: () => _userModule.directoryRoute?.navigator.delete(),
-      getSessionRefreshToken: _authenticateModule.repository.getSessionRefreshToken,
+      onSetup: _userModule.startup,
       onSignOut: () async {
         await _appModule.clear();
         await _authenticateModule.clear();
@@ -70,14 +65,15 @@ class AppProvider extends ChangeNotifier {
       },
     );
 
-    _authenticateModule.initialise(
+    await _authenticateModule.initialise(
       provider: (context) => of(context)._authenticateModule,
       viewSplash: () => _appModule.directoryRoute?.navigator.splash(),
     );
 
-    _userModule.initialise(
+    await _userModule.initialise(
       provider: (context) => of(context)._userModule,
       viewSplash: () => _appModule.directoryRoute?.navigator.splash(),
+      getSessionRefreshToken: _authenticateModule.repository.getSessionRefreshToken,
       onDeleteAccount: () async {
         await _appModule.clear();
         await _authenticateModule.clear();
@@ -85,8 +81,8 @@ class AppProvider extends ChangeNotifier {
       },
     );
 
-    await updateTheme(await _userModule.repository.getThemeMode() ?? ConfigurationData.defaultThemeMode, false);
-    await updateLanguage((await _userModule.repository.getLocale() ?? ConfigurationData.defaultLocale).languageCode, false);
+    await updateTheme(themeMode, false);
+    await updateLanguage(locale.languageCode, false);
 
     return this;
   }
@@ -97,10 +93,9 @@ class AppProvider extends ChangeNotifier {
     final bool notifyChange = true,
   ]) async {
     /// If the locale is the same, skip this update
-    if (themeMode == _themeMode) return;
+    if (themeMode == _userModule.repository.themeMode) return;
 
-    _themeMode = themeMode;
-    await _userModule.repository.setThemeMode(themeMode);
+    _userModule.repository.themeMode = themeMode;
 
     switch(themeMode) {
       case ThemeMode.system:
@@ -119,7 +114,7 @@ class AppProvider extends ChangeNotifier {
     final bool notifyChange = true,
   ]) async {
     /// If the locale is the same, skip this update
-    if (languageCode == _locale?.languageCode) return;
+    if (languageCode == _userModule.repository.locale?.languageCode) return;
 
     final locale = ConfigurationData.supportedLocaleList.firstWhere((locale) {
       return locale.languageCode == languageCode;
@@ -127,8 +122,7 @@ class AppProvider extends ChangeNotifier {
       return ConfigurationData.defaultLocale;
     });
 
-    _locale = locale;
-    await _userModule.repository.setLocale(locale);
+    _userModule.repository.locale = locale;
 
     final textResource = await ConfigurationData.localizationDelegateList.first.load(locale);
 

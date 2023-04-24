@@ -2,11 +2,13 @@ import '../../../service/route_service.dart';
 import 'controller/user_deletion_controller_route.dart';
 import 'controller/user_language_controller_route.dart';
 import 'controller/user_password_controller_route.dart';
+import 'controller/user_profile_controller_route.dart';
 import 'controller/user_registration_controller_route.dart';
 import 'controller/user_theme_controller_route.dart';
 import 'screen/user_deletion_screen_route.dart';
 import 'screen/user_language_screen_route.dart';
 import 'screen/user_password_screen_route.dart';
+import 'screen/user_profile_screen_route.dart';
 import 'screen/user_registration_screen_route.dart';
 import 'screen/user_theme_screen_route.dart';
 
@@ -34,6 +36,12 @@ class UserNavigatorRoute {
   void registration() {
     RouteService.push(UserRegistrationScreenRoute(
       controller: UserRegistrationControllerRoute(),
+    ));
+  }
+
+  void profile() {
+    RouteService.push(UserProfileScreenRoute(
+      controller: UserProfileControllerRoute(),
     ));
   }
 

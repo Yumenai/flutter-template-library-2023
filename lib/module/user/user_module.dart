@@ -8,22 +8,37 @@ class UserModule {
 
   static UserModule of(final BuildContext context) => _of(context);
 
-  final repository = const UserRepositoryData();
+  final repository = UserRepositoryData();
 
   UserDirectoryRoute? directoryRoute;
 
+  Future<String> Function() _getSessionRefreshToken = () async => '';
+
   UserModule();
 
-  void initialise({
+  Future<void> initialise({
     required final UserModule Function(BuildContext) provider,
     required final void Function() viewSplash,
     required final Future<void> Function() onDeleteAccount,
-  }) {
+    required final Future<String> Function() getSessionRefreshToken,
+  }) async {
     _of = provider;
     directoryRoute = UserDirectoryRoute(
       viewSplash: viewSplash,
       onDeleteAccount: onDeleteAccount,
     );
+    await repository.initialise();
+
+    _getSessionRefreshToken = getSessionRefreshToken;
+  }
+
+  Future<bool> startup(final BuildContext context) async {
+    await repository.setup(
+      context,
+      sessionRefreshToken: await _getSessionRefreshToken(),
+    );
+
+    return repository.sessionAccessToken.isNotEmpty;
   }
 
   Future<void> clear() async {

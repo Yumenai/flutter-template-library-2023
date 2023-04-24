@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import '../../../service/route_service.dart';
 import 'controller/app_dashboard_controller_route.dart';
 import 'controller/app_landing_controller_route.dart';
@@ -22,7 +24,7 @@ class AppDirectoryRoute {
     required final void Function() viewThemeSettings,
     required final void Function() viewLanguageSettings,
     required final void Function() viewAccountDeletion,
-    required final Future<String> Function() getSessionRefreshToken,
+    required final Future<bool> Function(BuildContext) onSetup,
     required final Future<void> Function() onSignOut,
   }) :  screen = AppScreenRoute(
     viewSignIn,
@@ -32,7 +34,7 @@ class AppDirectoryRoute {
     viewThemeSettings,
     viewLanguageSettings,
     viewAccountDeletion,
-    getSessionRefreshToken,
+    onSetup,
     onSignOut,
   );
 }
@@ -71,7 +73,7 @@ class AppScreenRoute {
   final void Function() _viewThemeSettings;
   final void Function() _viewLanguageSettings;
   final void Function() _viewAccountDeletion;
-  final Future<String> Function() _getSessionRefreshToken;
+  final Future<bool> Function(BuildContext) _onSetup;
   final Future<void> Function() _onSignOut;
 
   const AppScreenRoute(this._viewSignIn,
@@ -81,13 +83,13 @@ class AppScreenRoute {
     this._viewThemeSettings,
     this._viewLanguageSettings,
     this._viewAccountDeletion,
-    this._getSessionRefreshToken,
+    this._onSetup,
     this._onSignOut,
   );
 
   AppSplashScreenRoute get splash => AppSplashScreenRoute(
     controller: AppSplashControllerRoute(
-      getSessionRefreshToken: _getSessionRefreshToken,
+      onSetup: _onSetup,
     ),
   );
 
