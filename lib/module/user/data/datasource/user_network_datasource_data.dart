@@ -28,4 +28,26 @@ class UserNetworkDatasourceData {
 
     return response?.statusCode == 200;
   }
+
+  Future<bool> updatePassword(final BuildContext context, {
+    required final String currentPassword,
+    required final String replacePassword,
+    required final void Function(String?)? onFormErrorCurrentPassword,
+    required final void Function(String?)? onFormErrorReplacePassword,
+  }) async {
+    final response = await NetworkService.post(
+      context,
+      apiRoute: 'user/updatePassword',
+      bodyObject: {
+        'current_password': currentPassword,
+        'replace_password': replacePassword,
+      },
+      errorFormHandler: (errorForm) {
+        onFormErrorCurrentPassword?.call(errorForm['current_password']);
+        onFormErrorReplacePassword?.call(errorForm['replace_password']);
+      },
+    );
+
+    return response?.statusCode == 200;
+  }
 }

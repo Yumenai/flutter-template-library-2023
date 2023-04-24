@@ -66,4 +66,31 @@ class UserRepositoryData {
 
     return isSuccessful;
   }
+
+  Future<bool> updatePassword(final BuildContext context, {
+    required final String currentPassword,
+    required final String replacePassword,
+    final void Function(String?)? onFormErrorCurrentPassword,
+    final void Function(String?)? onFormErrorReplacePassword,
+  }) async {
+    DialogUtility.showLoading(context);
+
+    final isSuccessful = ConfigurationData.isMockedData ? await _networkMockDatasource.updatePassword(
+      context,
+      currentPassword: currentPassword,
+      replacePassword: replacePassword,
+      onFormErrorCurrentPassword: onFormErrorCurrentPassword,
+      onFormErrorReplacePassword: onFormErrorReplacePassword,
+    ) : await _networkDatasource.updatePassword(
+      context,
+      currentPassword: currentPassword,
+      replacePassword: replacePassword,
+      onFormErrorCurrentPassword: onFormErrorCurrentPassword,
+      onFormErrorReplacePassword: onFormErrorReplacePassword,
+    );
+
+    if (context.mounted) Navigator.pop(context);
+
+    return isSuccessful;
+  }
 }

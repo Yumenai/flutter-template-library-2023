@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../../../utility/dialog_utility.dart';
 import '../../../../utility/format_utility.dart';
 import '../../../../utility/interface_utility.dart';
+import '../../user_master.dart';
 
 class UserPasswordControllerRoute {
   final form = _UserPasswordForm();
@@ -14,6 +16,24 @@ class UserPasswordControllerRoute {
     if (isClearing) return;
 
     if (form.isNotValid()) return;
+
+    if (!context.mounted) return;
+
+    final isSuccess = await UserMaster.of(context).repository.updatePassword(
+      context,
+      currentPassword: form.currentPasswordInputController.text,
+      replacePassword: form.replacePasswordInputController.text,
+    );
+
+    if (!isSuccess) return;
+
+    if (!context.mounted) return;
+
+    await DialogUtility.showAlert(
+      context,
+      title: 'Success',
+      message: 'Password Updated!',
+    );
 
     if (!context.mounted) return;
 
