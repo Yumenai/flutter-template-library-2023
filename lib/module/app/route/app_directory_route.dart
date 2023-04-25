@@ -81,6 +81,6 @@ class AppDirectoryRoute {
         onSignOut: _onSignOut,
       ),
     ),
-    onNavigate: RouteService.pushBase,
+    onNavigate: RouteService.push,
   );
 }

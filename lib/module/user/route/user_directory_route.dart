@@ -29,35 +29,35 @@ class UserDirectoryRoute {
     screen: UserRegistrationScreenRoute(
       controller: UserRegistrationControllerRoute(),
     ),
-    onNavigate: RouteService.pushBase,
+    onNavigate: RouteService.push,
   );
 
   RouteModel get profile => RouteModel(
     screen: UserProfileScreenRoute(
       controller: UserProfileControllerRoute(),
     ),
-    onNavigate: RouteService.pushBase,
+    onNavigate: RouteService.push,
   );
 
   RouteModel get password => RouteModel(
     screen: UserPasswordScreenRoute(
       controller: UserPasswordControllerRoute(),
     ),
-    onNavigate: RouteService.pushBase,
+    onNavigate: RouteService.push,
   );
 
   RouteModel get theme => const RouteModel(
     screen: UserThemeScreenRoute(
       controller: UserThemeControllerRoute(),
     ),
-    onNavigate: RouteService.pushBase,
+    onNavigate: RouteService.push,
   );
 
   RouteModel get language => const RouteModel(
     screen: UserLanguageScreenRoute(
       controller: UserLanguageControllerRoute(),
     ),
-    onNavigate: RouteService.pushBase,
+    onNavigate: RouteService.push,
   );
 
   RouteModel get deletion => RouteModel(
@@ -67,6 +67,6 @@ class UserDirectoryRoute {
         onDeleteAccount: _onDeleteAccount,
       ),
     ),
-    onNavigate: RouteService.pushBase,
+    onNavigate: RouteService.push,
   );
 }

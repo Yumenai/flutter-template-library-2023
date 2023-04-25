@@ -20,6 +20,6 @@ class AuthenticateDirectoryRoute {
         viewSplash: _viewSplash,
       ),
     ),
-    onNavigate: RouteService.pushBase,
+    onNavigate: RouteService.push,
   );
 }
