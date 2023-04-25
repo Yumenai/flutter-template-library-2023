@@ -21,9 +21,9 @@ class AppSplashControllerRoute {
     if (!state.mounted) return;
 
     if (isUserAccessEnabled) {
-      AppModule.of(state.context).directoryRoute?.navigator.dashboard();
+      AppModule.of(state.context).directoryRoute.dashboard.navigate();
     } else {
-      AppModule.of(state.context).directoryRoute?.navigator.landing();
+      AppModule.of(state.context).directoryRoute.landing.navigate();
     }
   }
 }

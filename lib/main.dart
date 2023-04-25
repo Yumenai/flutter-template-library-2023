@@ -25,7 +25,7 @@ void main() async {
       ],
       child: AppTemplateView(
         name: await AppUtility.name,
-        layout: appProvider.setupScreen() ?? const SizedBox(),
+        layout: appProvider.startupRoute(),
       ),
     ),
   );

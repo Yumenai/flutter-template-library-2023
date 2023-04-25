@@ -10,7 +10,7 @@ class AuthenticateModule {
 
   final repository = const AuthenticateRepositoryData();
 
-  AuthenticateDirectoryRoute? directoryRoute;
+  final directoryRoute = AuthenticateDirectoryRoute();
 
   AuthenticateModule();
 
@@ -19,7 +19,7 @@ class AuthenticateModule {
     required final void Function() viewSplash,
   }) async {
     _of = provider;
-    directoryRoute = AuthenticateDirectoryRoute(
+    directoryRoute.initialise(
       viewSplash: viewSplash,
     );
   }

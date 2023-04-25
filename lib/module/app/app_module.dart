@@ -10,7 +10,7 @@ class AppModule {
 
   final repository = const AppRepositoryData();
 
-  AppDirectoryRoute? directoryRoute;
+  final directoryRoute = AppDirectoryRoute();
 
   AppModule();
 
@@ -27,7 +27,7 @@ class AppModule {
     required final Future<void> Function() onSignOut,
   }) async {
     _of = provider;
-    directoryRoute = AppDirectoryRoute(
+    directoryRoute.initialise(
       viewSignIn: viewSignIn,
       viewSignUp: viewSignUp,
       viewProfileSettings: viewProfileSettings,

@@ -50,13 +50,13 @@ class AppProvider extends ChangeNotifier {
   Future<AppProvider> setup() async {
     await _appModule.initialise(
       provider: (context) => of(context)._appModule,
-      viewSignIn: () => _authenticateModule.directoryRoute?.navigator.user(),
-      viewSignUp: () => _userModule.directoryRoute?.navigator.registration(),
-      viewProfileSettings: () => _userModule.directoryRoute?.navigator.profile(),
-      viewPasswordSettings: () => _userModule.directoryRoute?.navigator.password(),
-      viewThemeSettings: () => _userModule.directoryRoute?.navigator.theme(),
-      viewLanguageSettings: () => _userModule.directoryRoute?.navigator.language(),
-      viewAccountDeletion: () => _userModule.directoryRoute?.navigator.delete(),
+      viewSignIn: _authenticateModule.directoryRoute.user.navigate,
+      viewSignUp: _userModule.directoryRoute.registration.navigate,
+      viewProfileSettings: _userModule.directoryRoute.profile.navigate,
+      viewPasswordSettings: _userModule.directoryRoute.password.navigate,
+      viewThemeSettings: _userModule.directoryRoute.theme.navigate,
+      viewLanguageSettings: _userModule.directoryRoute.language.navigate,
+      viewAccountDeletion: _userModule.directoryRoute.deletion.navigate,
       onSetup: _userModule.startup,
       onSignOut: () async {
         await _appModule.clear();
@@ -67,12 +67,12 @@ class AppProvider extends ChangeNotifier {
 
     await _authenticateModule.initialise(
       provider: (context) => of(context)._authenticateModule,
-      viewSplash: () => _appModule.directoryRoute?.navigator.splash(),
+      viewSplash: _appModule.directoryRoute.splash.navigate,
     );
 
     await _userModule.initialise(
       provider: (context) => of(context)._userModule,
-      viewSplash: () => _appModule.directoryRoute?.navigator.splash(),
+      viewSplash: _appModule.directoryRoute.splash.navigate,
       getSessionRefreshToken: _authenticateModule.repository.getSessionRefreshToken,
       onDeleteAccount: () async {
         await _appModule.clear();
@@ -87,7 +87,7 @@ class AppProvider extends ChangeNotifier {
     return this;
   }
 
-  Widget? setupScreen() => _appModule.directoryRoute?.screen.splash;
+  Widget startupRoute() => _appModule.directoryRoute.splash.screen;
 
   Future<void> updateTheme(final ThemeMode themeMode, [
     final bool notifyChange = true,
@@ -147,7 +147,7 @@ class AppProvider extends ChangeNotifier {
     }
 
     if (notifyChange) {
-      notifyListeners(); 
+      notifyListeners();
     }
   }
 }

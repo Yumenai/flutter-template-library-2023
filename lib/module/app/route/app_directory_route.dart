@@ -1,22 +1,28 @@
 import 'package:flutter/material.dart';
 
+import '../../../model/route_model.dart';
 import '../../../service/route_service.dart';
 import 'controller/app_dashboard_controller_route.dart';
 import 'controller/app_landing_controller_route.dart';
-import 'controller/app_scanner_controller_route.dart';
 import 'controller/app_setting_controller_route.dart';
 import 'controller/app_splash_controller_route.dart';
 import 'screen/app_dashboard_screen_route.dart';
 import 'screen/app_landing_screen_route.dart';
-import 'screen/app_scanner_screen_route.dart';
 import 'screen/app_setting_screen_route.dart';
 import 'screen/app_splash_screen_route.dart';
 
 class AppDirectoryRoute {
-  final AppScreenRoute screen;
-  late final navigator = AppNavigatorRoute(screen);
+  void Function() _viewSignIn = () {};
+  void Function() _viewSignUp = () {};
+  void Function() _viewProfileSettings = () {};
+  void Function() _viewPasswordSettings = () {};
+  void Function() _viewThemeSettings = () {};
+  void Function() _viewLanguageSettings = () {};
+  void Function() _viewAccountDeletion = () {};
+  Future<bool> Function(BuildContext) _onSetup = (_) async => false;
+  Future<void> Function() _onSignOut = () async {};
 
-  AppDirectoryRoute({
+  void initialise({
     required final void Function() viewSignIn,
     required final void Function() viewSignUp,
     required final void Function() viewProfileSettings,
@@ -26,96 +32,55 @@ class AppDirectoryRoute {
     required final void Function() viewAccountDeletion,
     required final Future<bool> Function(BuildContext) onSetup,
     required final Future<void> Function() onSignOut,
-  }) :  screen = AppScreenRoute(
-    viewSignIn,
-    viewSignUp,
-    viewProfileSettings,
-    viewPasswordSettings,
-    viewThemeSettings,
-    viewLanguageSettings,
-    viewAccountDeletion,
-    onSetup,
-    onSignOut,
-  );
-}
-
-class AppNavigatorRoute {
-  final AppScreenRoute _screen;
-
-  const AppNavigatorRoute(this._screen);
-
-  void splash() {
-    RouteService.pushBase(_screen.splash);
+  }) {
+    _viewSignIn = viewSignIn;
+    _viewSignUp = viewSignUp;
+    _viewProfileSettings = viewProfileSettings;
+    _viewPasswordSettings = viewPasswordSettings;
+    _viewThemeSettings = viewThemeSettings;
+    _viewLanguageSettings = viewLanguageSettings;
+    _viewAccountDeletion = viewAccountDeletion;
+    _onSetup = onSetup;
+    _onSignOut = onSignOut;
   }
 
-  void landing() {
-    RouteService.pushBase(_screen.landing);
-  }
-
-  void dashboard() {
-    RouteService.pushBase(_screen.dashboard);
-  }
-
-  void setting() {
-    RouteService.push(_screen.setting);
-  }
-
-  void scanner() {
-    RouteService.push(_screen.scanner);
-  }
-}
-
-class AppScreenRoute {
-  final void Function() _viewSignIn;
-  final void Function() _viewSignUp;
-  final void Function() _viewProfileSettings;
-  final void Function() _viewPasswordSettings;
-  final void Function() _viewThemeSettings;
-  final void Function() _viewLanguageSettings;
-  final void Function() _viewAccountDeletion;
-  final Future<bool> Function(BuildContext) _onSetup;
-  final Future<void> Function() _onSignOut;
-
-  const AppScreenRoute(this._viewSignIn,
-    this._viewSignUp,
-    this._viewProfileSettings,
-    this._viewPasswordSettings,
-    this._viewThemeSettings,
-    this._viewLanguageSettings,
-    this._viewAccountDeletion,
-    this._onSetup,
-    this._onSignOut,
-  );
-
-  AppSplashScreenRoute get splash => AppSplashScreenRoute(
-    controller: AppSplashControllerRoute(
-      onSetup: _onSetup,
+  RouteModel get splash => RouteModel(
+    screen: AppSplashScreenRoute(
+      controller: AppSplashControllerRoute(
+        onSetup: _onSetup,
+      ),
     ),
+    onNavigate: RouteService.pushBase,
   );
 
-  AppLandingScreenRoute get landing => AppLandingScreenRoute(
-    controller: AppLandingControllerRoute(
-      onSignIn: _viewSignIn,
-      onSignUp: _viewSignUp,
+  RouteModel get landing => RouteModel(
+    screen: AppLandingScreenRoute(
+      controller: AppLandingControllerRoute(
+        onSignIn: _viewSignIn,
+        onSignUp: _viewSignUp,
+      ),
     ),
+    onNavigate: RouteService.pushBase,
   );
 
-  AppDashboardScreenRoute get dashboard => const AppDashboardScreenRoute(
-    controller: AppDashboardControllerRoute(),
-  );
-
-  AppSettingScreenRoute get setting => AppSettingScreenRoute(
-    controller: AppSettingControllerRoute(
-      viewProfileSettings: _viewProfileSettings,
-      viewPasswordSettings: _viewPasswordSettings,
-      viewThemeSettings: _viewThemeSettings,
-      viewLanguageSettings: _viewLanguageSettings,
-      viewAccountDeletion: _viewAccountDeletion,
-      onSignOut: _onSignOut,
+  RouteModel get dashboard => const RouteModel(
+    screen: AppDashboardScreenRoute(
+      controller: AppDashboardControllerRoute(),
     ),
+    onNavigate: RouteService.pushBase,
   );
 
-  AppScannerScreenRoute get scanner => AppScannerScreenRoute(
-    controller: AppScannerControllerRoute(),
+  RouteModel get settings => RouteModel(
+    screen: AppSettingScreenRoute(
+      controller: AppSettingControllerRoute(
+        viewProfileSettings: _viewProfileSettings,
+        viewPasswordSettings: _viewPasswordSettings,
+        viewThemeSettings: _viewThemeSettings,
+        viewLanguageSettings: _viewLanguageSettings,
+        viewAccountDeletion: _viewAccountDeletion,
+        onSignOut: _onSignOut,
+      ),
+    ),
+    onNavigate: RouteService.pushBase,
   );
 }

@@ -10,7 +10,7 @@ class UserModule {
 
   final repository = UserRepositoryData();
 
-  UserDirectoryRoute? directoryRoute;
+  final directoryRoute = UserDirectoryRoute();
 
   Future<String> Function() _getSessionRefreshToken = () async => '';
 
@@ -23,7 +23,7 @@ class UserModule {
     required final Future<String> Function() getSessionRefreshToken,
   }) async {
     _of = provider;
-    directoryRoute = UserDirectoryRoute(
+    directoryRoute.initialise(
       viewSplash: viewSplash,
       onDeleteAccount: onDeleteAccount,
     );

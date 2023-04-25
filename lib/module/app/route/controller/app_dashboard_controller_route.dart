@@ -7,6 +7,6 @@ class AppDashboardControllerRoute {
   const AppDashboardControllerRoute();
 
   void viewSettings(final BuildContext context) {
-    AppModule.of(context).directoryRoute?.navigator.setting();
+    AppModule.of(context).directoryRoute.settings.navigate();
   }
 }

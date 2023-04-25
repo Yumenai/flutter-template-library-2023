@@ -37,6 +37,6 @@ class AppSettingControllerRoute {
 
     if (!context.mounted) return;
 
-    AppModule.of(context).directoryRoute?.navigator.splash();
+    AppModule.of(context).directoryRoute.splash.navigate();
   }
 }
