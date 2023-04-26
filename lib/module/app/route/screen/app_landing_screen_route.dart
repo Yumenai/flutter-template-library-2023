@@ -23,11 +23,12 @@ class AppLandingScreenRoute extends StatelessWidget {
           shrinkWrap: true,
           padding: const EdgeInsets.all(24),
           children: [
-            ImageViewComponent.asset(
-              AppProvider.listen(context).image.appSplash,
-              fit: BoxFit.contain,
-              width: 200,
-              height: 200,
+            SizedBox.square(
+              dimension: 200,
+              child: ImageViewComponent.asset(
+                AppProvider.listen(context).image.appSplash,
+                fit: BoxFit.contain,
+              ),
             ),
             const SizedBox(
               height: 24,

@@ -9,9 +9,6 @@ class ImageViewComponent extends StatelessWidget {
   final ImageProvider image;
   final Widget? errorPlaceholder;
   final Widget? loadingPlaceholder;
-  final double? width;
-  final double? height;
-  final double? aspectRatio;
   final BoxFit? fit;
   final Color? color;
   final BlendMode? colorBlend;
@@ -20,9 +17,6 @@ class ImageViewComponent extends StatelessWidget {
     super.key,
     this.errorPlaceholder,
     this.loadingPlaceholder,
-    this.width,
-    this.height,
-    this.aspectRatio,
     this.fit = BoxFit.cover,
     this.color,
     this.colorBlend,
@@ -32,9 +26,6 @@ class ImageViewComponent extends StatelessWidget {
     super.key,
     this.errorPlaceholder,
     this.loadingPlaceholder,
-    this.width,
-    this.height,
-    this.aspectRatio,
     this.fit = BoxFit.cover,
     this.color,
     this.colorBlend,
@@ -44,9 +35,6 @@ class ImageViewComponent extends StatelessWidget {
     super.key,
     this.errorPlaceholder,
     this.loadingPlaceholder,
-    this.width,
-    this.height,
-    this.aspectRatio,
     this.fit = BoxFit.cover,
     this.color,
     this.colorBlend,
@@ -56,9 +44,6 @@ class ImageViewComponent extends StatelessWidget {
     super.key,
     this.errorPlaceholder,
     this.loadingPlaceholder,
-    this.width,
-    this.height,
-    this.aspectRatio,
     this.fit = BoxFit.cover,
     this.color,
     this.colorBlend,
@@ -70,17 +55,19 @@ class ImageViewComponent extends StatelessWidget {
       fit: fit,
       image: image,
       color: color,
-      width: width,
-      height: height,
       colorBlendMode: colorBlend,
       frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+        // Assuming only network image require loading animation
         if (image is NetworkImage) {
           if (wasSynchronouslyLoaded) {
-            return _sizeAdjustment(child);
+            return child;
           } else {
             return AnimatedCrossFade(
-              firstChild: _sizeAdjustment(loadingPlaceholder ?? const _ImageLoadingPlaceholder()),
-              secondChild: _sizeAdjustment(child),
+              firstChild: loadingPlaceholder ?? const _ImageLoadingPlaceholder(),
+              secondChild: SizedBox(
+                width: double.infinity,
+                child: child,
+              ),
               crossFadeState: frame == null ? CrossFadeState.showFirst : CrossFadeState.showSecond,
               duration: const Duration(
                 milliseconds: 500,
@@ -88,7 +75,7 @@ class ImageViewComponent extends StatelessWidget {
             );
           }
         } else {
-          return _sizeAdjustment(child);
+          return child;
         }
       },
       errorBuilder: (context, error, stackTrace) {
@@ -99,7 +86,7 @@ class ImageViewComponent extends StatelessWidget {
               return AnimatedOpacity(
                 duration: const Duration(milliseconds: 250),
                 opacity: asyncSnapshot.connectionState == ConnectionState.done ? 1 : 0,
-                child: _sizeAdjustment(errorPlaceholder ?? const SizedBox()),
+                child: errorPlaceholder ?? const Placeholder(),
               );
             },
           );
@@ -117,27 +104,6 @@ class ImageViewComponent extends StatelessWidget {
         }
       },
     );
-  }
-
-  Widget _sizeAdjustment(Widget child) {
-    if (aspectRatio != null) {
-      child = AspectRatio(
-        aspectRatio: aspectRatio ?? 1,
-        child: child,
-      );
-    }
-
-    if (width != null || height != null) {
-      child = Center(
-        child: SizedBox(
-          height: height,
-          width: width,
-          child: child,
-        ),
-      );
-    }
-
-    return child;
   }
 }
 
@@ -157,7 +123,7 @@ class _ImageLoadingPlaceholderState extends State<_ImageLoadingPlaceholder> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       timer ??= Timer.periodic(const Duration(milliseconds: 500), (timer) {
         if (opacity == 1) {
-          opacity = 0.5;
+          opacity = 0.2;
         } else {
           opacity = 1;
         }
