@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 class ImageViewComponent extends StatelessWidget {
   final ImageProvider image;
   final Widget? errorPlaceholder;
-  final Widget? loadingPlaceholder;
   final BoxFit? fit;
   final Color? color;
   final BlendMode? colorBlend;
@@ -16,7 +15,6 @@ class ImageViewComponent extends StatelessWidget {
   ImageViewComponent.file(final File file, {
     super.key,
     this.errorPlaceholder,
-    this.loadingPlaceholder,
     this.fit = BoxFit.cover,
     this.color,
     this.colorBlend,
@@ -25,7 +23,6 @@ class ImageViewComponent extends StatelessWidget {
   ImageViewComponent.asset(final String assetPath, {
     super.key,
     this.errorPlaceholder,
-    this.loadingPlaceholder,
     this.fit = BoxFit.cover,
     this.color,
     this.colorBlend,
@@ -34,7 +31,6 @@ class ImageViewComponent extends StatelessWidget {
   ImageViewComponent.memory(final Uint8List data, {
     super.key,
     this.errorPlaceholder,
-    this.loadingPlaceholder,
     this.fit = BoxFit.cover,
     this.color,
     this.colorBlend,
@@ -43,7 +39,6 @@ class ImageViewComponent extends StatelessWidget {
   ImageViewComponent.network(final String url, {
     super.key,
     this.errorPlaceholder,
-    this.loadingPlaceholder,
     this.fit = BoxFit.cover,
     this.color,
     this.colorBlend,
@@ -62,16 +57,12 @@ class ImageViewComponent extends StatelessWidget {
           if (wasSynchronouslyLoaded) {
             return child;
           } else {
-            return AnimatedCrossFade(
-              firstChild: loadingPlaceholder ?? const _ImageLoadingPlaceholder(),
-              secondChild: SizedBox(
-                width: double.infinity,
-                child: child,
-              ),
-              crossFadeState: frame == null ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+            return AnimatedOpacity(
+              opacity: frame == null ? 0 : 1,
               duration: const Duration(
-                milliseconds: 500,
+                milliseconds: 250,
               ),
+              child: child,
             );
           }
         } else {
@@ -103,57 +94,6 @@ class ImageViewComponent extends StatelessWidget {
           }
         }
       },
-    );
-  }
-}
-
-class _ImageLoadingPlaceholder extends StatefulWidget {
-  const _ImageLoadingPlaceholder();
-
-  @override
-  State<_ImageLoadingPlaceholder> createState() => _ImageLoadingPlaceholderState();
-}
-
-class _ImageLoadingPlaceholderState extends State<_ImageLoadingPlaceholder> {
-  double opacity = 1;
-  Timer? timer;
-
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      timer ??= Timer.periodic(const Duration(milliseconds: 500), (timer) {
-        if (opacity == 1) {
-          opacity = 0.2;
-        } else {
-          opacity = 1;
-        }
-        if (mounted) {
-          setState(() {});
-        } else {
-          timer.cancel();
-        }
-      });
-    });
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    timer?.cancel();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedOpacity(
-      opacity: opacity,
-      duration: const Duration(
-        milliseconds: 500,
-      ),
-      curve: Curves.linear,
-      child: Container(
-        color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFF616161) : const Color(0xFFE0E0E0),
-      ),
     );
   }
 }
