@@ -104,10 +104,10 @@ class PaginationViewComponent<T> extends StatefulWidget {
         super(key: controller.viewKey);
 
   @override
-  State<PaginationViewComponent> createState() => _PaginationViewComponentState();
+  State<PaginationViewComponent> createState() => _PaginationViewComponentState<T>();
 }
 
-class _PaginationViewComponentState extends State<PaginationViewComponent> {
+class _PaginationViewComponentState<T> extends State<PaginationViewComponent<T>> {
   final _pageController = PageController();
   final _scrollController = ScrollController();
 
