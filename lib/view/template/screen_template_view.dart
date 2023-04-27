@@ -45,12 +45,13 @@ class ScreenTemplateView extends StatelessWidget {
           iconPrefix: infoIconPrefix,
           iconSuffix: infoIconSuffix,
           title: infoTitle,
+          foregroundColor: foregroundColor,
         ),
         actions: infoActionList,
-        backgroundColor: enableOverlapHeader ? Colors.transparent : null,
+        foregroundColor: foregroundColor,
+        backgroundColor: enableOverlapHeader ? Colors.transparent : backgroundColor,
         elevation: enableOverlapHeader ? 0 : null,
         centerTitle: true,
-        foregroundColor: foregroundColor,
       ),
       backgroundColor: backgroundColor,
       extendBodyBehindAppBar: enableOverlapHeader,
@@ -108,7 +109,7 @@ class CollapsibleScreenTemplate extends StatelessWidget {
     this.navigatorBottom,
     this.foregroundColor,
     this.backgroundColor,
-    this.collapseMode = CollapseMode.parallax,
+    this.collapseMode = CollapseMode.pin,
   });
 
   @override
@@ -139,6 +140,7 @@ class CollapsibleScreenTemplate extends StatelessWidget {
                 ) : null,
                 expandedHeight: infoBackgroundHeight ?? MediaQuery.of(context).size.width * 2 / 3,
                 foregroundColor: foregroundColor,
+                backgroundColor: backgroundColor,
                 flexibleSpace: FlexibleSpaceBar(
                   title: LayoutBuilder(
                     builder: (context, constraint) {
@@ -157,7 +159,7 @@ class CollapsibleScreenTemplate extends StatelessWidget {
                                 iconPrefix: infoIconPrefix,
                                 iconSuffix: infoIconSuffix,
                                 title: infoTitle,
-                                foregroundColor: Theme.of(context).colorScheme.onSurface,
+                                foregroundColor: foregroundColor ?? Theme.of(context).colorScheme.onSurface,
                               ) ?? const SizedBox(),
                             ),
                             const SizedBox(
