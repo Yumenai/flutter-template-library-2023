@@ -222,8 +222,8 @@ class _PaginationViewComponentState<T> extends State<PaginationViewComponent<T>>
                     child: widget.itemBuilder(
                       context,
                       PaginationViewModel(
-                        model: widget.controller.dataList[position],
-                        position: position,
+                        model: widget.controller.dataList[itemCount],
+                        position: itemCount,
                       ),
                     ),
                   );
