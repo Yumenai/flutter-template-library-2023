@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../../../../utility/format_utility.dart';
 import '../../../../utility/interface_utility.dart';
-import '../../authenticate_module.dart';
+import '../../authentication_module.dart';
 
-class AuthenticateUserControllerRoute {
+class AuthenticationLoginControllerRoute {
   final form = _AuthenticateUserForm();
 
   final void Function() viewSplash;
 
-  AuthenticateUserControllerRoute({
+  AuthenticationLoginControllerRoute({
     required this.viewSplash,
   });
 
@@ -22,7 +22,7 @@ class AuthenticateUserControllerRoute {
 
     if (!context.mounted) return;
 
-    final isSuccessful = await AuthenticateModule.of(context).repository.user(
+    final isSuccessful = await AuthenticationModule.of(context).repository.user(
       context,
       id: form.idInputController.text,
       password: form.passwordInputController.text,

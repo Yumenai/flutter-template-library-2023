@@ -2,8 +2,8 @@ import '../../../../utility/key_value_utility.dart';
 
 const _sessionRefreshTokenKey = 'authenticate_session_refresh_token';
 
-class AuthenticateSettingDatasourceData {
-  const AuthenticateSettingDatasourceData();
+class AuthenticationSettingDatasourceData {
+  const AuthenticationSettingDatasourceData();
 
   Future<String> getSessionRefreshToken() async {
     return await KeyValueUtility.getString(_sessionRefreshTokenKey) ?? '';

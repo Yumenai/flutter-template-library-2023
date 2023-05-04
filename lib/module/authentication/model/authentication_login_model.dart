@@ -1,15 +1,15 @@
-class AuthenticateUserModel {
-  static AuthenticateUserModel? fromJson(final Map? json) {
+class AuthenticationLoginModel {
+  static AuthenticationLoginModel? fromJson(final Map? json) {
     if (json == null) return null;
 
-    return AuthenticateUserModel(
+    return AuthenticationLoginModel(
       refreshToken: json['session_refresh_token']?.toString() ?? '',
     );
   }
 
   final String refreshToken;
 
-  const AuthenticateUserModel({
+  const AuthenticationLoginModel({
     required this.refreshToken,
   });
 }

@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import '../../../../data/mock_network_data.dart';
 import '../../../../provider/app_provider.dart';
 import '../../../../utility/dialog_utility.dart';
-import '../../model/authenticate_user_model.dart';
+import '../../model/authentication_login_model.dart';
 
-class AuthenticateNetworkMockDatasourceData {
-  const AuthenticateNetworkMockDatasourceData();
+class AuthenticationNetworkMockDatasourceData {
+  const AuthenticationNetworkMockDatasourceData();
 
-  Future<AuthenticateUserModel?> user(final BuildContext context, {
+  Future<AuthenticationLoginModel?> user(final BuildContext context, {
     required final String id,
     required final String password,
     final void Function(String?)? onFormErrorId,
@@ -19,7 +19,7 @@ class AuthenticateNetworkMockDatasourceData {
     for (final user in MockNetworkData.userList) {
       if (user['authenticate_id'] == id) {
         if (user['authenticate_password'] == password) {
-          return AuthenticateUserModel(
+          return AuthenticationLoginModel(
             refreshToken: user['session_refresh_token']?.toString() ?? '',
           );
         }

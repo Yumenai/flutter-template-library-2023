@@ -6,12 +6,12 @@ import '../../../../view/template/screen_template_view.dart';
 import '../../../../component/view/image_view_component.dart';
 import '../../../../provider/app_provider.dart';
 import '../../../../utility/app_utility.dart';
-import '../controller/authenticate_user_controller_route.dart';
+import '../controller/authentication_login_controller_route.dart';
 
-class AuthenticateUserScreenRoute extends StatelessWidget {
-  final AuthenticateUserControllerRoute controller;
+class AuthenticationLoginScreenRoute extends StatelessWidget {
+  final AuthenticationLoginControllerRoute controller;
 
-  const AuthenticateUserScreenRoute({
+  const AuthenticationLoginScreenRoute({
     super.key,
     required this.controller,
   });

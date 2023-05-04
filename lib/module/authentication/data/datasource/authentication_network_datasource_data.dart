@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../../../../service/network_service.dart';
-import '../../model/authenticate_user_model.dart';
+import '../../model/authentication_login_model.dart';
 
-class AuthenticateNetworkDatasourceData {
-  const AuthenticateNetworkDatasourceData();
+class AuthenticationNetworkDatasourceData {
+  const AuthenticationNetworkDatasourceData();
 
-  Future<AuthenticateUserModel?> user(final BuildContext context, {
+  Future<AuthenticationLoginModel?> user(final BuildContext context, {
     required final String id,
     required final String password,
     final void Function(String?)? onFormErrorId,
@@ -27,6 +27,6 @@ class AuthenticateNetworkDatasourceData {
 
     if (response == null) return null;
 
-    return AuthenticateUserModel.fromJson(response.responseMap);
+    return AuthenticationLoginModel.fromJson(response.responseMap);
   }
 }

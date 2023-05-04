@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 
 import '../../../data/configuration_data.dart';
 import '../../../utility/dialog_utility.dart';
-import 'datasource/authenticate_network_datasource_data.dart';
-import 'datasource/authenticate_network_mock_datasource_data.dart';
-import 'datasource/authenticate_setting_datasource_data.dart';
+import 'datasource/authentication_network_datasource_data.dart';
+import 'datasource/authentication_network_mock_datasource_data.dart';
+import 'datasource/authentication_setting_datasource_data.dart';
 
-class AuthenticateRepositoryData {
-  final _settingDatasource = const AuthenticateSettingDatasourceData();
-  final _networkDatasource = const AuthenticateNetworkDatasourceData();
-  final _networkMockDatasource = const AuthenticateNetworkMockDatasourceData();
+class AuthenticationRepositoryData {
+  final _settingDatasource = const AuthenticationSettingDatasourceData();
+  final _networkDatasource = const AuthenticationNetworkDatasourceData();
+  final _networkMockDatasource = const AuthenticationNetworkMockDatasourceData();
 
-  const AuthenticateRepositoryData();
+  const AuthenticationRepositoryData();
 
 
   Future<String> getSessionRefreshToken() async {

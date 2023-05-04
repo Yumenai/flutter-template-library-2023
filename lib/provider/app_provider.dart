@@ -7,7 +7,7 @@ import '../data/variable/color_variable_data.dart';
 import '../data/variable/environment_variable_data.dart';
 import '../data/variable/image_variable_data.dart';
 import '../module/app/app_module.dart';
-import '../module/authenticate/authenticate_module.dart';
+import '../module/authentication/authentication_module.dart';
 import '../module/user/user_module.dart';
 
 class AppProvider extends ChangeNotifier {
@@ -23,7 +23,7 @@ class AppProvider extends ChangeNotifier {
   }
 
   final _appModule = AppModule();
-  final _authenticateModule = AuthenticateModule();
+  final _authenticationModule = AuthenticationModule();
   final _userModule = UserModule();
 
   Locale get locale => _userModule.repository.locale ?? ConfigurationData.defaultLocale;
@@ -50,7 +50,7 @@ class AppProvider extends ChangeNotifier {
   Future<AppProvider> setup() async {
     await _appModule.initialise(
       provider: (context) => of(context)._appModule,
-      viewSignIn: _authenticateModule.directoryRoute.user.navigate,
+      viewSignIn: _authenticationModule.directoryRoute.user.navigate,
       viewSignUp: _userModule.directoryRoute.registration.navigate,
       viewProfileSettings: _userModule.directoryRoute.profile.navigate,
       viewPasswordSettings: _userModule.directoryRoute.password.navigate,
@@ -60,23 +60,23 @@ class AppProvider extends ChangeNotifier {
       onSetup: _userModule.startup,
       onSignOut: () async {
         await _appModule.clear();
-        await _authenticateModule.clear();
+        await _authenticationModule.clear();
         await _userModule.clear();
       },
     );
 
-    await _authenticateModule.initialise(
-      provider: (context) => of(context)._authenticateModule,
+    await _authenticationModule.initialise(
+      provider: (context) => of(context)._authenticationModule,
       viewSplash: _appModule.directoryRoute.splash.navigate,
     );
 
     await _userModule.initialise(
       provider: (context) => of(context)._userModule,
       viewSplash: _appModule.directoryRoute.splash.navigate,
-      getSessionRefreshToken: _authenticateModule.repository.getSessionRefreshToken,
+      getSessionRefreshToken: _authenticationModule.repository.getSessionRefreshToken,
       onDeleteAccount: () async {
         await _appModule.clear();
-        await _authenticateModule.clear();
+        await _authenticationModule.clear();
         await _userModule.clear();
       },
     );
