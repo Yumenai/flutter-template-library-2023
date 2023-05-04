@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import '../../../../utility/dialog_utility.dart';
 import '../../../../utility/format_utility.dart';
 import '../../../../utility/interface_utility.dart';
-import '../../user_module.dart';
+import '../../../user/user_module.dart';
 
-class UserRegistrationControllerRoute {
+class AuthenticationRegistrationControllerRoute {
   final form = _UserRegisterForm();
 
-  UserRegistrationControllerRoute();
+  AuthenticationRegistrationControllerRoute();
 
   void signUp(final BuildContext context) async {
     final isClearing = await InterfaceUtility.isFocusClearing(context);

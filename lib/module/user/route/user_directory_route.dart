@@ -4,13 +4,11 @@ import 'controller/user_deletion_controller_route.dart';
 import 'controller/user_language_controller_route.dart';
 import 'controller/user_password_controller_route.dart';
 import 'controller/user_profile_controller_route.dart';
-import 'controller/user_registration_controller_route.dart';
 import 'controller/user_theme_controller_route.dart';
 import 'screen/user_deletion_screen_route.dart';
 import 'screen/user_language_screen_route.dart';
 import 'screen/user_password_screen_route.dart';
 import 'screen/user_profile_screen_route.dart';
-import 'screen/user_registration_screen_route.dart';
 import 'screen/user_theme_screen_route.dart';
 
 class UserDirectoryRoute {
@@ -24,13 +22,6 @@ class UserDirectoryRoute {
     _viewSplash = viewSplash;
     _onDeleteAccount = onDeleteAccount;
   }
-
-  RouteModel get registration => RouteModel(
-    screen: UserRegistrationScreenRoute(
-      controller: UserRegistrationControllerRoute(),
-    ),
-    onNavigate: RouteService.push,
-  );
 
   RouteModel get profile => RouteModel(
     screen: UserProfileScreenRoute(

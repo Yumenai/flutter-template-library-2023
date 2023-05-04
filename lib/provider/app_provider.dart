@@ -50,8 +50,8 @@ class AppProvider extends ChangeNotifier {
   Future<AppProvider> setup() async {
     await _appModule.initialise(
       provider: (context) => of(context)._appModule,
-      viewSignIn: _authenticationModule.directoryRoute.user.navigate,
-      viewSignUp: _userModule.directoryRoute.registration.navigate,
+      viewSignIn: _authenticationModule.directoryRoute.login.navigate,
+      viewSignUp: _authenticationModule.directoryRoute.registration.navigate,
       viewProfileSettings: _userModule.directoryRoute.profile.navigate,
       viewPasswordSettings: _userModule.directoryRoute.password.navigate,
       viewThemeSettings: _userModule.directoryRoute.theme.navigate,
