@@ -81,7 +81,7 @@ class UserNetworkDatasourceData {
     final response = await NetworkService.post(
       context,
       apiRoute: 'user/updateProfile',
-      bodyObject: {
+      body: {
         'name': name,
         'email': email,
         'birthdate': FormatUtility.date(birthdate),
@@ -108,7 +108,7 @@ class UserNetworkDatasourceData {
     final response = await NetworkService.post(
       context,
       apiRoute: 'user/updatePassword',
-      bodyObject: {
+      body: {
         'current_password': currentPassword,
         'replace_password': replacePassword,
       },
@@ -128,7 +128,7 @@ class UserNetworkDatasourceData {
     final response = await NetworkService.post(
       context,
       apiRoute: 'user/deleteAccount',
-      bodyObject: {
+      body: {
         'password': password,
       },
       errorFormHandler: (errorForm) {

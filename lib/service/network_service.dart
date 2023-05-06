@@ -47,20 +47,20 @@ class NetworkService {
   static Future<NetworkModelService?> put(final BuildContext context, {
     required final String apiRoute,
     final String hostAddress = '',
-    final Map<String, String>? headerMap,
-    final Object? bodyObject,
+    final Map<String, String>? header,
+    final Object? body,
     final void Function(Map)? errorFormHandler,
   }) async {
     final url = _configureUrl(context, hostAddress, apiRoute);
 
-    log('[Request][Put] Network Service: $url : $bodyObject');
+    log('[Request][Put] Network Service: $url : $body');
 
     return _handleResponse(
       context,
       requestHandler: () => http.put(
         Uri.parse(url),
-        headers: headerMap,
-        body: bodyObject,
+        headers: _getHeaderConfiguration(context, header),
+        body: body,
       ),
       logPrefix: '[Response][Put] Network Service: ',
       errorFormHandler: errorFormHandler,
@@ -70,21 +70,21 @@ class NetworkService {
   static Future<NetworkModelService?> post(final BuildContext context, {
     required final String apiRoute,
     final String hostAddress = '',
-    final Map<String, String>? headerMap,
-    final Object? bodyObject,
+    final Map<String, String>? header,
+    final Object? body,
     final bool enableJsonEncoder = true,
     final void Function(Map)? errorFormHandler,
   }) async {
     final url = _configureUrl(context, hostAddress, apiRoute);
 
-    log('[Request][Post] Network Service: $url : $bodyObject');
+    log('[Request][Post] Network Service: $url : $body');
 
     return _handleResponse(
       context,
       requestHandler: () => http.post(
         Uri.parse(url),
-        headers: headerMap,
-        body: enableJsonEncoder ? jsonEncode(bodyObject) : bodyObject,
+        headers: _getHeaderConfiguration(context, header),
+        body: enableJsonEncoder ? jsonEncode(body) : body,
       ),
       logPrefix: '[Response][Post] Network Service: ',
       errorFormHandler: errorFormHandler,
@@ -94,20 +94,20 @@ class NetworkService {
   static Future<NetworkModelService?> delete(final BuildContext context, {
     required final String apiRoute,
     final String hostAddress = '',
-    final Map<String, String>? headerMap,
-    final Object? bodyObject,
+    final Map<String, String>? header,
+    final Object? body,
     final void Function(Map)? errorFormHandler,
   }) async {
     final url = _configureUrl(context, hostAddress, apiRoute);
 
-    log('[Request][Delete] Network Service: $url : $bodyObject');
+    log('[Request][Delete] Network Service: $url : $body');
 
     return _handleResponse(
       context,
       requestHandler: () => http.delete(
         Uri.parse(url),
-        headers: headerMap,
-        body: bodyObject,
+        headers: _getHeaderConfiguration(context, header),
+        body: body,
       ),
       logPrefix: '[Response][Delete] Network Service: ',
       errorFormHandler: errorFormHandler,
@@ -117,8 +117,8 @@ class NetworkService {
   static Future<NetworkModelService?> postMultipart(final BuildContext context, {
     required final String apiRoute,
     final String hostAddress = '',
-    final Map<String, String>? headerMap,
-    final dynamic bodyObject,
+    final Map<String, String>? header,
+    final dynamic body,
     final Map<String, Uint8List>? fileMap,
     final String fileType = 'file',
     final MapEntry<String, String>? mediaTypeMapEntry,
@@ -126,7 +126,7 @@ class NetworkService {
   }) {
     final url = _configureUrl(context, hostAddress, apiRoute);
 
-    log('[Request][Post Multipart] Network Service: $url : $bodyObject');
+    log('[Request][Post Multipart] Network Service: $url : $body');
 
     return _handleResponse(
       context,
@@ -136,11 +136,11 @@ class NetworkService {
           Uri.parse(url),
         );
 
-        headerMap?.forEach((key, value) {
+        header?.forEach((key, value) {
           request.headers[key] = value;
         });
 
-        bodyObject?.forEach((key, value) {
+        body?.forEach((key, value) {
           request.fields[key] = value;
         });
 
@@ -191,7 +191,7 @@ class NetworkService {
 
   static Map<String, String> _getHeaderConfiguration(final BuildContext context, final Map<String, String>? additionalHeader) {
     return {
-      'access-token': AppProvider.of(context).accessToken,
+      'authorization': AppProvider.of(context).accessToken,
       ...?additionalHeader,
     };
   }
