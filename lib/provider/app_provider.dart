@@ -81,73 +81,76 @@ class AppProvider extends ChangeNotifier {
       },
     );
 
-    await updateTheme(themeMode, false);
-    await updateLanguage(locale.languageCode, false);
+    await _updateTheme(themeMode);
+    await _updateLanguage(locale.languageCode);
 
     return this;
   }
 
   Widget startupRoute() => _appModule.directoryRoute.splash.screen;
 
-  Future<void> updateTheme(final ThemeMode themeMode, [
-    final bool notifyChange = true,
-  ]) async {
+  Future<void> updateTheme(final ThemeMode themeMode) async {
     /// If the locale is the same, skip this update
     if (themeMode == _userModule.repository.themeMode) return;
 
+    await _updateTheme(themeMode);
+    notifyListeners();
+  }
+
+  Future<void> updateLanguage(final String languageCode) async {
+    /// If the locale is the same, skip this update
+    if (languageCode == _userModule.repository.locale?.languageCode) return;
+
+    await _updateLanguage(languageCode);
+    notifyListeners();
+  }
+
+  void updateBrightness(final Brightness brightness) {
+    _updateBrightness(brightness);
+    notifyListeners();
+  }
+
+  Future<void> _updateTheme(final ThemeMode themeMode) async {
     _userModule.repository.themeMode = themeMode;
 
     switch(themeMode) {
       case ThemeMode.system:
-        updateBrightness(WidgetsBinding.instance.window.platformBrightness);
+        _updateBrightness(WidgetsBinding.instance.window.platformBrightness);
         break;
       case ThemeMode.light:
-        updateBrightness(Brightness.light);
+        _updateBrightness(Brightness.light);
         break;
       case ThemeMode.dark:
-        updateBrightness(Brightness.dark);
+        _updateBrightness(Brightness.dark);
         break;
     }
   }
 
-  Future<void> updateLanguage(final String languageCode, [
-    final bool notifyChange = true,
-  ]) async {
-    /// If the locale is the same, skip this update
-    if (languageCode == _userModule.repository.locale?.languageCode) return;
+  Future<void> _updateLanguage(final String languageCode) async {
+    Locale replacementLocale = ConfigurationData.defaultLocale;
 
-    final locale = ConfigurationData.supportedLocaleList.firstWhere((locale) {
-      return locale.languageCode == languageCode;
-    }, orElse: () {
-      return ConfigurationData.defaultLocale;
-    });
+    for (final locale in ConfigurationData.supportedLocaleList) {
+      if (locale.languageCode == languageCode) {
+        replacementLocale = locale;
+      }
+    }
 
-    _userModule.repository.locale = locale;
+    _userModule.repository.locale = replacementLocale;
 
-    final textResource = await ConfigurationData.localizationDelegateList.first.load(locale);
+    final textResource = await ConfigurationData.localizationDelegateList.first.load(replacementLocale);
 
     if (textResource is AppLocalizations) {
       _text = textResource;
     }
-
-    if (notifyChange) {
-      notifyListeners();
-    }
   }
 
-  void updateBrightness(final Brightness brightness, [
-    final bool notifyChange = true,
-  ]) {
+  void _updateBrightness(final Brightness brightness) {
     if (brightness == Brightness.dark) {
       _color = ColorVariableData.dark;
       _image = ImageVariableData.dark;
     } else {
       _color = ColorVariableData.light;
       _image = ImageVariableData.light;
-    }
-
-    if (notifyChange) {
-      notifyListeners();
     }
   }
 }

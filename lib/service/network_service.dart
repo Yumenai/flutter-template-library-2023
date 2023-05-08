@@ -206,6 +206,8 @@ class NetworkService {
 
       final statusCode = response.statusCode;
 
+      log('$logPrefix${response.request?.url.toString()} $statusCode ${response.body}');
+
       if (statusCode > 199 && statusCode < 300) {
         return NetworkModelService(
           statusCode: response.statusCode,
