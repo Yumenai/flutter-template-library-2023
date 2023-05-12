@@ -45,7 +45,7 @@ class AppDirectoryRoute {
   }
 
   RouteModel get splash => RouteModel(
-    screen: AppSplashScreenRoute(
+    onBuild: () => AppSplashScreenRoute(
       controller: AppSplashControllerRoute(
         onSetup: _onSetup,
       ),
@@ -54,7 +54,7 @@ class AppDirectoryRoute {
   );
 
   RouteModel get landing => RouteModel(
-    screen: AppLandingScreenRoute(
+    onBuild: () => AppLandingScreenRoute(
       controller: AppLandingControllerRoute(
         onSignIn: _viewSignIn,
         onSignUp: _viewSignUp,
@@ -63,15 +63,15 @@ class AppDirectoryRoute {
     onNavigate: RouteService.pushBase,
   );
 
-  RouteModel get dashboard => const RouteModel(
-    screen: AppDashboardScreenRoute(
+  RouteModel get dashboard => RouteModel(
+    onBuild: () => const AppDashboardScreenRoute(
       controller: AppDashboardControllerRoute(),
     ),
     onNavigate: RouteService.pushBase,
   );
 
   RouteModel get settings => RouteModel(
-    screen: AppSettingScreenRoute(
+    onBuild: () => AppSettingScreenRoute(
       controller: AppSettingControllerRoute(
         viewProfileSettings: _viewProfileSettings,
         viewPasswordSettings: _viewPasswordSettings,

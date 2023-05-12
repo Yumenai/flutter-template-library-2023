@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 
 class RouteModel {
-  final Widget screen;
+  final Widget Function() _onBuild;
   final Future<dynamic>? Function(Widget) _onNavigate;
 
   const RouteModel({
-    required this.screen,
+    required final Widget Function() onBuild,
     required final Future<dynamic>? Function(Widget) onNavigate,
-  }) : _onNavigate = onNavigate;
+  }) : _onBuild = onBuild,
+        _onNavigate = onNavigate;
 
-  Future<dynamic>? navigate() => _onNavigate(screen);
+  Widget build() => _onBuild();
+
+  Future<dynamic>? navigate() => _onNavigate(_onBuild());
 }

@@ -17,7 +17,7 @@ class AuthenticationDirectoryRoute {
   }
 
   RouteModel get login => RouteModel(
-    screen: AuthenticationLoginScreenRoute(
+    onBuild: () => AuthenticationLoginScreenRoute(
       controller: AuthenticationLoginControllerRoute(
         viewSplash: _viewSplash,
       ),
@@ -26,7 +26,7 @@ class AuthenticationDirectoryRoute {
   );
 
   RouteModel get registration => RouteModel(
-    screen: AuthenticationRegistrationScreenRoute(
+    onBuild: () => AuthenticationRegistrationScreenRoute(
       controller: AuthenticationRegistrationControllerRoute(),
     ),
     onNavigate: RouteService.push,

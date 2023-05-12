@@ -24,35 +24,35 @@ class UserDirectoryRoute {
   }
 
   RouteModel get profile => RouteModel(
-    screen: UserProfileScreenRoute(
+    onBuild: () => UserProfileScreenRoute(
       controller: UserProfileControllerRoute(),
     ),
     onNavigate: RouteService.push,
   );
 
   RouteModel get password => RouteModel(
-    screen: UserPasswordScreenRoute(
+    onBuild: () => UserPasswordScreenRoute(
       controller: UserPasswordControllerRoute(),
     ),
     onNavigate: RouteService.push,
   );
 
-  RouteModel get theme => const RouteModel(
-    screen: UserThemeScreenRoute(
+  RouteModel get theme => RouteModel(
+    onBuild: () => const UserThemeScreenRoute(
       controller: UserThemeControllerRoute(),
     ),
     onNavigate: RouteService.push,
   );
 
-  RouteModel get language => const RouteModel(
-    screen: UserLanguageScreenRoute(
+  RouteModel get language => RouteModel(
+    onBuild: () => const UserLanguageScreenRoute(
       controller: UserLanguageControllerRoute(),
     ),
     onNavigate: RouteService.push,
   );
 
   RouteModel get deletion => RouteModel(
-    screen: UserDeletionScreenRoute(
+    onBuild: () => UserDeletionScreenRoute(
       controller: UserDeletionControllerRoute(
         viewSplash: _viewSplash,
         onDeleteAccount: _onDeleteAccount,

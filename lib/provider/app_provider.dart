@@ -87,7 +87,7 @@ class AppProvider extends ChangeNotifier {
     return this;
   }
 
-  Widget startupRoute() => _appModule.directoryRoute.splash.screen;
+  Widget startupRoute() => _appModule.directoryRoute.splash.build();
 
   Future<void> updateTheme(final ThemeMode themeMode) async {
     /// If the locale is the same, skip this update
