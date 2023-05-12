@@ -21,6 +21,8 @@ class ScreenTemplateView extends StatelessWidget {
   final Color? backgroundColor;
   final bool enableOverlapHeader;
 
+  final void Function()? onBackOverride;
+
   const ScreenTemplateView({
     super.key,
     this.infoTitle,
@@ -35,6 +37,7 @@ class ScreenTemplateView extends StatelessWidget {
     this.foregroundColor,
     this.backgroundColor,
     this.enableOverlapHeader = false,
+    this.onBackOverride,
   });
 
   @override
@@ -51,6 +54,11 @@ class ScreenTemplateView extends StatelessWidget {
         foregroundColor: foregroundColor,
         backgroundColor: enableOverlapHeader ? Colors.transparent : backgroundColor,
         elevation: enableOverlapHeader ? 0 : null,
+        leading: onBackOverride == null ? null : IconButtonComponent(
+          hint: 'Back',
+          icon: const Icon(Icons.arrow_back),
+          onPressed: onBackOverride ?? () {},
+        ),
         centerTitle: true,
       ),
       backgroundColor: backgroundColor,
@@ -67,10 +75,18 @@ class ScreenTemplateView extends StatelessWidget {
       bottomNavigationBar: navigatorBottom,
     );
 
+    final navigateComponent = onBackOverride == null ? component : WillPopScope(
+      onWillPop: () async {
+        onBackOverride?.call();
+        return false;
+      },
+      child: component,
+    );
+
     if (ConfigurationData.isTestMode) {
-      return _EnvironmentBannerView(component);
+      return _EnvironmentBannerView(navigateComponent);
     } else {
-      return component;
+      return navigateComponent;
     }
   }
 }
@@ -94,6 +110,8 @@ class CollapsibleScreenTemplate extends StatelessWidget {
   final Color? backgroundColor;
   final CollapseMode collapseMode;
 
+  final void Function()? onBackOverride;
+
   const CollapsibleScreenTemplate({
     super.key,
     this.infoTitle,
@@ -110,6 +128,7 @@ class CollapsibleScreenTemplate extends StatelessWidget {
     this.foregroundColor,
     this.backgroundColor,
     this.collapseMode = CollapseMode.pin,
+    this.onBackOverride,
   });
 
   @override
@@ -135,7 +154,7 @@ class CollapsibleScreenTemplate extends StatelessWidget {
                     size: 38,
                     margin: EdgeInsets.zero,
                     style: IconButtonStyle.elevated,
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: onBackOverride ?? () => Navigator.pop(context),
                   ),
                 ) : null,
                 expandedHeight: infoBackgroundHeight ?? MediaQuery.of(context).size.width * 2 / 3,
@@ -198,10 +217,18 @@ class CollapsibleScreenTemplate extends StatelessWidget {
       bottomNavigationBar: navigatorBottom,
     );
 
+    final navigateComponent = onBackOverride == null ? component : WillPopScope(
+      onWillPop: () async {
+        onBackOverride?.call();
+        return false;
+      },
+      child: component,
+    );
+
     if (ConfigurationData.isTestMode) {
-      return _EnvironmentBannerView(component);
+      return _EnvironmentBannerView(navigateComponent);
     } else {
-      return component;
+      return navigateComponent;
     }
   }
 }
