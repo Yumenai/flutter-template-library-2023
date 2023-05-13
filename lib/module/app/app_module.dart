@@ -23,6 +23,7 @@ class AppModule {
     required final void Function() viewThemeSettings,
     required final void Function() viewLanguageSettings,
     required final void Function() viewAccountDeletion,
+    required final Future<String?> Function() getCodeScanner,
     required final Future<bool> Function(BuildContext) onSetup,
     required final Future<void> Function() onSignOut,
   }) async {
@@ -35,6 +36,7 @@ class AppModule {
       viewThemeSettings: viewThemeSettings,
       viewLanguageSettings: viewLanguageSettings,
       viewAccountDeletion: viewAccountDeletion,
+      getCodeScanner: getCodeScanner,
       onSetup: onSetup,
       onSignOut: onSignOut,
     );

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
-class AppScannerControllerRoute {
+class ScannerCodeControllerRoute {
   final scannerController = MobileScannerController();
 
-  AppScannerControllerRoute();
+  ScannerCodeControllerRoute();
 
   void onScan(final BuildContext context, final String data) async {
     await scannerController.stop();

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 import '../../../../view/template/screen_template_view.dart';
-import '../controller/app_scanner_controller_route.dart';
+import '../controller/scanner_code_controller_route.dart';
 
-class AppScannerScreenRoute extends StatelessWidget {
-  final AppScannerControllerRoute controller;
+class ScannerCodeScreenRoute extends StatelessWidget {
+  final ScannerCodeControllerRoute controller;
 
-  const AppScannerScreenRoute({
+  const ScannerCodeScreenRoute({
     super.key,
     required this.controller,
   });

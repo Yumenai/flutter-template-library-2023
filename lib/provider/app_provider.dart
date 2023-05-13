@@ -8,6 +8,7 @@ import '../data/variable/environment_variable_data.dart';
 import '../data/variable/image_variable_data.dart';
 import '../module/app/app_module.dart';
 import '../module/authentication/authentication_module.dart';
+import '../module/scanner/scanner_module.dart';
 import '../module/user/user_module.dart';
 
 class AppProvider extends ChangeNotifier {
@@ -25,6 +26,7 @@ class AppProvider extends ChangeNotifier {
   final _appModule = AppModule();
   final _authenticationModule = AuthenticationModule();
   final _userModule = UserModule();
+  final _scannerModule = ScannerModule();
 
   Locale get locale => _userModule.repository.locale ?? ConfigurationData.defaultLocale;
   ThemeMode get themeMode => _userModule.repository.themeMode ?? ConfigurationData.defaultThemeMode;
@@ -57,6 +59,7 @@ class AppProvider extends ChangeNotifier {
       viewThemeSettings: _userModule.directoryRoute.theme.navigate,
       viewLanguageSettings: _userModule.directoryRoute.language.navigate,
       viewAccountDeletion: _userModule.directoryRoute.deletion.navigate,
+      getCodeScanner: _scannerModule.directoryRoute.code.navigate,
       onSetup: _userModule.startup,
       onSignOut: () async {
         await _appModule.clear();
@@ -79,6 +82,10 @@ class AppProvider extends ChangeNotifier {
         await _authenticationModule.clear();
         await _userModule.clear();
       },
+    );
+
+    await _scannerModule.initialise(
+      provider: (context) => of(context)._scannerModule,
     );
 
     await _updateTheme(themeMode);

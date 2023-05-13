@@ -19,6 +19,7 @@ class AppDirectoryRoute {
   void Function() _viewThemeSettings = () {};
   void Function() _viewLanguageSettings = () {};
   void Function() _viewAccountDeletion = () {};
+  Future<String?> Function() _getCodeScanner = () async => '';
   Future<bool> Function(BuildContext) _onSetup = (_) async => false;
   Future<void> Function() _onSignOut = () async {};
 
@@ -30,6 +31,7 @@ class AppDirectoryRoute {
     required final void Function() viewThemeSettings,
     required final void Function() viewLanguageSettings,
     required final void Function() viewAccountDeletion,
+    required final Future<String?> Function() getCodeScanner,
     required final Future<bool> Function(BuildContext) onSetup,
     required final Future<void> Function() onSignOut,
   }) {
@@ -40,6 +42,7 @@ class AppDirectoryRoute {
     _viewThemeSettings = viewThemeSettings;
     _viewLanguageSettings = viewLanguageSettings;
     _viewAccountDeletion = viewAccountDeletion;
+    _getCodeScanner = getCodeScanner;
     _onSetup = onSetup;
     _onSignOut = onSignOut;
   }
@@ -64,8 +67,9 @@ class AppDirectoryRoute {
   );
 
   RouteModel get dashboard => RouteModel(
-    onBuild: () => const AppDashboardScreenRoute(
-      controller: AppDashboardControllerRoute(),
+    onBuild: () => AppDashboardScreenRoute(
+      controller: const AppDashboardControllerRoute(),
+      getCodeScanner: _getCodeScanner,
     ),
     onNavigate: RouteService.pushBase,
   );
